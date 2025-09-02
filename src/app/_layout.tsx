@@ -1,36 +1,62 @@
+import { useFonts } from 'expo-font';
+import { Stack } from 'expo-router';
+import 'react-native-reanimated';
+import { StatusBar } from 'expo-status-bar';
 import {
+  ThemeProvider as NavThemeProvider,
   DarkTheme,
   DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
-import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import "react-native-reanimated";
+} from '@react-navigation/native';
+import { MyTamaguiProvider, useThemeMode } from '../providers/tamaguiProvider';
+import { useTheme } from 'tamagui';
+import { useMemo } from 'react';
 
-import { useColorScheme } from "@/src/hooks/useColorScheme";
-import { MyTamaguiProvider } from "../providers/tamaguiProvider";
+function NavBridge() {
+  const { mode } = useThemeMode();
+  const t = useTheme();
+
+  const navTheme = useMemo(
+    () => ({
+      ...(mode === 'dark' ? DarkTheme : DefaultTheme),
+      colors: {
+        ...(mode === 'dark' ? DarkTheme.colors : DefaultTheme.colors),
+        background: t.background?.val,
+        card: t.background?.val,
+        text: t.color?.val,
+        border: t.borderColor?.val ?? (mode === 'dark' ? '#2A2A2A' : '#E5E7EB'),
+        primary: t.color?.val,
+      },
+    }),
+    [mode, t.background?.val, t.color?.val, t.borderColor?.val],
+  );
+
+  return (
+    <NavThemeProvider value={navTheme}>
+      <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
+      <Stack
+        screenOptions={{
+          contentStyle: { backgroundColor: t.background?.val },
+          headerStyle: { backgroundColor: t.background?.val },
+          headerTintColor: t.color?.val,
+        }}
+      >
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+    </NavThemeProvider>
+  );
+}
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require("@/assets/fonts/SpaceMono-Regular.ttf"),
+    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
+    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
   });
-
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
+  if (!loaded) return null;
 
   return (
     <MyTamaguiProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
+      <NavBridge />
     </MyTamaguiProvider>
   );
 }

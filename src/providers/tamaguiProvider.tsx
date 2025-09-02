@@ -1,14 +1,23 @@
-import config from "@/tamagui.config";
-import React from "react";
-import { useColorScheme } from "react-native";
-import { TamaguiProvider, Theme } from "tamagui";
+import React, { createContext, useContext, useState } from 'react';
+import { TamaguiProvider, Theme } from 'tamagui';
+import config from '../../tamagui.config';
+
+const Ctx = createContext({
+  mode: 'light',
+  setMode: (m: 'light' | 'dark') => {},
+});
+export const useThemeMode = () => useContext(Ctx);
 
 export function MyTamaguiProvider({ children }: { children: React.ReactNode }) {
-  const scheme = useColorScheme();
-  const theme = scheme === "dark" ? "dark" : "light";
+  const [mode, setMode] = useState<'light' | 'dark'>('light');
+
   return (
-    <TamaguiProvider config={config} defaultTheme={theme}>
-      <Theme name={theme}>{children}</Theme>
-    </TamaguiProvider>
+    <Ctx.Provider value={{ mode, setMode }}>
+      <TamaguiProvider config={config} defaultTheme={mode}>
+        <Theme name={mode} key={mode}>
+          {children}
+        </Theme>
+      </TamaguiProvider>
+    </Ctx.Provider>
   );
 }
