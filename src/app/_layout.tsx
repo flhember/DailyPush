@@ -1,5 +1,5 @@
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { router, Stack, useSegments } from 'expo-router';
 import 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
 import {
@@ -9,11 +9,15 @@ import {
 } from '@react-navigation/native';
 import { MyTamaguiProvider, useThemeMode } from '../providers/tamaguiProvider';
 import { useTheme } from 'tamagui';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import AuthProvider, { useAuth } from '../providers/authProvider';
 
 function NavBridge() {
-  const { mode } = useThemeMode();
   const t = useTheme();
+  const { mode } = useThemeMode();
+  const { session, loading } = useAuth();
+  const segments = useSegments();
+  const navigating = useRef(false);
 
   const navTheme = useMemo(
     () => ({
@@ -30,17 +34,46 @@ function NavBridge() {
     [mode, t.background?.val, t.color?.val, t.borderColor?.val],
   );
 
+  useEffect(() => {
+    if (loading || navigating.current) return;
+
+    const group = segments[0];
+
+    if (group === 'training') return;
+
+    const inAuth = group === '(auth)';
+    const inTabs = group === '(tabs)';
+
+    if (!session && !inAuth) {
+      navigating.current = true;
+      router.replace('/(auth)/sign-in');
+      setTimeout(() => (navigating.current = false), 0);
+      return;
+    }
+
+    if (session && !inTabs) {
+      console.log(session.user.email);
+      navigating.current = true;
+      console.log('Redirecting to /(tabs)');
+      router.replace('/(tabs)');
+      setTimeout(() => (navigating.current = false), 0);
+    }
+  }, [session, loading, segments]);
+
   return (
     <NavThemeProvider value={navTheme}>
       <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
       <Stack
+        initialRouteName="index"
         screenOptions={{
           contentStyle: { backgroundColor: t.background?.val },
           headerStyle: { backgroundColor: t.background?.val },
           headerTintColor: t.color?.val,
         }}
       >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false, animation: 'none' }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false, animation: 'none' }} />
+        <Stack.Screen name="training" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
     </NavThemeProvider>
@@ -56,7 +89,9 @@ export default function RootLayout() {
 
   return (
     <MyTamaguiProvider>
-      <NavBridge />
+      <AuthProvider>
+        <NavBridge />
+      </AuthProvider>
     </MyTamaguiProvider>
   );
 }
