@@ -1,10 +1,11 @@
 import { YStack, XStack, Separator, H3, Button } from 'tamagui';
 import { ThemeSwitch } from '@/src/components/ThemeToggle';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { NoProgramCard } from '@/src/components/NoProgramCard';
 import { supabase } from '@/src/lib/supabase';
 import { useEffect } from 'react';
-import { useAuth } from '@/src/providers/authProvider';
+import { useAuth } from '@/src/providers/AuthProvider';
+import { MaxPushupRecordCard } from '@/src/components/MaxPushupRecordCard';
+import { router } from 'expo-router';
 
 export default function Home() {
   const insets = useSafeAreaInsets();
@@ -15,6 +16,11 @@ export default function Home() {
     const returnData = await supabase.auth.signOut();
     console.log(returnData);
   }
+
+  const startMaxPushUps = () => {
+    console.log('Start Max Push Ups!');
+    router.push('/training');
+  };
 
   useEffect(() => {
     console.log('Max pushup: ', profile?.maxPushups);
@@ -27,7 +33,7 @@ export default function Home() {
         <ThemeSwitch />
       </XStack>
       <Separator />
-      <NoProgramCard />
+      <MaxPushupRecordCard value={profile?.maxPushups} onPressTest={startMaxPushUps} />
       <Button
         pos="absolute"
         left="$4"

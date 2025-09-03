@@ -1,5 +1,5 @@
 import { Button, Switch, XStack } from 'tamagui';
-import { useThemeMode } from '../providers/tamaguiProvider';
+import { useThemeMode } from '../providers/TamaguiProvider';
 import { Moon, Sun } from '@tamagui/lucide-icons';
 
 export function ThemeButton() {

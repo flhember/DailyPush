@@ -4,11 +4,17 @@ import { Pressable } from 'react-native';
 import { StopTrainingDialog } from '@/src/components/StopTrainingDiag';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { generateProgram } from '@/src/scripts/generateProgram';
+import { useInsertMaxPushUpRecords } from '@/src/api/maxPushUpRecords';
+import { useAuth } from '@/src/providers/AuthProvider';
+import { useUpdateMaxPushUpsProfile } from '@/src/api/profiles';
 
 export default function TrainingScreen() {
-  const [maxPushups, setMaxPushups] = useState(0);
+  const [maxPushups, setMaxPushups] = useState<number>(0);
   const insets = useSafeAreaInsets();
+  const { mutate: insertMaxPushUpRecords } = useInsertMaxPushUpRecords();
+  const { mutate: updateMaxPushUpsProfile } = useUpdateMaxPushUpsProfile();
+
+  const { profile } = useAuth();
 
   const onPress = () => {
     setMaxPushups((c) => c + 1);
@@ -20,21 +26,26 @@ export default function TrainingScreen() {
   };
 
   const handleValideTraining = () => {
-    let level: number;
+    console.log('Add new record !');
 
-    if (maxPushups < 10) level = 1;
-    else if (maxPushups < 20) level = 2;
-    else if (maxPushups < 35) level = 3;
-    else if (maxPushups < 50) level = 4;
-    else level = 5;
-
-    const program = generateProgram(maxPushups);
-    console.log(program[level].sessions[0]);
-    console.log(program[level].sessions[1]);
-    console.log(program[level].sessions[2]);
-
-    console.log(program[level].week);
-    //router.replace('/(tabs)');
+    insertMaxPushUpRecords(
+      {
+        numberPushUps: maxPushups,
+      },
+      {
+        onSuccess: () => {
+          if (
+            profile?.maxPushups !== undefined &&
+            (profile?.maxPushups === null || profile?.maxPushups < maxPushups)
+          ) {
+            console.log('Ouai');
+            updateMaxPushUpsProfile(maxPushups);
+          }
+          console.log('All good');
+          router.back();
+        },
+      },
+    );
   };
 
   return (

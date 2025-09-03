@@ -4254,6 +4254,45 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.85.9":
+  version: 5.85.9
+  resolution: "@tanstack/query-core@npm:5.85.9"
+  checksum: 10c0/c7a02e816f49e2b0c8cfc7db1541742d85e6aca82c67f849813b352800dc225dbf89d506c3187c9ffb5643bb0b0309255b03b039fbffaae293415850baaae2ab
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-persist-client-core@npm:5.85.9":
+  version: 5.85.9
+  resolution: "@tanstack/query-persist-client-core@npm:5.85.9"
+  dependencies:
+    "@tanstack/query-core": "npm:5.85.9"
+  checksum: 10c0/7fc2aa1df42bf83c4509f64e385a6aa357c26875e4da73f5e5ea9f46a957d76d753fc0e158e639a63c6b1c1ab273d1c58bd43913690ce3ffe59bea229452bcb0
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query-persist-client@npm:^5.85.9":
+  version: 5.85.9
+  resolution: "@tanstack/react-query-persist-client@npm:5.85.9"
+  dependencies:
+    "@tanstack/query-persist-client-core": "npm:5.85.9"
+  peerDependencies:
+    "@tanstack/react-query": ^5.85.9
+    react: ^18 || ^19
+  checksum: 10c0/67c91b007c28905a36a0f98ea4958a635a76ad61cad4b7c1863c75f0bb21b2e57f6a908d02a796215cf2f1286e0e304bb7bf41ca8f07ba85ab97e1bae87b9ff5
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.85.9":
+  version: 5.85.9
+  resolution: "@tanstack/react-query@npm:5.85.9"
+  dependencies:
+    "@tanstack/query-core": "npm:5.85.9"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10c0/d20f418567812bc2417784d2da319f59f3f7ab96deba47e18aae59716c8499c85b7eb5b10ff5463958fb3f07043facbf2a815d541bafb644e8a339a8d4f5a88f
+  languageName: node
+  linkType: hard
+
 "@tybys/wasm-util@npm:^0.10.0":
   version: 0.10.0
   resolution: "@tybys/wasm-util@npm:0.10.0"
@@ -5909,6 +5948,8 @@ __metadata:
     "@tamagui/config": "npm:^1.132.23"
     "@tamagui/font-inter": "npm:^1.132.23"
     "@tamagui/lucide-icons": "npm:^1.132.23"
+    "@tanstack/react-query": "npm:^5.85.9"
+    "@tanstack/react-query-persist-client": "npm:^5.85.9"
     "@types/aes-js": "npm:^3"
     "@types/react": "npm:~19.0.10"
     "@types/react-native-get-random-values": "npm:^1"

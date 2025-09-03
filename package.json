@@ -21,6 +21,8 @@
     "@tamagui/config": "^1.132.23",
     "@tamagui/font-inter": "^1.132.23",
     "@tamagui/lucide-icons": "^1.132.23",
+    "@tanstack/react-query": "^5.85.9",
+    "@tanstack/react-query-persist-client": "^5.85.9",
     "aes-js": "^3.1.2",
     "expo": "~53.0.22",
     "expo-blur": "~14.1.5",

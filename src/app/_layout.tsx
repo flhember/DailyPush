@@ -1,16 +1,17 @@
 import { useFonts } from 'expo-font';
 import { router, Stack, useSegments } from 'expo-router';
+import { useEffect, useMemo, useRef } from 'react';
 import 'react-native-reanimated';
+import { useTheme } from 'tamagui';
 import { StatusBar } from 'expo-status-bar';
 import {
   ThemeProvider as NavThemeProvider,
   DarkTheme,
   DefaultTheme,
 } from '@react-navigation/native';
-import { MyTamaguiProvider, useThemeMode } from '../providers/tamaguiProvider';
-import { useTheme } from 'tamagui';
-import { useEffect, useMemo, useRef } from 'react';
-import AuthProvider, { useAuth } from '../providers/authProvider';
+import { MyTamaguiProvider, useThemeMode } from '@/src/providers/TamaguiProvider';
+import AuthProvider, { useAuth } from '@/src/providers/AuthProvider';
+import QueryProvider from '@/src/providers/QueryProvider';
 
 function NavBridge() {
   const t = useTheme();
@@ -90,7 +91,9 @@ export default function RootLayout() {
   return (
     <MyTamaguiProvider>
       <AuthProvider>
-        <NavBridge />
+        <QueryProvider>
+          <NavBridge />
+        </QueryProvider>
       </AuthProvider>
     </MyTamaguiProvider>
   );
