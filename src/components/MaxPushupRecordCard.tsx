@@ -1,5 +1,6 @@
 import { Card, YStack, XStack, H4, Paragraph, SizableText, Button, Separator } from 'tamagui';
 import { Trophy, Calendar, History } from '@tamagui/lucide-icons';
+import { formatInDeviceTZ } from '../utils/datetime';
 
 type Props = {
   value?: number | null;
@@ -8,30 +9,6 @@ type Props = {
   onPressTest?: () => void;
   onPressHistory?: () => void;
 };
-
-type Opts = {
-  locale?: string;
-  withTime?: boolean;
-};
-
-export function formatInDeviceTZ(input?: string | Date | null, opts: Opts = {}) {
-  if (!input) return '';
-  const locale = opts.locale ?? Intl.DateTimeFormat().resolvedOptions().locale;
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-  console.log(locale);
-  console.log(timeZone);
-
-  const date = new Date(input);
-  if (Number.isNaN(date.getTime())) return '';
-
-  const options: Intl.DateTimeFormatOptions =
-    opts.withTime !== false
-      ? { dateStyle: 'medium', timeStyle: 'short', timeZone }
-      : { dateStyle: 'medium', timeZone };
-
-  return new Intl.DateTimeFormat('locale', options).format(date);
-}
 
 export function MaxPushupRecordCard({ value, date, loading, onPressTest, onPressHistory }: Props) {
   const hasRecord = typeof value === 'number' && value > 0;

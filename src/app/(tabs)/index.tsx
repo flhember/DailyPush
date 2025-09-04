@@ -2,16 +2,22 @@ import { YStack, XStack, Separator, H3, Button } from 'tamagui';
 import { ThemeSwitch } from '@/src/components/ThemeToggle';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { supabase } from '@/src/lib/supabase';
-import { useEffect } from 'react';
 import { MaxPushupRecordCard } from '@/src/components/MaxPushupRecordCard';
 import { router } from 'expo-router';
 import { useProfilesRead } from '@/src/api/profiles';
-import { useMaxPushUpRecordsList } from '@/src/api/maxPushUpRecords';
+import { useEffect, useState } from 'react';
+import { MaxPushupHistorySheet } from '@/src/components/MaxPushupHistorySheet';
+import { useThemeMode } from '@/src/providers/TamaguiProvider';
 
 export default function Home() {
+  const { mode } = useThemeMode();
   const insets = useSafeAreaInsets();
   const { data: profile } = useProfilesRead();
-  const { data } = useMaxPushUpRecordsList();
+  const [historyOpen, setHistoryOpen] = useState(false);
+
+  useEffect(() => {
+    console.log(historyOpen);
+  }, [historyOpen]);
 
   async function logOut() {
     await supabase.auth.signOut();
@@ -21,10 +27,6 @@ export default function Home() {
     console.log('Start Max Push Ups!');
     router.push('/training');
   };
-
-  useEffect(() => {
-    console.log(data);
-  }, []);
 
   return (
     <YStack f={1} p="$4" pt={insets.top + 10} gap="$3" animation="quicker">
@@ -37,6 +39,7 @@ export default function Home() {
         value={profile?.maxPushups}
         date={profile?.maxPushupsDate}
         onPressTest={startMaxPushUps}
+        onPressHistory={() => setHistoryOpen(true)}
       />
       <Button
         pos="absolute"
@@ -49,6 +52,7 @@ export default function Home() {
       >
         Log out
       </Button>
+      <MaxPushupHistorySheet open={historyOpen} onOpenChange={setHistoryOpen} limit={10} />
     </YStack>
   );
 }

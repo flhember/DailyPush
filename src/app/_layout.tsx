@@ -2,7 +2,7 @@ import { useFonts } from 'expo-font';
 import { router, Stack, useSegments } from 'expo-router';
 import { useEffect, useMemo, useRef } from 'react';
 import 'react-native-reanimated';
-import { useTheme } from 'tamagui';
+import { PortalProvider, useTheme } from 'tamagui';
 import { StatusBar } from 'expo-status-bar';
 import {
   ThemeProvider as NavThemeProvider,
@@ -72,6 +72,7 @@ function NavBridge() {
           headerTintColor: t.color?.val,
         }}
       >
+        <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false, animation: 'none' }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false, animation: 'none' }} />
         <Stack.Screen name="training" options={{ headerShown: false }} />
@@ -90,11 +91,13 @@ export default function RootLayout() {
 
   return (
     <MyTamaguiProvider>
-      <AuthProvider>
-        <QueryProvider>
-          <NavBridge />
-        </QueryProvider>
-      </AuthProvider>
+      <PortalProvider shouldAddRootHost>
+        <AuthProvider>
+          <QueryProvider>
+            <NavBridge />
+          </QueryProvider>
+        </AuthProvider>
+      </PortalProvider>
     </MyTamaguiProvider>
   );
 }

@@ -15,7 +15,7 @@ export const useMaxPushUpRecordsList = () => {
         .select('*')
         .eq('user_id', id)
         .order('created_at', { ascending: false });
-      console.log(error);
+      console.log('useMaxPushUpRecordsList ', error);
       if (error) {
         throw new Error(error.message);
       }
