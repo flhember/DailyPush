@@ -3,18 +3,18 @@ import { ThemeSwitch } from '@/src/components/ThemeToggle';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { supabase } from '@/src/lib/supabase';
 import { useEffect } from 'react';
-import { useAuth } from '@/src/providers/AuthProvider';
 import { MaxPushupRecordCard } from '@/src/components/MaxPushupRecordCard';
 import { router } from 'expo-router';
+import { useProfilesRead } from '@/src/api/profiles';
+import { useMaxPushUpRecordsList } from '@/src/api/maxPushUpRecords';
 
 export default function Home() {
   const insets = useSafeAreaInsets();
-  const { profile } = useAuth();
+  const { data: profile } = useProfilesRead();
+  const { data } = useMaxPushUpRecordsList();
 
   async function logOut() {
-    console.log('Logout');
-    const returnData = await supabase.auth.signOut();
-    console.log(returnData);
+    await supabase.auth.signOut();
   }
 
   const startMaxPushUps = () => {
@@ -23,8 +23,8 @@ export default function Home() {
   };
 
   useEffect(() => {
-    console.log('Max pushup: ', profile?.maxPushups);
-  }, [profile]);
+    console.log(data);
+  }, []);
 
   return (
     <YStack f={1} p="$4" pt={insets.top + 10} gap="$3" animation="quicker">
@@ -33,7 +33,11 @@ export default function Home() {
         <ThemeSwitch />
       </XStack>
       <Separator />
-      <MaxPushupRecordCard value={profile?.maxPushups} onPressTest={startMaxPushUps} />
+      <MaxPushupRecordCard
+        value={profile?.maxPushups}
+        date={profile?.maxPushupsDate}
+        onPressTest={startMaxPushUps}
+      />
       <Button
         pos="absolute"
         left="$4"

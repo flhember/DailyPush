@@ -26,11 +26,12 @@ export default function TrainingScreen() {
   };
 
   const handleValideTraining = () => {
-    console.log('Add new record !');
+    const datePushUps = new Date().toISOString();
 
     insertMaxPushUpRecords(
       {
         numberPushUps: maxPushups,
+        datePushUps,
       },
       {
         onSuccess: () => {
@@ -38,10 +39,8 @@ export default function TrainingScreen() {
             profile?.maxPushups !== undefined &&
             (profile?.maxPushups === null || profile?.maxPushups < maxPushups)
           ) {
-            console.log('Ouai');
-            updateMaxPushUpsProfile(maxPushups);
+            updateMaxPushUpsProfile({ numberPushUps: maxPushups, datePushUps });
           }
-          console.log('All good');
           router.back();
         },
       },

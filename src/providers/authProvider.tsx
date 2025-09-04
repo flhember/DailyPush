@@ -1,6 +1,6 @@
 import { Session } from '@supabase/supabase-js';
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
-import { Tables } from '../database.types';
+import { Tables } from '@/src/database.types';
 import { supabase } from '../lib/supabase';
 
 type AuthData = {

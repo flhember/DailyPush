@@ -3,19 +3,34 @@ import { Trophy, Calendar, History } from '@tamagui/lucide-icons';
 
 type Props = {
   value?: number | null;
-  date?: Date | number | null;
+  date?: string | null | undefined;
   loading?: boolean;
   onPressTest?: () => void;
   onPressHistory?: () => void;
 };
 
-function formatDate(d?: Date | number | null) {
-  if (!d) return '';
-  const date = typeof d === 'number' ? new Date(d) : d;
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = date.toLocaleString('fr-FR', { month: 'short' }); // ex: sept.
-  const year = date.getFullYear();
-  return `${day} ${month} ${year}`;
+type Opts = {
+  locale?: string;
+  withTime?: boolean;
+};
+
+export function formatInDeviceTZ(input?: string | Date | null, opts: Opts = {}) {
+  if (!input) return '';
+  const locale = opts.locale ?? Intl.DateTimeFormat().resolvedOptions().locale;
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  console.log(locale);
+  console.log(timeZone);
+
+  const date = new Date(input);
+  if (Number.isNaN(date.getTime())) return '';
+
+  const options: Intl.DateTimeFormatOptions =
+    opts.withTime !== false
+      ? { dateStyle: 'medium', timeStyle: 'short', timeZone }
+      : { dateStyle: 'medium', timeZone };
+
+  return new Intl.DateTimeFormat('locale', options).format(date);
 }
 
 export function MaxPushupRecordCard({ value, date, loading, onPressTest, onPressHistory }: Props) {
@@ -43,7 +58,7 @@ export function MaxPushupRecordCard({ value, date, loading, onPressTest, onPress
             {!!date && (
               <XStack ai="center" gap="$2" mt="$2">
                 <Calendar size={16} />
-                <Paragraph>Atteint le {formatDate(date)}</Paragraph>
+                <Paragraph>Atteint le {formatInDeviceTZ(date)}</Paragraph>
               </XStack>
             )}
           </YStack>

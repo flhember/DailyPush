@@ -2,6 +2,7 @@ import { supabase } from '@/src/lib/supabase';
 import { useAuth } from '@/src/providers/AuthProvider';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+//Use for read the history of the record of max push ups try
 export const useMaxPushUpRecordsList = () => {
   const { session } = useAuth();
   const id = session?.user.id;
@@ -14,6 +15,7 @@ export const useMaxPushUpRecordsList = () => {
         .select('*')
         .eq('user_id', id)
         .order('created_at', { ascending: false });
+      console.log(error);
       if (error) {
         throw new Error(error.message);
       }
@@ -22,6 +24,7 @@ export const useMaxPushUpRecordsList = () => {
   });
 };
 
+//Use it for add a new attemps of max push up in db
 export const useInsertMaxPushUpRecords = () => {
   const queryClient = useQueryClient();
   const { session } = useAuth();
@@ -29,8 +32,10 @@ export const useInsertMaxPushUpRecords = () => {
 
   return useMutation({
     async mutationFn(data: any) {
-      const { error, data: newProduct } = await supabase.from('maxPushUpRecords').insert({
+      console.log(data);
+      const { error, data: newRecord } = await supabase.from('maxPushUpRecords').insert({
         numberPushUps: data.numberPushUps,
+        datePushUps: data.datePushUps,
         user_id: userId,
       });
 
@@ -38,7 +43,7 @@ export const useInsertMaxPushUpRecords = () => {
         console.log(error);
         throw new Error(error.message);
       }
-      return newProduct;
+      return newRecord;
     },
     async onSuccess() {
       await queryClient.invalidateQueries({
