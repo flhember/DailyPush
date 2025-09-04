@@ -8,7 +8,7 @@ import { useInsertMaxPushUpRecords } from '@/src/api/maxPushUpRecords';
 import { useAuth } from '@/src/providers/AuthProvider';
 import { useUpdateMaxPushUpsProfile } from '@/src/api/profiles';
 
-export default function TrainingScreen() {
+export default function MaxTrainingScreen() {
   const [maxPushups, setMaxPushups] = useState<number>(0);
   const insets = useSafeAreaInsets();
   const { mutate: insertMaxPushUpRecords } = useInsertMaxPushUpRecords();

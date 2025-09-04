@@ -7,13 +7,13 @@ import { router } from 'expo-router';
 import { useProfilesRead } from '@/src/api/profiles';
 import { useEffect, useState } from 'react';
 import { MaxPushupHistorySheet } from '@/src/components/MaxPushupHistorySheet';
-import { useThemeMode } from '@/src/providers/TamaguiProvider';
+import { ProgramDayCard } from '@/src/components/ProgramDayCard';
 
 export default function Home() {
-  const { mode } = useThemeMode();
   const insets = useSafeAreaInsets();
   const { data: profile } = useProfilesRead();
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [day, setDay] = useState<1 | 2 | 3 | 4 | 5 | 6>(1);
 
   useEffect(() => {
     console.log(historyOpen);
@@ -25,7 +25,7 @@ export default function Home() {
 
   const startMaxPushUps = () => {
     console.log('Start Max Push Ups!');
-    router.push('/training');
+    router.push('/training/MaxTrainingScreen');
   };
 
   return (
@@ -41,6 +41,7 @@ export default function Home() {
         onPressTest={startMaxPushUps}
         onPressHistory={() => setHistoryOpen(true)}
       />
+      <ProgramDayCard day={day} level={2} onChangeDay={setDay} />
       <Button
         pos="absolute"
         left="$4"

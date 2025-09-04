@@ -178,7 +178,7 @@ export default function HistoryScreen() {
         ListEmptyComponent={
           <YStack ai="center" p="$6" gap="$2">
             <Paragraph>Aucun record pour cette période.</Paragraph>
-            <Button theme="accent" onPress={() => router.push('/training')}>
+            <Button theme="accent" onPress={() => router.push('/training/MaxTrainingScreen')}>
               Nouveau test
             </Button>
           </YStack>
@@ -195,7 +195,7 @@ export default function HistoryScreen() {
         elevate
         theme="accent"
         icon={Plus}
-        onPress={() => router.push('/training')}
+        onPress={() => router.push('/training/MaxTrainingScreen')}
         aria-label="Nouveau test"
       />
     </YStack>

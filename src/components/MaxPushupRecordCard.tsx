@@ -14,7 +14,7 @@ export function MaxPushupRecordCard({ value, date, loading, onPressTest, onPress
   const hasRecord = typeof value === 'number' && value > 0;
 
   return (
-    <Card elevate bordered p="$4" br="$6" pressStyle={{ scale: 0.99 }}>
+    <Card elevate bordered p="$4" br="$6">
       <YStack gap="$3">
         <XStack ai="center" jc="space-between">
           <XStack ai="center" gap="$2">

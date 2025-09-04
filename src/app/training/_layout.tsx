@@ -4,7 +4,15 @@ export default function TrainingLayout() {
   return (
     <Stack>
       <Stack.Screen
-        name="index"
+        name="MaxTrainingScreen"
+        options={{
+          headerTitle: '',
+          headerTransparent: true, // enlève le texte du bouton retour
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="DayTrainingScreen"
         options={{
           headerTitle: '',
           headerTransparent: true, // enlève le texte du bouton retour
