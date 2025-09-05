@@ -19,6 +19,7 @@ export function StopTrainingDialog({ onConfirm }: Props) {
           size="$2"
           circular
           icon={X}
+          chromeless
           accessibilityLabel="Arrêter l'entraînement"
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         />

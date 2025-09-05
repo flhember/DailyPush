@@ -22,7 +22,7 @@ export function MaxPushupRecordCard({ value, date, loading, onPressTest, onPress
             <H4>Record max pompes</H4>
           </XStack>
           {hasRecord && (
-            <Button size="$2" icon={History} onPress={onPressHistory} circular variant="ghost" />
+            <Button size="$2" icon={History} onPress={onPressHistory} circular chromeless />
           )}
         </XStack>
 

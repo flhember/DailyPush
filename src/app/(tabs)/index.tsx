@@ -1,13 +1,13 @@
-import { YStack, XStack, Separator, H3, Button } from 'tamagui';
+import { YStack, XStack, Separator, H3 } from 'tamagui';
 import { ThemeSwitch } from '@/src/components/ThemeToggle';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { supabase } from '@/src/lib/supabase';
 import { MaxPushupRecordCard } from '@/src/components/MaxPushupRecordCard';
 import { router } from 'expo-router';
 import { useProfilesRead } from '@/src/api/profiles';
 import { useEffect, useState } from 'react';
 import { MaxPushupHistorySheet } from '@/src/components/MaxPushupHistorySheet';
 import { ProgramDayCard } from '@/src/components/ProgramDayCard';
+import { ProgramCardPushups } from '@/src/components/ProgramCardPushups';
 
 export default function Home() {
   const insets = useSafeAreaInsets();
@@ -18,10 +18,6 @@ export default function Home() {
   useEffect(() => {
     console.log(historyOpen);
   }, [historyOpen]);
-
-  async function logOut() {
-    await supabase.auth.signOut();
-  }
 
   const startMaxPushUps = () => {
     console.log('Start Max Push Ups!');
@@ -41,20 +37,15 @@ export default function Home() {
         onPressTest={startMaxPushUps}
         onPressHistory={() => setHistoryOpen(true)}
       />
-      <ProgramDayCard day={day} level={2} onChangeDay={setDay} />
-
-      <Button
-        pos="absolute"
-        left="$4"
-        right="$4"
-        bottom={insets.bottom + 60}
-        size="$5"
-        theme="error"
-        onPress={logOut}
-      >
-        Log out
-      </Button>
+      <ProgramCardPushups
+        title="Programme Pompes"
+        maxPushups={28}
+        currentDayIndex={0}
+        onStart={(day) => console.log('start day plan:', day)}
+        onPlanning={() => console.log('open planning')}
+      />
       <MaxPushupHistorySheet open={historyOpen} onOpenChange={setHistoryOpen} limit={10} />
     </YStack>
   );
 }
+//      <ProgramDayCard day={day} level={2} onChangeDay={setDay} />
