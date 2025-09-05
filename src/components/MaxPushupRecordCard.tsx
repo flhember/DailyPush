@@ -1,6 +1,5 @@
-import { Card, YStack, XStack, H4, Paragraph, SizableText, Button, Separator } from 'tamagui';
-import { Trophy, Calendar, History } from '@tamagui/lucide-icons';
-import { formatInDeviceTZ } from '../utils/datetime';
+import { Card, YStack, XStack, H4, Paragraph, SizableText, Button } from 'tamagui';
+import { Trophy, History } from '@tamagui/lucide-icons';
 
 type Props = {
   value?: number | null;
@@ -14,30 +13,35 @@ export function MaxPushupRecordCard({ value, date, loading, onPressTest, onPress
   const hasRecord = typeof value === 'number' && value > 0;
 
   return (
-    <Card elevate bordered p="$4" br="$6">
+    <Card elevate bordered={1} p="$4" br="$6">
       <YStack gap="$3">
+        {/* HEADER */}
         <XStack ai="center" jc="space-between">
           <XStack ai="center" gap="$2">
             <Trophy size={20} />
             <H4>Record max pompes</H4>
           </XStack>
+          {hasRecord && (
+            <Button size="$2" icon={History} onPress={onPressHistory} circular variant="ghost" />
+          )}
         </XStack>
 
+        {/* CONTENU */}
         {loading ? (
           <Paragraph>Chargement…</Paragraph>
         ) : hasRecord ? (
-          <YStack gap="$1">
-            <SizableText size="$10" fow="700">
-              {value}
-            </SizableText>
-            <Paragraph>répétitions</Paragraph>
-
-            {!!date && (
-              <XStack ai="center" gap="$2" mt="$2">
-                <Calendar size={16} />
-                <Paragraph>Atteint le {formatInDeviceTZ(date)}</Paragraph>
-              </XStack>
-            )}
+          <YStack gap="$2">
+            <XStack ai="center" jc="space-between">
+              <YStack>
+                <SizableText size="$10" fow="700">
+                  {value}
+                </SizableText>
+                <Paragraph>répétitions</Paragraph>
+              </YStack>
+              <Button mt={'$6'} size="$3" theme="accent" onPress={onPressTest}>
+                Nouveau test
+              </Button>
+            </XStack>
           </YStack>
         ) : (
           <YStack gap="$2">
@@ -46,20 +50,6 @@ export function MaxPushupRecordCard({ value, date, loading, onPressTest, onPress
               Faire un test max 💪
             </Button>
           </YStack>
-        )}
-
-        {hasRecord && (
-          <>
-            <Separator />
-            <XStack gap="$2" jc="flex-end" fw="wrap">
-              <Button size="$3" variant="outlined" icon={History} onPress={onPressHistory}>
-                Historique
-              </Button>
-              <Button size="$3" theme="accent" onPress={onPressTest}>
-                Nouveau test
-              </Button>
-            </XStack>
-          </>
         )}
       </YStack>
     </Card>

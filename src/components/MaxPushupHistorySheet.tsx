@@ -49,7 +49,7 @@ export function MaxPushupHistorySheet({ open, onOpenChange, limit = 10 }: Props)
       <Sheet.Frame animation="quick" p="$4" pb={insets.bottom + 20} gap="$3">
         <XStack ai="center" jc="space-between">
           <H4>Historique — max pompes</H4>
-          <Button chromeless size="$2" icon={X} onPress={() => onOpenChange(false)} />
+          <Button chromeless circular size="$2" icon={X} onPress={() => onOpenChange(false)} />
         </XStack>
 
         <Separator />
@@ -62,7 +62,7 @@ export function MaxPushupHistorySheet({ open, onOpenChange, limit = 10 }: Props)
         ) : items.length === 0 ? (
           <YStack ai="center" gap="$2" p="$4">
             <Paragraph>Aucun test enregistré.</Paragraph>
-            <Button theme="accent" onPress={() => router.push('/training')}>
+            <Button theme="accent" onPress={() => router.push('/training/MaxTrainingScreen')}>
               Nouveau test
             </Button>
           </YStack>
@@ -108,7 +108,7 @@ export function MaxPushupHistorySheet({ open, onOpenChange, limit = 10 }: Props)
             theme="accent"
             onPress={() => {
               onOpenChange(false);
-              router.push('/training');
+              router.push('/training/MaxTrainingScreen');
             }}
           >
             Nouveau test

@@ -17,7 +17,7 @@ type RecordItem = {
 
 function monthKey(dateISO: string) {
   const d = new Date(dateISO);
-  return d.toLocaleString('fr-FR', { month: 'long', year: 'numeric' }); // ex: "septembre 2025"
+  return d.toLocaleString('fr-FR', { month: 'long', year: 'numeric' });
 }
 
 function getISO(item: RecordItem) {

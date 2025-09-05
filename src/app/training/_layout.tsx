@@ -7,7 +7,7 @@ export default function TrainingLayout() {
         name="MaxTrainingScreen"
         options={{
           headerTitle: '',
-          headerTransparent: true, // enlève le texte du bouton retour
+          headerTransparent: true,
           headerShown: false,
         }}
       />
@@ -15,7 +15,7 @@ export default function TrainingLayout() {
         name="DayTrainingScreen"
         options={{
           headerTitle: '',
-          headerTransparent: true, // enlève le texte du bouton retour
+          headerTransparent: true,
           headerShown: false,
         }}
       />

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Pressable } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { YStack, XStack, H1, Paragraph, Button, Progress, Separator, SizableText } from 'tamagui';

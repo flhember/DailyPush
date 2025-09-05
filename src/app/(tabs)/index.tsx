@@ -34,7 +34,7 @@ export default function Home() {
         <H3 color="$color12">Daily Push.</H3>
         <ThemeSwitch />
       </XStack>
-      <Separator />
+      <Separator borderColor="$borderColor" />
       <MaxPushupRecordCard
         value={profile?.maxPushups}
         date={profile?.maxPushupsDate}
@@ -42,6 +42,7 @@ export default function Home() {
         onPressHistory={() => setHistoryOpen(true)}
       />
       <ProgramDayCard day={day} level={2} onChangeDay={setDay} />
+
       <Button
         pos="absolute"
         left="$4"

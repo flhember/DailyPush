@@ -3,7 +3,7 @@ export type DayPlan = {
   restSec: number;
   sets: (number | 'max')[];
   minLastSet: number;
-  minRestAfterDays: number; // jours de repos mini après la séance
+  minRestAfterDays: number;
 };
 
 // < 5 pompes
