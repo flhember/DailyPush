@@ -6,14 +6,12 @@ import { router } from 'expo-router';
 import { useProfilesRead } from '@/src/api/profiles';
 import { useEffect, useState } from 'react';
 import { MaxPushupHistorySheet } from '@/src/components/MaxPushupHistorySheet';
-import { ProgramDayCard } from '@/src/components/ProgramDayCard';
 import { ProgramCardPushups } from '@/src/components/ProgramCardPushups';
 
 export default function Home() {
   const insets = useSafeAreaInsets();
   const { data: profile } = useProfilesRead();
   const [historyOpen, setHistoryOpen] = useState(false);
-  const [day, setDay] = useState<1 | 2 | 3 | 4 | 5 | 6>(1);
 
   useEffect(() => {
     console.log(historyOpen);
@@ -42,7 +40,7 @@ export default function Home() {
         maxPushups={28}
         currentDayIndex={0}
         onStart={(day) => console.log('start day plan:', day)}
-        onPlanning={() => console.log('open planning')}
+        onPlanning={() => router.navigate('/(tabs)/planning')}
       />
       <MaxPushupHistorySheet open={historyOpen} onOpenChange={setHistoryOpen} limit={10} />
     </YStack>

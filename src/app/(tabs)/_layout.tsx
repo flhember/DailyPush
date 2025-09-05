@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import { Platform } from 'react-native';
 import { HapticTab } from '@/src/components/HapticTab';
-import { Palette, House } from '@tamagui/lucide-icons';
+import { CalendarDays, House, History } from '@tamagui/lucide-icons';
 import { useTheme, YStack } from 'tamagui';
 
 export default function TabLayout() {
@@ -33,12 +33,23 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="planning"
         options={{
-          title: 'Explore',
+          title: 'Planning',
           tabBarIcon: ({ color, focused }) => (
             <YStack ai="center" gap="$1" animation="bouncy" scale={focused ? 1.05 : 1}>
-              <Palette size={24} color={color as string} />
+              <CalendarDays size={24} color={color as string} />
+            </YStack>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="history"
+        options={{
+          title: 'History',
+          tabBarIcon: ({ color, focused }) => (
+            <YStack ai="center" gap="$1" animation="bouncy" scale={focused ? 1.05 : 1}>
+              <History size={24} color={color as string} />
             </YStack>
           ),
         }}
