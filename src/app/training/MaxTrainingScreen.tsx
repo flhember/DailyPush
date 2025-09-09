@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useInsertMaxPushUpRecords } from '@/src/api/maxPushUpRecords';
 import { useAuth } from '@/src/providers/AuthProvider';
 import { useUpdateMaxPushUpsProfile } from '@/src/api/profiles';
+import { findLevelIndex } from '@/src/utils/findLevelIndex';
 
 export default function MaxTrainingScreen() {
   const [maxPushups, setMaxPushups] = useState<number>(0);
@@ -26,6 +27,7 @@ export default function MaxTrainingScreen() {
   };
 
   const handleValideTraining = () => {
+    const indexLevel = findLevelIndex(maxPushups);
     const datePushUps = new Date().toISOString();
 
     insertMaxPushUpRecords(
@@ -39,7 +41,7 @@ export default function MaxTrainingScreen() {
             profile?.maxPushups !== undefined &&
             (profile?.maxPushups === null || profile?.maxPushups < maxPushups)
           ) {
-            updateMaxPushUpsProfile({ numberPushUps: maxPushups, datePushUps });
+            updateMaxPushUpsProfile({ numberPushUps: maxPushups, datePushUps, indexLevel });
           }
           router.back();
         },

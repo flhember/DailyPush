@@ -152,7 +152,6 @@ export default function HistoryScreen() {
         )}
         renderItem={({ item }) => {
           const iso = getISO(item);
-          const isBest = item.numberPushUps === best;
           return (
             <Card bordered p="$3" mb="$2" pressStyle={{ scale: 0.99 }}>
               <XStack ai="center" jc="space-between">
