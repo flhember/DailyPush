@@ -7,6 +7,7 @@ import { useMaxPushUpRecordsList } from '@/src/api/maxPushUpRecords';
 import { router } from 'expo-router';
 import { formatInDeviceTZ } from '@/src/utils/datetime';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { supabase } from '@/src/lib/supabase';
 
 type RecordItem = {
   id: string;
@@ -73,6 +74,10 @@ export default function HistoryScreen() {
   const onDelete = (id: string) => {
     console.log('delete: ', id);
   };
+
+  async function logOut() {
+    await supabase.auth.signOut();
+  }
 
   return (
     <YStack f={1} p="$4" pt={insets.top + 10} gap="$3" animation="quicker">
@@ -198,6 +203,17 @@ export default function HistoryScreen() {
         onPress={() => router.push('/training/MaxTrainingScreen')}
         aria-label="Nouveau test"
       />
+      <Button
+        pos="absolute"
+        left="$4"
+        right="$4"
+        bottom={insets.bottom + 60}
+        size="$5"
+        theme="error"
+        onPress={logOut}
+      >
+        Log out
+      </Button>
     </YStack>
   );
 }

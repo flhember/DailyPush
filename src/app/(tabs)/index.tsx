@@ -7,9 +7,11 @@ import { useProfilesRead } from '@/src/api/profiles';
 import { useEffect, useState } from 'react';
 import { MaxPushupHistorySheet } from '@/src/components/MaxPushupHistorySheet';
 import { ProgramCardPushups } from '@/src/components/ProgramCardPushups';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 export default function Home() {
   const insets = useSafeAreaInsets();
+  const tabBarHeight = useBottomTabBarHeight();
   const { data: profile } = useProfilesRead();
   const [historyOpen, setHistoryOpen] = useState(false);
 
@@ -23,7 +25,7 @@ export default function Home() {
   };
 
   return (
-    <YStack f={1} p="$4" pt={insets.top + 10} gap="$3" animation="quicker">
+    <YStack f={1} p="$4" pt={insets.top + 10} pb={tabBarHeight} gap="$3" animation="quicker">
       <XStack ai="center" justifyContent="space-between">
         <H3 color="$color12">Daily Push.</H3>
         <ThemeSwitch />
@@ -40,7 +42,7 @@ export default function Home() {
         maxPushups={28}
         currentDayIndex={0}
         onStart={(day) => console.log('start day plan:', day)}
-        onPlanning={() => router.navigate('/(tabs)/planning')}
+        onPlanning={() => router.navigate('/(tabs)/Training')}
       />
       <MaxPushupHistorySheet open={historyOpen} onOpenChange={setHistoryOpen} limit={10} />
     </YStack>

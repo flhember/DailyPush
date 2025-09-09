@@ -12,6 +12,7 @@ import {
 import { MyTamaguiProvider, useThemeMode } from '@/src/providers/TamaguiProvider';
 import AuthProvider, { useAuth } from '@/src/providers/AuthProvider';
 import QueryProvider from '@/src/providers/QueryProvider';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 function NavBridge() {
   const t = useTheme();
@@ -90,14 +91,16 @@ export default function RootLayout() {
   if (!loaded) return null;
 
   return (
-    <MyTamaguiProvider>
-      <PortalProvider shouldAddRootHost>
-        <AuthProvider>
-          <QueryProvider>
-            <NavBridge />
-          </QueryProvider>
-        </AuthProvider>
-      </PortalProvider>
-    </MyTamaguiProvider>
+    <SafeAreaProvider>
+      <MyTamaguiProvider>
+        <PortalProvider shouldAddRootHost>
+          <AuthProvider>
+            <QueryProvider>
+              <NavBridge />
+            </QueryProvider>
+          </AuthProvider>
+        </PortalProvider>
+      </MyTamaguiProvider>
+    </SafeAreaProvider>
   );
 }

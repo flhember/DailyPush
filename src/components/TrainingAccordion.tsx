@@ -1,64 +1,15 @@
+import React, { useMemo } from 'react';
+import { Play, Check, Timer, ChevronRight, ChevronDown, Dumbbell } from '@tamagui/lucide-icons';
 import {
   YStack,
   XStack,
-  H3,
-  Separator,
   Button,
   Paragraph,
   SizableText,
-  Card,
-  Stack,
   ScrollView,
   Accordion,
+  Square,
 } from 'tamagui';
-import { ThemeSwitch } from '@/src/components/ThemeToggle';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { supabase } from '@/src/lib/supabase';
-/*
-export default function PlanningScreen() {
-  const insets = useSafeAreaInsets();
-
-  async function logOut() {
-    await supabase.auth.signOut();
-  }
-
-  return (
-    <YStack f={1} p="$4" pt={insets.top + 10} gap="$3" animation="quicker">
-      <XStack ai="center" justifyContent="space-between">
-        <H3 color="$color12" animation="quicker" animateOnly={['color']}>
-          Planning.
-        </H3>
-        <ThemeSwitch />
-      </XStack>
-      <Separator />
-      <Button
-        pos="absolute"
-        left="$4"
-        right="$4"
-        bottom={insets.bottom + 60}
-        size="$5"
-        theme="error"
-        onPress={logOut}
-      >
-        Log out
-      </Button>
-    </YStack>
-  );
-}*/
-
-import React, { useMemo } from 'react';
-import {
-  CalendarDays,
-  Play,
-  Check,
-  Timer,
-  ChevronRight,
-  ChevronDown,
-  ChevronUp,
-  Dumbbell,
-} from '@tamagui/lucide-icons';
-
-// --- Import tes plans depuis ton fichier data ---
 import {
   pushupsUnder5,
   pushups6to10,
@@ -231,18 +182,11 @@ function LevelSection({
 }) {
   return (
     <Accordion type="multiple" defaultValue={defaultOpen ? ['open'] : []}>
-      <Accordion.Item value="open">
+      <Accordion.Item value="close">
+        {/* HEADER ACCORDION*/}
         <Accordion.Trigger>
           {({ open = true }) => (
-            <XStack
-              ai="center"
-              jc="space-between"
-              p="$3"
-              br="$5"
-              bw={1}
-              boc="$borderColor"
-              bc="$background"
-            >
+            <XStack ai="center" jc="space-between">
               <XStack ai="center" gap="$2">
                 <Dumbbell size={18} />
                 <YStack>
@@ -254,12 +198,18 @@ function LevelSection({
                   </Paragraph>
                 </YStack>
               </XStack>
-              {open ? <ChevronUp /> : <ChevronDown />}
+              <YStack ai="flex-end">
+                <Square animation="quick" rotate={open ? '180deg' : '0deg'}>
+                  <ChevronDown size="$1" />
+                </Square>
+              </YStack>
             </XStack>
           )}
         </Accordion.Trigger>
+
+        {/* ACCORDION CONTENT */}
         <Accordion.Content>
-          <YStack gap="$2" p="$3">
+          <YStack gap="$2">
             {plans.map((p, i) => (
               <DayRow
                 key={i}
@@ -278,21 +228,19 @@ function LevelSection({
   );
 }
 
-// --- Écran Planning ---
-function PlanningScreen({
+export default function TrainingAccordion({
   selectedMax,
   currentIndexByLevel = {},
   completedByLevel = {},
   onStart,
   onToggleDone,
 }: {
-  selectedMax?: number; // si fourni, on ouvre la section correspondante
+  selectedMax?: number;
   currentIndexByLevel?: Record<string, number>;
   completedByLevel?: Record<string, boolean[]>;
   onStart?: (plan: DayPlan, index: number, levelKey: string) => void;
   onToggleDone?: (index: number, levelKey: string) => void;
 }) {
-  // Détermine le niveau par défaut à ouvrir selon selectedMax
   const defaultOpenKey = useMemo(() => {
     if (selectedMax == null) return undefined;
     if (selectedMax <= 5) return 'u5';
@@ -310,84 +258,23 @@ function PlanningScreen({
   }, [selectedMax]);
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 16 }}>
-      <YStack gap="$3">
-        {/* Header */}
-        <XStack ai="center" jc="space-between">
-          <XStack ai="center" gap="$2">
-            <CalendarDays size={18} />
-            <SizableText size="$7" fow="700">
-              Planning
-            </SizableText>
-          </XStack>
-          {selectedMax != null && <Badge>Max: {selectedMax}</Badge>}
-        </XStack>
-
-        <Separator />
-
-        {/* Sections par niveau */}
-        <YStack gap="$3">
-          {LEVELS.map((lvl) => (
-            <LevelSection
-              key={lvl.key}
-              title={`Niveau ${lvl.label}`}
-              subtitle={`Programme ${lvl.range} pompes`}
-              plans={lvl.plans}
-              currentIndex={currentIndexByLevel[lvl.key] ?? 0}
-              completed={completedByLevel[lvl.key] ?? []}
-              defaultOpen={lvl.key === defaultOpenKey}
-              onStart={(plan, i) => onStart?.(plan, i, lvl.key)}
-              onToggleDone={(i) => onToggleDone?.(i, lvl.key)}
-            />
-          ))}
-        </YStack>
+    <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ padding: 5 }}>
+      {/* Sections par niveau */}
+      <YStack gap="$0">
+        {LEVELS.map((lvl) => (
+          <LevelSection
+            key={lvl.key}
+            title={`Niveau ${lvl.label}`}
+            subtitle={`Programme ${lvl.range} pompes`}
+            plans={lvl.plans}
+            currentIndex={currentIndexByLevel[lvl.key] ?? 0}
+            completed={completedByLevel[lvl.key] ?? []}
+            defaultOpen={lvl.key === defaultOpenKey}
+            onStart={(plan, i) => onStart?.(plan, i, lvl.key)}
+            onToggleDone={(i) => onToggleDone?.(i, lvl.key)}
+          />
+        ))}
       </YStack>
     </ScrollView>
-  );
-}
-
-// --- Exemple d'usage ---
-// <PlanningScreen
-//   selectedMax={28}
-//   currentIndexByLevel={{ '26_30': 1 }}
-//   completedByLevel={{ '26_30': [true, false, false, false, false, false] }}
-//   onStart={(plan, i, levelKey) => console.log('start', levelKey, i, plan)}
-//   onToggleDone={(i, levelKey) => console.log('toggle', levelKey, i)}
-// />
-
-export default function PlanningTabScreen() {
-  const insets = useSafeAreaInsets();
-
-  async function logOut() {
-    await supabase.auth.signOut();
-  }
-
-  return (
-    <YStack f={1} p="$4" pt={insets.top + 10} gap="$3" animation="quicker">
-      <XStack ai="center" justifyContent="space-between">
-        <H3 color="$color12" animation="quicker" animateOnly={['color']}>
-          Planning.
-        </H3>
-        <ThemeSwitch />
-      </XStack>
-      <Separator />
-      <PlanningScreen
-        currentIndexByLevel={{ '26_30': 1 }}
-        completedByLevel={{ '26_30': [true, false, false, false, false, false] }}
-        onStart={(plan, i, levelKey) => console.log('start', levelKey, i, plan)}
-        onToggleDone={(i, levelKey) => console.log('toggle', levelKey, i)}
-      />
-      <Button
-        pos="absolute"
-        left="$4"
-        right="$4"
-        bottom={insets.bottom + 60}
-        size="$5"
-        theme="error"
-        onPress={logOut}
-      >
-        Log out
-      </Button>
-    </YStack>
   );
 }

@@ -1,5 +1,5 @@
-import { Card, YStack, XStack, Paragraph, SizableText, Button, Separator, H4 } from 'tamagui';
-import { Dumbbell, Calendar, ChevronRight, Timer } from '@tamagui/lucide-icons';
+import { Card, YStack, XStack, Paragraph, Button, Separator, H4 } from 'tamagui';
+import { Dumbbell, ChevronRight, Timer } from '@tamagui/lucide-icons';
 
 // --- IMPORTS DE TES TABLEAUX ---
 // (importe-les depuis ton fichier où tu les as définis)
@@ -106,8 +106,8 @@ export function ProgramCardPushups({
 
         {/* Actions */}
         <XStack jc="flex-end" gap="$2" fw="wrap">
-          <Button size="$3" variant="outlined" icon={Calendar} onPress={onPlanning}>
-            Planning
+          <Button size="$3" variant="outlined" icon={Dumbbell} onPress={onPlanning}>
+            Training
           </Button>
           <Button size="$3" theme="accent" onPress={() => onStart?.(day)} iconAfter={ChevronRight}>
             Commencer
