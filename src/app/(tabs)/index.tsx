@@ -54,8 +54,8 @@ export default function Home() {
       />
       <ProgramCardPushups
         title="Programme Pompes"
-        maxPushups={28}
-        currentDayIndex={0}
+        currentLevelIndex={profile?.indexLevel ?? undefined}
+        currentDayIndex={profile?.indexDay ?? 0}
         onStart={(day) => console.log('start day plan:', day)}
         onPlanning={() => router.navigate('/(tabs)/Training')}
       />

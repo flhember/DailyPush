@@ -1,15 +1,12 @@
 import React from 'react';
 import { Timer, ChevronDown, Dumbbell, CheckCircle } from '@tamagui/lucide-icons';
 import { YStack, XStack, Paragraph, SizableText, ScrollView, Accordion, Square } from 'tamagui';
-import { DayPlan, LEVELS, ProgramSlug } from '@/src/utils/program100pushups';
+import { DayPlan, PROGRAMS, ProgramSlug } from '@/src/utils/program100pushups';
 import { SessionRecord } from '../api/sessionsRecords';
 import { Badge } from './ui/Badge';
 import { Platform } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-
-// --- Utils ---
-const fmtSets = (sets: (number | 'max')[]) =>
-  sets.map((s) => (typeof s === 'number' ? s : 'max')).join(' • ');
+import { formatSets } from '../utils/formatSets';
 
 // helpers dans TrainingAccordion.tsx
 const buildSuccessMap = (records: SessionRecord[] = []) => {
@@ -80,7 +77,7 @@ function DayRow({
 
       <XStack ai="center" jc="space-between" gap="$2" fw="wrap">
         <Paragraph size="$3" fow="600">
-          {fmtSets(plan.sets)}
+          {formatSets(plan.sets)}
         </Paragraph>
       </XStack>
     </YStack>
@@ -211,7 +208,7 @@ export default function TrainingAccordion({
     >
       {/* Sections par niveau */}
       <YStack gap="$0">
-        {LEVELS.map((lvl) => {
+        {PROGRAMS.map((lvl) => {
           const done = successByLevel.get(lvl.key) ?? new Set<number>();
           return (
             <YStack key={lvl.key} onLayout={(e) => rememberY(lvl.key, e.nativeEvent.layout.y)}>

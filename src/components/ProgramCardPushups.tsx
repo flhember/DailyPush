@@ -1,57 +1,12 @@
 import { Card, YStack, XStack, Paragraph, Button, Separator, H4 } from 'tamagui';
 import { Dumbbell, ChevronRight, Timer } from '@tamagui/lucide-icons';
-
-// --- IMPORTS DE TES TABLEAUX ---
-// (importe-les depuis ton fichier où tu les as définis)
-import {
-  pushupsUnder5,
-  pushups6to10,
-  pushups11to20,
-  pushups21to25,
-  pushups26to30,
-  pushups31to35,
-  pushups36to40,
-  pushups41to45,
-  pushups46to50,
-  pushups51to55,
-  pushups56to60,
-  pushupsOver60,
-} from '@/src/utils/program100pushups';
-
-// --- TYPES (tes DayPlan)
-export type DayPlan = {
-  day: 1 | 2 | 3 | 4 | 5 | 6;
-  restSec: number;
-  sets: (number | 'max')[];
-  minLastSet: number;
-  minRestAfterDays: number;
-};
-
-// --- HELPERS ---
-function pickPlanByMax(maxPushups: number): DayPlan[] {
-  if (maxPushups <= 5) return pushupsUnder5;
-  if (maxPushups <= 10) return pushups6to10;
-  if (maxPushups <= 20) return pushups11to20;
-  if (maxPushups <= 25) return pushups21to25;
-  if (maxPushups <= 30) return pushups26to30;
-  if (maxPushups <= 35) return pushups31to35;
-  if (maxPushups <= 40) return pushups36to40;
-  if (maxPushups <= 45) return pushups41to45;
-  if (maxPushups <= 50) return pushups46to50;
-  if (maxPushups <= 55) return pushups51to55;
-  if (maxPushups <= 60) return pushups56to60;
-  return pushupsOver60;
-}
-
-function formatSets(sets: (number | 'max')[]) {
-  // ex: "12 • 17 • 13 • 13 • max"
-  return sets.map((s) => (typeof s === 'number' ? s : 'max')).join(' • ');
-}
+import { DayPlan, getDayPlan } from '@/src/utils/program100pushups';
+import { formatSets } from '../utils/formatSets';
 
 type Props = {
   title: string;
-  maxPushups: number;
-  currentDayIndex: number; // 0-based index de la prochaine séance à faire
+  currentLevelIndex: string | undefined;
+  currentDayIndex: number;
   onStart?: (plan: DayPlan) => void;
   onPlanning?: () => void;
   onPressCard?: () => void;
@@ -59,15 +14,29 @@ type Props = {
 
 export function ProgramCardPushups({
   title,
-  maxPushups,
+  currentLevelIndex,
   currentDayIndex,
   onStart,
   onPlanning,
   onPressCard,
 }: Props) {
-  const plan = pickPlanByMax(maxPushups);
-  const clampedIndex = Math.max(0, Math.min(currentDayIndex, plan.length - 1));
-  const day = plan[clampedIndex];
+  const day = getDayPlan(currentLevelIndex, currentDayIndex);
+
+  if (!day) {
+    return (
+      <Card bordered p="$4" br="$6" onPress={onPressCard}>
+        <YStack gap="$3">
+          <XStack ai="center" gap="$2">
+            <Dumbbell size={20} />
+            <H4>{title}</H4>
+          </XStack>
+          <Paragraph opacity={0.7}>
+            Programme introuvable pour {currentLevelIndex} – vérifie le niveau/jour.
+          </Paragraph>
+        </YStack>
+      </Card>
+    );
+  }
 
   return (
     <Card bordered={1} p="$4" br="$6" onPress={onPressCard}>

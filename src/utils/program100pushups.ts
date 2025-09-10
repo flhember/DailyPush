@@ -203,7 +203,7 @@ export const pushupsOver60: DayPlan[] = [
   },
 ];
 
-export const LEVELS: { key: ProgramSlug; label: string; range: string; plans: DayPlan[] }[] = [
+export const PROGRAMS: { key: ProgramSlug; label: string; range: string; plans: DayPlan[] }[] = [
   { key: 'under5', label: '< 5', range: '< 5 pompes', plans: pushupsUnder5 },
   { key: '6-10', label: '6–10', range: '6 à 10', plans: pushups6to10 },
   { key: '11-20', label: '11–20', range: '11 à 20', plans: pushups11to20 },
@@ -217,3 +217,13 @@ export const LEVELS: { key: ProgramSlug; label: string; range: string; plans: Da
   { key: '56-60', label: '56–60', range: '56 à 60', plans: pushups56to60 },
   { key: 'over60', label: '60+', range: '> 60', plans: pushupsOver60 },
 ];
+
+export function getDayPlan(level: string | undefined, dayIndex: number): DayPlan | undefined {
+  const def = PROGRAMS.find((p) => p.key === level);
+  if (!def) return undefined;
+  const days = def.plans.map((p: { day: any }) => p.day);
+  const maxDay = Math.max(...days);
+  const minDay = Math.min(...days);
+  const clamped = Math.min(Math.max(dayIndex, minDay), maxDay);
+  return def.plans.find((p: { day: number }) => p.day === clamped);
+}
