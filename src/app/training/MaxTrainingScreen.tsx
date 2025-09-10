@@ -41,7 +41,12 @@ export default function MaxTrainingScreen() {
             profile?.maxPushups !== undefined &&
             (profile?.maxPushups === null || profile?.maxPushups < maxPushups)
           ) {
-            updateMaxPushUpsProfile({ numberPushUps: maxPushups, datePushUps, indexLevel });
+            updateMaxPushUpsProfile({
+              numberPushUps: maxPushups,
+              datePushUps,
+              indexLevel,
+              indexDay: 1,
+            });
           }
           router.back();
         },

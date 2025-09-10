@@ -39,6 +39,7 @@ export const useUpdateMaxPushUpsProfile = () => {
           maxPushups: data.numberPushUps,
           maxPushupsDate: data.datePushUps,
           indexLevel: data.indexLevel,
+          indexDay: data.indexDay,
         })
         .eq('id', userId)
         .select('id, maxPushups')

@@ -70,7 +70,7 @@ export function ProgramCardPushups({
   const day = plan[clampedIndex];
 
   return (
-    <Card elevate bordered={1} p="$4" br="$6" onPress={onPressCard}>
+    <Card bordered={1} p="$4" br="$6" onPress={onPressCard}>
       <YStack gap="$3">
         {/* Header */}
         <XStack ai="center" jc="space-between">

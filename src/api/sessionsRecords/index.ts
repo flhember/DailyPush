@@ -39,7 +39,7 @@ export const useInsertSessionRecord = () => {
       const { error, data: newRecord } = await supabase.from('sessionsRecords').insert({
         user_id: userId,
         level: '6-10',
-        day: 2,
+        day: 1,
         sets_target: [6, 7, 6, 6, 'max'],
         sets_actual: [6, 7, 6, 6, 12],
         success: true,

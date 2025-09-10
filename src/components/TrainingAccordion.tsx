@@ -1,13 +1,28 @@
 import React from 'react';
-import { Timer, ChevronDown, Dumbbell } from '@tamagui/lucide-icons';
+import { Timer, ChevronDown, Dumbbell, CheckCircle } from '@tamagui/lucide-icons';
 import { YStack, XStack, Paragraph, SizableText, ScrollView, Accordion, Square } from 'tamagui';
 import { DayPlan, LEVELS, ProgramSlug } from '@/src/utils/program100pushups';
 import { SessionRecord } from '../api/sessionsRecords';
 import { Badge } from './ui/Badge';
+import { Platform } from 'react-native';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 // --- Utils ---
 const fmtSets = (sets: (number | 'max')[]) =>
   sets.map((s) => (typeof s === 'number' ? s : 'max')).join(' • ');
+
+// helpers dans TrainingAccordion.tsx
+const buildSuccessMap = (records: SessionRecord[] = []) => {
+  const m = new Map<ProgramSlug, Set<number>>();
+  for (const r of records) {
+    if (!r.success) continue;
+    const key = r.level as ProgramSlug;
+    const day = Number(r.day);
+    if (!m.has(key)) m.set(key, new Set());
+    m.get(key)!.add(day);
+  }
+  return m;
+};
 
 function DayRow({
   plan,
@@ -39,9 +54,9 @@ function DayRow({
             Jour {plan.day}
           </Badge>
           {isDone && (
-            <Badge bg="$green10" color="$green1">
-              Fait
-            </Badge>
+            <XStack ai="center" gap="$1">
+              <CheckCircle size={16} color="$green10" />
+            </XStack>
           )}
           {isNext && !isDone && (
             <Badge bg="$accentColor" color="white">
@@ -78,6 +93,8 @@ function LevelSection({
   subtitle,
   plans,
   expanded,
+  currentDay,
+  successDays,
   onStart,
   onExpandChange,
 }: {
@@ -85,6 +102,8 @@ function LevelSection({
   subtitle: string;
   plans: DayPlan[];
   expanded?: boolean;
+  currentDay: number;
+  successDays?: Set<number>;
   onStart?: (plan: DayPlan, index: number) => void;
   onExpandChange?: (open: boolean) => void;
 }) {
@@ -92,7 +111,6 @@ function LevelSection({
 
   React.useEffect(() => {
     setValue(expanded ? ['open'] : []);
-    // notifier le parent si on s'ouvre via prop
     if (expanded) requestAnimationFrame(() => onExpandChange?.(true));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expanded]);
@@ -133,7 +151,14 @@ function LevelSection({
         <Accordion.Content>
           <YStack gap="$2">
             {plans.map((p, i) => (
-              <DayRow key={i} plan={p} index={i} onStart={onStart} />
+              <DayRow
+                key={i}
+                plan={p}
+                index={i}
+                onStart={onStart}
+                isDone={successDays?.has(p.day)}
+                isNext={!!expanded && p.day === currentDay}
+              />
             ))}
           </YStack>
         </Accordion.Content>
@@ -144,15 +169,19 @@ function LevelSection({
 
 export default function TrainingAccordion({
   currentLevel,
+  currentDay,
   sessionsRecords,
   onStart,
 }: {
   currentLevel: string | undefined;
+  currentDay: number;
   sessionsRecords?: SessionRecord[];
   onStart?: (plan: DayPlan, index: number, levelKey: string) => void;
 }) {
+  const tabBarHeight = useBottomTabBarHeight();
   const scrollRef = React.useRef<ScrollView>(null);
   const positionsRef = React.useRef<Record<ProgramSlug, number>>({} as any);
+  const successByLevel = React.useMemo(() => buildSuccessMap(sessionsRecords), [sessionsRecords]);
 
   const rememberY = (slug: ProgramSlug, y: number) => {
     positionsRef.current[slug] = y;
@@ -170,27 +199,35 @@ export default function TrainingAccordion({
     }
   };
 
+  console.log(buildSuccessMap(sessionsRecords));
+
   return (
     <ScrollView
       ref={scrollRef}
-      contentInsetAdjustmentBehavior="automatic"
-      contentContainerStyle={{ padding: 5 }}
+      // contentInsetAdjustmentBehavior={Platform.OS === 'ios' ? 'automatic' : undefined}
+      contentContainerStyle={{
+        paddingBottom: Platform.OS === 'ios' ? tabBarHeight : 0,
+      }}
     >
       {/* Sections par niveau */}
       <YStack gap="$0">
-        {LEVELS.map((lvl) => (
-          <YStack key={lvl.key} onLayout={(e) => rememberY(lvl.key, e.nativeEvent.layout.y)}>
-            <LevelSection
-              key={lvl.key}
-              title={`Niveau ${lvl.label}`}
-              subtitle={`Programme ${lvl.range} pompes`}
-              plans={lvl.plans}
-              expanded={currentLevel === lvl.key}
-              onStart={(plan, i) => onStart?.(plan, i, lvl.key)}
-              onExpandChange={(open) => open && scrollToSlug(lvl.key)}
-            />
-          </YStack>
-        ))}
+        {LEVELS.map((lvl) => {
+          const done = successByLevel.get(lvl.key) ?? new Set<number>();
+          return (
+            <YStack key={lvl.key} onLayout={(e) => rememberY(lvl.key, e.nativeEvent.layout.y)}>
+              <LevelSection
+                title={`Niveau ${lvl.label}`}
+                subtitle={`Programme ${lvl.range} pompes`}
+                plans={lvl.plans}
+                expanded={currentLevel === lvl.key}
+                currentDay={currentDay}
+                successDays={done}
+                onStart={(plan, i) => onStart?.(plan, i, lvl.key)}
+                onExpandChange={(open) => open && scrollToSlug(lvl.key)}
+              />
+            </YStack>
+          );
+        })}
       </YStack>
     </ScrollView>
   );
