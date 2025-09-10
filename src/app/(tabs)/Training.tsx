@@ -1,5 +1,4 @@
-import { YStack, XStack, H3, Separator } from 'tamagui';
-import { ThemeSwitch } from '@/src/components/ThemeToggle';
+import { YStack, XStack, H4 } from 'tamagui';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TrainingAccordion from '@/src/components/TrainingAccordion';
 import { useProfilesRead } from '@/src/api/profiles';
@@ -13,13 +12,9 @@ export default function TrainingTabScreen() {
 
   return (
     <YStack f={1} p="$4" pt={insets.top + 10} gap="$3" animation="quicker">
-      <XStack ai="center" justifyContent="space-between">
-        <H3 color="$color12" animation="quicker" animateOnly={['color']}>
-          Training.
-        </H3>
-        <ThemeSwitch />
+      <XStack p="$2" gap="$3">
+        <H4>Programme</H4>
       </XStack>
-      <Separator mt="$0" />
       <TrainingAccordion
         currentLevel={profile?.indexLevel ?? undefined}
         currentDay={profile?.indexDay ?? 0}

@@ -189,7 +189,7 @@ export default function TrainingAccordion({
     if (typeof y === 'number') {
       requestAnimationFrame(() => {
         scrollRef.current?.scrollTo({
-          y: Math.max(0, y + 4),
+          y: Math.max(0, y),
           animated: true,
         });
       });
