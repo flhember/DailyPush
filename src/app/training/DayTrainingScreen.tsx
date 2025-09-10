@@ -10,8 +10,11 @@ import { getDayPlan, ProgramSlug, DayPlan } from '@/src/utils/program100pushups'
 import { useInsertSessionRecord } from '@/src/api/sessionsRecords';
 import { useUpdateMaxPushUpsProfile } from '@/src/api/profiles';
 import { getNextSession } from '@/src/utils/getNextSession';
+import { useAuth } from '@/src/providers/AuthProvider';
 
 export default function DayTrainingScreen() {
+  const { profile } = useAuth();
+
   useKeepAwake();
 
   const { levelSlug, day } = useLocalSearchParams<{
@@ -145,6 +148,8 @@ export default function DayTrainingScreen() {
 
     const success = last_set_reps >= plan.minLastSet;
 
+    const bestRep = completedSets.reduce((max, n) => (n > max ? n : max), 0);
+
     insertRecord.mutate(
       {
         level: levelSlug,
@@ -166,10 +171,19 @@ export default function DayTrainingScreen() {
             success,
           });
 
-          updateMaxPushUpsProfile({
-            indexLevel: next.level,
-            indexDay: next.day,
-          });
+          if (profile?.maxPushups && bestRep > profile?.maxPushups) {
+            updateMaxPushUpsProfile({
+              numberPushUps: bestRep,
+              datePushUps: new Date().toISOString(),
+              indexLevel: next.level,
+              indexDay: next.day,
+            });
+          } else {
+            updateMaxPushUpsProfile({
+              indexLevel: next.level,
+              indexDay: next.day,
+            });
+          }
           router.replace('/(tabs)');
         },
         onError: (err) => {
