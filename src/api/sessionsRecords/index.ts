@@ -35,16 +35,15 @@ export const useInsertSessionRecord = () => {
 
   return useMutation({
     async mutationFn(data: any) {
-      console.log(data);
       const { error, data: newRecord } = await supabase.from('sessionsRecords').insert({
         user_id: userId,
-        level: '6-10',
-        day: 1,
-        sets_target: [6, 7, 6, 6, 'max'],
-        sets_actual: [6, 7, 6, 6, 12],
-        success: true,
-        last_set_reps: 12,
-        total_reps: 37,
+        level: data.level,
+        day: data.day,
+        sets_target: data.sets_target,
+        sets_actual: data.sets_actual,
+        success: data.success,
+        last_set_reps: data.last_set_reps,
+        total_reps: data.total_reps,
       });
 
       if (error) {

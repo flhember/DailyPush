@@ -1,4 +1,4 @@
-import { YStack, XStack, Separator, H3, Button } from 'tamagui';
+import { YStack, XStack, Separator, H3 } from 'tamagui';
 import { ThemeSwitch } from '@/src/components/ThemeToggle';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaxPushupRecordCard } from '@/src/components/MaxPushupRecordCard';
@@ -8,15 +8,11 @@ import { useEffect, useState } from 'react';
 import { MaxPushupHistorySheet } from '@/src/components/MaxPushupHistorySheet';
 import { ProgramCardPushups } from '@/src/components/ProgramCardPushups';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { useInsertSessionRecord, useSessionsRecordsList } from '@/src/api/sessionsRecords';
 
 export default function Home() {
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
   const { data: profile } = useProfilesRead();
-
-  const { data: sessionsRecords } = useSessionsRecordsList();
-  const { mutate: insertSessionRecord } = useInsertSessionRecord();
 
   const [historyOpen, setHistoryOpen] = useState(false);
 
@@ -27,16 +23,6 @@ export default function Home() {
   const startMaxPushUps = () => {
     console.log('Start Max Push Ups!');
     router.push('/training/MaxTrainingScreen');
-  };
-
-  const readFt = () => {
-    console.log('Sessions Records: ', sessionsRecords);
-  };
-
-  const addFt = () => {
-    console.log('Add');
-
-    insertSessionRecord({});
   };
 
   return (
@@ -56,17 +42,9 @@ export default function Home() {
         title="Programme Pompes"
         currentLevelIndex={profile?.indexLevel ?? undefined}
         currentDayIndex={profile?.indexDay ?? 0}
-        onStart={(day) => console.log('start day plan:', day)}
         onPlanning={() => router.navigate('/(tabs)/Training')}
       />
       <MaxPushupHistorySheet open={historyOpen} onOpenChange={setHistoryOpen} limit={10} />
-      <Button size="$3" variant="outlined" onPress={readFt}>
-        Read
-      </Button>
-      <Button size="$3" theme="accent" onPress={addFt}>
-        Add
-      </Button>
     </YStack>
   );
 }
-//      <ProgramDayCard day={day} level={2} onChangeDay={setDay} />

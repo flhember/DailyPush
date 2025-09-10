@@ -71,10 +71,6 @@ export default function HistoryScreen() {
     return { best, total, count };
   }, [filtered, best]);
 
-  const onDelete = (id: string) => {
-    console.log('delete: ', id);
-  };
-
   async function logOut() {
     await supabase.auth.signOut();
   }
@@ -84,34 +80,9 @@ export default function HistoryScreen() {
       {/* Header + filtres */}
       <YStack p="$4" gap="$3">
         <H4>Historique</H4>
-
-        <XStack gap="$2" fw="wrap">
-          <Button
-            size="$2"
-            variant={range === '30' ? 'outlined' : 'ghost'}
-            onPress={() => setRange('30')}
-          >
-            30 j
-          </Button>
-          <Button
-            size="$2"
-            variant={range === '90' ? 'outlined' : 'ghost'}
-            onPress={() => setRange('90')}
-          >
-            90 j
-          </Button>
-          <Button
-            size="$2"
-            variant={range === 'all' ? 'outlined' : 'ghost'}
-            onPress={() => setRange('all')}
-          >
-            Tout
-          </Button>
-        </XStack>
-
         {/* KPIs */}
         <XStack gap="$3" fw="wrap">
-          <Card f={1} p="$3" bordered elevate>
+          <Card f={1} p="$3" bordered>
             <XStack ai="center" gap="$2">
               <Trophy size={16} />
               <Paragraph>Meilleur</Paragraph>
@@ -163,17 +134,7 @@ export default function HistoryScreen() {
                     <Paragraph>
                       {formatInDeviceTZ(iso, { withTime: true, locale: 'fr-FR' })}
                     </Paragraph>
-                    {/* si tu stockes un champ note, ajoute-le ici */}
                   </YStack>
-                </XStack>
-                <XStack ai="center" gap="$2">
-                  <Button
-                    size="$2"
-                    chromeless
-                    icon={Trash2}
-                    onPress={() => onDelete(item.id)}
-                    aria-label="Supprimer"
-                  />
                 </XStack>
               </XStack>
             </Card>
@@ -187,20 +148,6 @@ export default function HistoryScreen() {
             </Button>
           </YStack>
         }
-      />
-
-      {/* FAB */}
-      <Button
-        pos="absolute"
-        bottom="$6"
-        right="$6"
-        size="$5"
-        circular
-        elevate
-        theme="accent"
-        icon={Plus}
-        onPress={() => router.push('/training/MaxTrainingScreen')}
-        aria-label="Nouveau test"
       />
       <Button
         pos="absolute"

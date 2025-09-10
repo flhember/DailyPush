@@ -1,45 +1,50 @@
 import { Card, YStack, XStack, Paragraph, Button, Separator, H4 } from 'tamagui';
 import { Dumbbell, ChevronRight, Timer } from '@tamagui/lucide-icons';
-import { DayPlan, getDayPlan } from '@/src/utils/program100pushups';
+import { getDayPlan } from '@/src/utils/program100pushups';
 import { formatSets } from '../utils/formatSets';
+import { router } from 'expo-router';
 
 type Props = {
   title: string;
   currentLevelIndex: string | undefined;
   currentDayIndex: number;
-  onStart?: (plan: DayPlan) => void;
   onPlanning?: () => void;
-  onPressCard?: () => void;
 };
 
 export function ProgramCardPushups({
   title,
   currentLevelIndex,
   currentDayIndex,
-  onStart,
   onPlanning,
-  onPressCard,
 }: Props) {
   const day = getDayPlan(currentLevelIndex, currentDayIndex);
 
   if (!day) {
     return (
-      <Card bordered p="$4" br="$6" onPress={onPressCard}>
+      <Card bordered p="$4" br="$6">
         <YStack gap="$3">
           <XStack ai="center" gap="$2">
             <Dumbbell size={20} />
             <H4>{title}</H4>
           </XStack>
           <Paragraph opacity={0.7}>
-            Programme introuvable pour {currentLevelIndex} – vérifie le niveau/jour.
+            Pas de max de pompes enregistré. Faites un test max pour savoir où vous en êtes.
           </Paragraph>
         </YStack>
       </Card>
     );
   }
 
+  const startSession = () => {
+    if (!currentLevelIndex && !day) return;
+    router.push({
+      pathname: '/training/DayTrainingScreen',
+      params: { levelSlug: currentLevelIndex, day: String(day.day) },
+    });
+  };
+
   return (
-    <Card bordered={1} p="$4" br="$6" onPress={onPressCard}>
+    <Card bordered={1} p="$4" br="$6">
       <YStack gap="$3">
         {/* Header */}
         <XStack ai="center" jc="space-between">
@@ -78,7 +83,7 @@ export function ProgramCardPushups({
           <Button size="$3" variant="outlined" icon={Dumbbell} onPress={onPlanning}>
             Training
           </Button>
-          <Button size="$3" theme="accent" onPress={() => onStart?.(day)} iconAfter={ChevronRight}>
+          <Button size="$3" theme="accent" onPress={startSession} iconAfter={ChevronRight}>
             Commencer
           </Button>
         </XStack>
