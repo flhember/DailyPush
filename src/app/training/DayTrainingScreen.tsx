@@ -11,11 +11,13 @@ import { useInsertSessionRecord } from '@/src/api/sessionsRecords';
 import { useUpdateMaxPushUpsProfile } from '@/src/api/profiles';
 import { getNextSession } from '@/src/utils/getNextSession';
 import { useAuth } from '@/src/providers/AuthProvider';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function DayTrainingScreen() {
-  const { profile } = useAuth();
-
   useKeepAwake();
+
+  const { profile } = useAuth();
+  const insets = useSafeAreaInsets();
 
   const { levelSlug, day } = useLocalSearchParams<{
     levelSlug?: ProgramSlug;
@@ -205,85 +207,109 @@ export default function DayTrainingScreen() {
   }
 
   return (
-    <YStack f={1} ai="center" jc="center" p="$4" gap="$5">
-      <StopTrainingDialog onConfirm={stop} />
+    <YStack f={1} animation="quicker">
+      <Pressable style={{ flex: 1 }} onPress={state === 'active' ? addRep : undefined}>
+        <YStack f={1} jc="center" ai="center" gap="$3">
+          <StopTrainingDialog onConfirm={stop} />
 
-      <SizableText>
-        Jour {plan.day} — Série {setIdx + 1}/{totalSets}
-      </SizableText>
+          {/* Petit sous-titre en haut */}
+          <SizableText>
+            Jour {plan.day} — Série {setIdx + 1}/{totalSets}
+          </SizableText>
 
-      {state === 'active' && (
-        <>
-          <H1>{count}</H1>
-          <Paragraph size="$7">Pompes</Paragraph>
-
-          {typeof currentTarget === 'number' ? (
+          {/* Bloc central selon l'état */}
+          {state === 'active' && (
             <>
-              <Progress value={progress} w={260} bg="$color3" br="$10">
-                <Progress.Indicator bc={indicatorBg} animation="bouncy" />
-              </Progress>
-              <Paragraph>
-                {count} / {currentTarget}
-              </Paragraph>
+              <H1>{count}</H1>
+              <Paragraph size="$7">Pompes</Paragraph>
+
+              {typeof currentTarget === 'number' ? (
+                <>
+                  <Progress value={progress} w={260} bg="$color3" br="$10">
+                    <Progress.Indicator bc={indicatorBg} animation="bouncy" br="$10" />
+                  </Progress>
+                  <Paragraph>
+                    {count} / {currentTarget}
+                  </Paragraph>
+                </>
+              ) : (
+                <Paragraph>Série “max” — minimum {plan.minLastSet}</Paragraph>
+              )}
             </>
-          ) : (
-            <Paragraph>Série “max” — minimum {plan.minLastSet}</Paragraph>
           )}
 
-          {/* Overlay plein écran pour compter */}
-          <Pressable style={{ position: 'absolute', inset: 0 }} onPress={addRep} />
+          {state === 'rest' && (
+            <YStack ai="center" gap="$3">
+              <Paragraph size="$7">Repos</Paragraph>
+              <H1>{restLeft}s</H1>
+              <Paragraph>Prochaine série : {String(plan.sets[setIdx + 1])}</Paragraph>
+            </YStack>
+          )}
 
-          <Button
-            theme="accent"
-            disabled={!canFinishSet}
-            onPress={finishSet}
-            opacity={canFinishSet ? 1 : 0.5}
-          >
-            {setIdx === totalSets - 1 ? 'Terminer la séance' : 'Valider la série'}
-          </Button>
-        </>
-      )}
-
-      {state === 'rest' && (
-        <YStack ai="center" gap="$3">
-          <Paragraph size="$7">Repos</Paragraph>
-          <H1>{restLeft}s</H1>
-          <Paragraph>Prochaine série : {String(plan.sets[setIdx + 1])}</Paragraph>
-          <Button
-            onPress={() => {
-              // Passer le repos
-              if (restTimerRef.current) {
-                clearInterval(restTimerRef.current);
-                restTimerRef.current = null;
-              }
-              setSetIdx((i) => i + 1);
-              setState('active');
-              setRestLeft(0);
-            }}
-          >
-            Passer le repos
-          </Button>
+          {state === 'finished' && (
+            <YStack ai="center" gap="$3">
+              <Paragraph size="$9" fow="700" color="$green10">
+                Séance terminée 🎉
+              </Paragraph>
+              <Paragraph ta="center">
+                Respecte {plan.minRestAfterDays} jour{plan.minRestAfterDays > 1 ? 's' : ''} de repos
+                minimum.
+              </Paragraph>
+              <Separator />
+            </YStack>
+          )}
         </YStack>
-      )}
 
-      {state === 'finished' && (
-        <YStack ai="center" gap="$3">
-          <Paragraph size="$9" fow="700" color="$green10">
-            Séance terminée 🎉
-          </Paragraph>
-          <Paragraph ta="center">
-            Respecte {plan.minRestAfterDays} jour{plan.minRestAfterDays > 1 ? 's' : ''} de repos
-            minimum.
-          </Paragraph>
-          <Separator />
-          <XStack gap="$3">
-            <Button onPress={() => router.replace('/(tabs)')}>Retour</Button>
-            <Button theme="accent" onPress={finalizeSession}>
-              Enregistrer
-            </Button>
-          </XStack>
+        {/* CTA flottant en bas (même style que ton écran max) */}
+        <YStack gap="$3" ai="center" mb={insets.bottom + 30}>
+          {state === 'active' && (
+            <>
+              <Paragraph size="$7">Content de ta série ?</Paragraph>
+              <Button
+                theme="accent"
+                disabled={!canFinishSet}
+                opacity={canFinishSet ? 1 : 0.5}
+                onPress={finishSet}
+                zIndex={10000}
+              >
+                {setIdx === totalSets - 1 ? 'Terminer la séance' : 'Valider la série'}
+              </Button>
+            </>
+          )}
+
+          {state === 'rest' && (
+            <>
+              <Paragraph size="$7">Respire… prêt à enchaîner ?</Paragraph>
+              <Button
+                onPress={() => {
+                  if (restTimerRef.current) {
+                    clearInterval(restTimerRef.current);
+                    restTimerRef.current = null;
+                  }
+                  setSetIdx((i) => i + 1);
+                  setState('active');
+                  setRestLeft(0);
+                }}
+                zIndex={10000}
+              >
+                Passer le repos
+              </Button>
+            </>
+          )}
+
+          {state === 'finished' && (
+            <>
+              <Paragraph size="$7">Enregistrer ta séance ?</Paragraph>
+              <XStack gap="$2">
+                <Button onPress={() => router.replace('/(tabs)')}>Retour</Button>
+                <Button theme="accent" onPress={finalizeSession}>
+                  Enregistrer
+                </Button>
+              </XStack>
+            </>
+          )}
         </YStack>
-      )}
+      </Pressable>
     </YStack>
   );
 }

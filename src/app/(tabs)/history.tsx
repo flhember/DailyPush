@@ -208,7 +208,7 @@ export default function HistoryScreen() {
       <SectionList
         sections={sections}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 120 }}
+        contentContainerStyle={{ paddingHorizontal: 8, paddingBottom: 120 }}
         refreshControl={
           <RefreshControl refreshing={isLoading || isRefetching} onRefresh={refetchAll} />
         }
@@ -217,12 +217,12 @@ export default function HistoryScreen() {
           if (item.type === 'max') {
             // ---- Item Test Max
             return (
-              <Card bordered p="$3" mb="$2" pressStyle={{ scale: 0.99 }}>
+              <Card bordered p="$3" mb="$2">
                 <XStack ai="center" jc="space-between">
                   <XStack ai="center" gap="$3">
                     <Trophy size={18} />
                     <YStack>
-                      <SizableText size="$7" fow="700">
+                      <SizableText size="$6" fow="700">
                         {item.numberPushUps} pompes (test max)
                       </SizableText>
                       <Paragraph opacity={0.8}>
@@ -238,12 +238,12 @@ export default function HistoryScreen() {
           // ---- Item Séance Training
           const success = !!item.success;
           return (
-            <Card bordered p="$3" mb="$2" pressStyle={{ scale: 0.99 }}>
+            <Card bordered p="$3" mb="$2">
               <XStack ai="center" jc="space-between">
                 <XStack ai="center" gap="$3" fw="wrap">
                   <Dumbbell size={18} />
                   <YStack>
-                    <SizableText size="$7" fow="700">
+                    <SizableText size="$6" fow="700">
                       {labelFromLevelSlug(item.level)} · Jour {item.day ?? '?'}
                     </SizableText>
                     <Paragraph opacity={0.8}>

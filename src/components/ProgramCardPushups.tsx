@@ -81,7 +81,7 @@ export function ProgramCardPushups({
         {/* Actions */}
         <XStack jc="flex-end" gap="$2" fw="wrap">
           <Button size="$3" variant="outlined" icon={Dumbbell} onPress={onPlanning}>
-            Training
+            Programme
           </Button>
           <Button size="$3" theme="accent" onPress={startSession} iconAfter={ChevronRight}>
             Commencer

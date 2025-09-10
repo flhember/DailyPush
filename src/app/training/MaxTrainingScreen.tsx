@@ -64,14 +64,19 @@ export default function MaxTrainingScreen() {
             <Paragraph size="$8">Pompes</Paragraph>
           </YStack>
         </YStack>
-        {maxPushups > 0 && (
-          <YStack gap="$3" ai="center" mb={insets.bottom + 30}>
-            <Paragraph size="$7">Content de ton score ?</Paragraph>
-            <Button theme="accent" onPress={handleValideTraining}>
-              Valider mon entraînement
-            </Button>
-          </YStack>
-        )}
+
+        <YStack gap="$3" ai="center" mb={insets.bottom + 30}>
+          <Paragraph size="$7">Content de ton score ?</Paragraph>
+          <Button
+            theme="accent"
+            disabled={maxPushups === 0 ? true : false}
+            opacity={maxPushups === 0 ? 0.5 : 1}
+            onPress={handleValideTraining}
+            zIndex={10000}
+          >
+            Valider mon entraînement
+          </Button>
+        </YStack>
       </Pressable>
     </YStack>
   );
