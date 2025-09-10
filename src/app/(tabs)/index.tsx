@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { MaxPushupHistorySheet } from '@/src/components/MaxPushupHistorySheet';
 import { ProgramCardPushups } from '@/src/components/ProgramCardPushups';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { ProgramProgressCard } from '@/src/components/ProgramProgressCard';
 
 export default function Home() {
   const insets = useSafeAreaInsets();

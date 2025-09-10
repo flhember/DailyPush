@@ -1,6 +1,16 @@
-import { Card, YStack, XStack, Paragraph, Button, Separator, H4 } from 'tamagui';
+import {
+  Card,
+  YStack,
+  XStack,
+  Paragraph,
+  Button,
+  Separator,
+  H4,
+  SizableText,
+  Progress,
+} from 'tamagui';
 import { Dumbbell, ChevronRight, Timer } from '@tamagui/lucide-icons';
-import { getDayPlan } from '@/src/utils/program100pushups';
+import { getDayPlan, PROGRAMS } from '@/src/utils/program100pushups';
 import { formatSets } from '../utils/formatSets';
 import { router } from 'expo-router';
 
@@ -17,7 +27,11 @@ export function ProgramCardPushups({
   currentDayIndex,
   onPlanning,
 }: Props) {
+  const def = currentLevelIndex ? PROGRAMS.find((p) => p.key === currentLevelIndex) : undefined;
   const day = getDayPlan(currentLevelIndex, currentDayIndex);
+  const maxDay = def ? Math.max(...def.plans.map((p) => p.day)) : 6;
+  const doneDays = Math.max(0, currentDayIndex - 1);
+  const progressPct = Math.round((doneDays / maxDay) * 100); // entier 0..100
 
   if (!day) {
     return (
@@ -53,6 +67,19 @@ export function ProgramCardPushups({
             <H4>{title}</H4>
           </XStack>
         </XStack>
+
+        {/* Progression */}
+        <YStack gap="$2">
+          <XStack ai="center" jc="space-between">
+            <Paragraph>Niveau {currentLevelIndex}</Paragraph>
+            <SizableText size="$6" fow="700">
+              Jour {currentDayIndex} / {maxDay}
+            </SizableText>
+          </XStack>
+          <Progress value={progressPct} bg="$color3" br="$10" bc="$color6">
+            <Progress.Indicator bc="$accentColor" animation="bouncy" br="$10" />
+          </Progress>
+        </YStack>
 
         {/* Bloc séance actuelle */}
         <YStack gap="$2">
