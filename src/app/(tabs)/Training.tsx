@@ -3,10 +3,14 @@ import { ThemeSwitch } from '@/src/components/ThemeToggle';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TrainingAccordion from '@/src/components/TrainingAccordion';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useProfilesRead } from '@/src/api/profiles';
+import { useSessionsRecordsList } from '@/src/api/sessionsRecords';
 
 export default function TrainingTabScreen() {
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
+  const { data: profile } = useProfilesRead();
+  const { data: sessionsRecords } = useSessionsRecordsList();
 
   return (
     <YStack f={1} p="$4" pt={insets.top + 10} pb={tabBarHeight} gap="$3" animation="quicker">
@@ -18,8 +22,8 @@ export default function TrainingTabScreen() {
       </XStack>
       <Separator mt="$0" />
       <TrainingAccordion
-        currentIndexByLevel={{ '26_30': 1 }}
-        completedByLevel={{ '26_30': [true, false, false, false, false, false] }}
+        currentLevel={profile?.indexLevel ?? undefined}
+        sessionsRecords={sessionsRecords}
         onStart={(plan, i, levelKey) => console.log('start', levelKey, i, plan)}
         onToggleDone={(i, levelKey) => console.log('toggle', levelKey, i)}
       />

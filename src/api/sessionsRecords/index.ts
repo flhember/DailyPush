@@ -1,13 +1,16 @@
+import { Tables } from '@/src/database.types';
 import { supabase } from '@/src/lib/supabase';
 import { useAuth } from '@/src/providers/AuthProvider';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+export type SessionRecord = Tables<'sessionsRecords'>;
 
 //Use for read the history of the record of sessions
 export const useSessionsRecordsList = () => {
   const { session } = useAuth();
   const userId = session?.user.id;
 
-  return useQuery({
+  return useQuery<SessionRecord[]>({
     queryKey: ['sessionsRecords'],
     queryFn: async () => {
       const { data, error } = await supabase

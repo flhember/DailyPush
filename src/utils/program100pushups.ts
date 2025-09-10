@@ -188,3 +188,18 @@ export const pushupsOver60: DayPlan[] = [
     minRestAfterDays: 2,
   },
 ];
+
+export const LEVELS: { key: string; label: string; range: string; plans: DayPlan[] }[] = [
+  { key: 'under5', label: '< 5', range: '< 5 pompes', plans: pushupsUnder5 },
+  { key: '6-10', label: '6–10', range: '6 à 10', plans: pushups6to10 },
+  { key: '11-20', label: '11–20', range: '11 à 20', plans: pushups11to20 },
+  { key: '21-25', label: '21–25', range: '21 à 25', plans: pushups21to25 },
+  { key: '26-30', label: '26–30', range: '26 à 30', plans: pushups26to30 },
+  { key: '31-35', label: '31–35', range: '31 à 35', plans: pushups31to35 },
+  { key: '36-40', label: '36–40', range: '36 à 40', plans: pushups36to40 },
+  { key: '41-45', label: '41–45', range: '41 à 45', plans: pushups41to45 },
+  { key: '46-50', label: '46–50', range: '46 à 50', plans: pushups46to50 },
+  { key: '51-55', label: '51–55', range: '51 à 55', plans: pushups51to55 },
+  { key: '56-60', label: '56–60', range: '56 à 60', plans: pushups56to60 },
+  { key: 'over60', label: '60+', range: '> 60', plans: pushupsOver60 },
+];
