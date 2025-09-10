@@ -1,7 +1,7 @@
 import React from 'react';
 import { Timer, ChevronDown, Dumbbell } from '@tamagui/lucide-icons';
 import { YStack, XStack, Paragraph, SizableText, ScrollView, Accordion, Square } from 'tamagui';
-import { DayPlan, LEVELS } from '@/src/utils/program100pushups';
+import { DayPlan, LEVELS, ProgramSlug } from '@/src/utils/program100pushups';
 import { SessionRecord } from '../api/sessionsRecords';
 import { Badge } from './ui/Badge';
 
@@ -14,14 +14,12 @@ function DayRow({
   isNext,
   isDone,
   onStart,
-  onToggleDone,
 }: {
   plan: DayPlan;
   index: number;
   isNext?: boolean;
   isDone?: boolean;
   onStart?: (plan: DayPlan, index: number) => void;
-  onToggleDone?: (index: number) => void;
 }) {
   return (
     <YStack
@@ -81,23 +79,31 @@ function LevelSection({
   plans,
   expanded,
   onStart,
-  onToggleDone,
+  onExpandChange,
 }: {
   title: string;
   subtitle: string;
   plans: DayPlan[];
   expanded?: boolean;
   onStart?: (plan: DayPlan, index: number) => void;
-  onToggleDone?: (index: number) => void;
+  onExpandChange?: (open: boolean) => void;
 }) {
   const [value, setValue] = React.useState<string[]>(expanded ? ['open'] : []);
 
   React.useEffect(() => {
     setValue(expanded ? ['open'] : []);
+    // notifier le parent si on s'ouvre via prop
+    if (expanded) requestAnimationFrame(() => onExpandChange?.(true));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expanded]);
 
+  const handleChange = (v: string[]) => {
+    setValue(v);
+    onExpandChange?.(v.includes('open'));
+  };
+
   return (
-    <Accordion type="multiple" value={value} onValueChange={setValue}>
+    <Accordion type="multiple" value={value} onValueChange={handleChange}>
       <Accordion.Item value="open">
         {/* HEADER ACCORDION*/}
         <Accordion.Trigger>
@@ -127,7 +133,7 @@ function LevelSection({
         <Accordion.Content>
           <YStack gap="$2">
             {plans.map((p, i) => (
-              <DayRow key={i} plan={p} index={i} onStart={onStart} onToggleDone={onToggleDone} />
+              <DayRow key={i} plan={p} index={i} onStart={onStart} />
             ))}
           </YStack>
         </Accordion.Content>
@@ -140,29 +146,50 @@ export default function TrainingAccordion({
   currentLevel,
   sessionsRecords,
   onStart,
-  onToggleDone,
 }: {
   currentLevel: string | undefined;
   sessionsRecords?: SessionRecord[];
   onStart?: (plan: DayPlan, index: number, levelKey: string) => void;
-  onToggleDone?: (index: number, levelKey: string) => void;
 }) {
-  console.log(currentLevel);
+  const scrollRef = React.useRef<ScrollView>(null);
+  const positionsRef = React.useRef<Record<ProgramSlug, number>>({} as any);
+
+  const rememberY = (slug: ProgramSlug, y: number) => {
+    positionsRef.current[slug] = y;
+  };
+
+  const scrollToSlug = (slug: ProgramSlug) => {
+    const y = positionsRef.current[slug];
+    if (typeof y === 'number') {
+      requestAnimationFrame(() => {
+        scrollRef.current?.scrollTo({
+          y: Math.max(0, y + 4),
+          animated: true,
+        });
+      });
+    }
+  };
 
   return (
-    <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ padding: 5 }}>
+    <ScrollView
+      ref={scrollRef}
+      contentInsetAdjustmentBehavior="automatic"
+      contentContainerStyle={{ padding: 5 }}
+    >
       {/* Sections par niveau */}
       <YStack gap="$0">
         {LEVELS.map((lvl) => (
-          <LevelSection
-            key={lvl.key}
-            title={`Niveau ${lvl.label}`}
-            subtitle={`Programme ${lvl.range} pompes`}
-            plans={lvl.plans}
-            expanded={currentLevel === lvl.key}
-            onStart={(plan, i) => onStart?.(plan, i, lvl.key)}
-            onToggleDone={(i) => onToggleDone?.(i, lvl.key)}
-          />
+          <YStack key={lvl.key} onLayout={(e) => rememberY(lvl.key, e.nativeEvent.layout.y)}>
+            <LevelSection
+              key={lvl.key}
+              title={`Niveau ${lvl.label}`}
+              subtitle={`Programme ${lvl.range} pompes`}
+              plans={lvl.plans}
+              expanded={currentLevel === lvl.key}
+              onStart={(plan, i) => onStart?.(plan, i, lvl.key)}
+              onExpandChange={(open) => open && scrollToSlug(lvl.key)}
+            />
+          </YStack>
         ))}
       </YStack>
     </ScrollView>

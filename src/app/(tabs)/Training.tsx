@@ -25,7 +25,6 @@ export default function TrainingTabScreen() {
         currentLevel={profile?.indexLevel ?? undefined}
         sessionsRecords={sessionsRecords}
         onStart={(plan, i, levelKey) => console.log('start', levelKey, i, plan)}
-        onToggleDone={(i, levelKey) => console.log('toggle', levelKey, i)}
       />
     </YStack>
   );

@@ -6,6 +6,20 @@ export type DayPlan = {
   minRestAfterDays: number;
 };
 
+export type ProgramSlug =
+  | 'under5'
+  | '6-10'
+  | '11-20'
+  | '21-25'
+  | '26-30'
+  | '31-35'
+  | '36-40'
+  | '41-45'
+  | '46-50'
+  | '51-55'
+  | '56-60'
+  | 'over60';
+
 // < 5 pompes
 export const pushupsUnder5: DayPlan[] = [
   { day: 1, restSec: 60, sets: [2, 3, 2, 2, 'max'], minLastSet: 3, minRestAfterDays: 1 },
@@ -189,7 +203,7 @@ export const pushupsOver60: DayPlan[] = [
   },
 ];
 
-export const LEVELS: { key: string; label: string; range: string; plans: DayPlan[] }[] = [
+export const LEVELS: { key: ProgramSlug; label: string; range: string; plans: DayPlan[] }[] = [
   { key: 'under5', label: '< 5', range: '< 5 pompes', plans: pushupsUnder5 },
   { key: '6-10', label: '6–10', range: '6 à 10', plans: pushups6to10 },
   { key: '11-20', label: '11–20', range: '11 à 20', plans: pushups11to20 },
