@@ -23,6 +23,8 @@ import { supabase } from '@/src/lib/supabase';
 import { formatInDeviceTZ } from '@/src/utils/datetime';
 import { useMaxPushUpRecordsList } from '@/src/api/maxPushUpRecords';
 import { useAuth } from '@/src/providers/AuthProvider';
+import { useTranslation } from 'react-i18next';
+import i18n from '@/src/i18n';
 
 function getInitials(name?: string | null, email?: string | null) {
   const base = name?.trim() || email?.split('@')[0] || 'U';
@@ -35,12 +37,14 @@ function getInitials(name?: string | null, email?: string | null) {
 }
 
 export default function AccountScreen() {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const { data: profile } = useProfilesRead();
   const { data: sessions = [] } = useSessionsRecordsList();
   const { data: maxData = [] } = useMaxPushUpRecordsList();
   const { mutate: updateProfileName } = useUpdateProfileName();
   const { session } = useAuth();
+  const locale = i18n.language || 'en-US';
 
   // KPIs
   const sessionCount = sessions.length + maxData.length;
@@ -77,7 +81,7 @@ export default function AccountScreen() {
     <YStack f={1} p="$4" pt={insets.top + 10} gap="$3" animation="quicker">
       {/* Header */}
       <XStack ai="center" jc="space-between">
-        <H3 color="$color12">Mon compte</H3>
+        <H3 color="$color12">{t('account.title')}</H3>
         <Button
           size="$2"
           variant="outlined"
@@ -88,7 +92,7 @@ export default function AccountScreen() {
             setOpen(true);
           }}
         >
-          Éditer
+          {t('account.edit')}
         </Button>
       </XStack>
       <Separator />
@@ -106,7 +110,7 @@ export default function AccountScreen() {
           </Avatar>
           <YStack f={1}>
             <SizableText size="$7" fow="700">
-              {profile?.full_name || 'Utilisateur'}
+              {profile?.full_name || t('account.userFallback')}
             </SizableText>
             <Paragraph opacity={0.7}>{profile?.username || '—'}</Paragraph>
           </YStack>
@@ -118,25 +122,27 @@ export default function AccountScreen() {
         <Card f={1} p="$3" bordered>
           <XStack ai="center" gap="$2">
             <Trophy size={16} />
-            <Paragraph>Record</Paragraph>
+            <Paragraph>{t('account.kpis.record')}</Paragraph>
           </XStack>
           <SizableText size="$8" fow="800">
             {best}
           </SizableText>
           {!!profile?.maxPushupsDate && (
             <Paragraph size="$2" opacity={0.6}>
-              le {formatInDeviceTZ(profile.maxPushupsDate, { withTime: false, locale: 'fr-FR' })}
+              {t('account.kpis.recordOn', {
+                date: formatInDeviceTZ(profile.maxPushupsDate, { withTime: false, locale }),
+              })}
             </Paragraph>
           )}
         </Card>
         <Card f={1} p="$3" bordered>
-          <Paragraph>Séances</Paragraph>
+          <Paragraph>{t('account.kpis.sessions')}</Paragraph>
           <SizableText size="$8" fow="800">
             {sessionCount}
           </SizableText>
         </Card>
         <Card f={1} p="$3" bordered>
-          <Paragraph>Total reps</Paragraph>
+          <Paragraph>{t('account.kpis.totalReps')}</Paragraph>
           <SizableText size="$8" fow="800">
             {totalReps}
           </SizableText>
@@ -154,7 +160,7 @@ export default function AccountScreen() {
         icon={LogOut}
         onPress={logout}
       >
-        Se déconnecter
+        {t('account.logout')}
       </Button>
 
       {/* Sheet édition profil */}
@@ -175,18 +181,18 @@ export default function AccountScreen() {
           animation="lazy"
         />
         <Sheet.Frame animation="quick" p="$4" pb={insets.bottom + 20} gap="$3">
-          <H3>Modifier le profil</H3>
+          <H3>{t('account.editSheet.title')}</H3>
           <YStack gap="$2">
-            <Label htmlFor="full_name">Nom complet</Label>
+            <Label htmlFor="full_name">{t('account.editSheet.fullName')}</Label>
             <Input id="full_name" value={fullName} onChangeText={setFullName} />
 
-            <Label htmlFor="username">Username</Label>
+            <Label htmlFor="username">{t('account.editSheet.username')}</Label>
             <Input id="username" value={username} onChangeText={setUsername} />
           </YStack>
           <XStack jc="flex-end" gap="$2" mt="$2">
-            <Button onPress={() => setOpen(false)}>Annuler</Button>
+            <Button onPress={() => setOpen(false)}>{t('account.editSheet.cancel')}</Button>
             <Button theme="accent" onPress={saveProfile}>
-              Enregistrer
+              {t('account.editSheet.save')}
             </Button>
           </XStack>
         </Sheet.Frame>

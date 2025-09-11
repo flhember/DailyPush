@@ -57,5 +57,24 @@
         "maxTest": "Test max",
         "levelTitle": "Niveau {{label}}",
         "dayShort": "Jour {{day}}"
+    },
+    "account": {
+        "title": "Mon compte",
+        "edit": "Éditer",
+        "userFallback": "Utilisateur",
+        "kpis": {
+            "record": "Record",
+            "sessions": "Séances",
+            "totalReps": "Total de reps",
+            "recordOn": "le {{date}}"
+        },
+        "logout": "Se déconnecter",
+        "editSheet": {
+            "title": "Modifier le profil",
+            "fullName": "Nom complet",
+            "username": "Nom d’utilisateur",
+            "cancel": "Annuler",
+            "save": "Enregistrer"
+        }
     }
 }

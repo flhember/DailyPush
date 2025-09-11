@@ -57,5 +57,24 @@
         "maxTest": "Max test",
         "levelTitle": "Level {{label}}",
         "dayShort": "Day {{day}}"
+    },
+    "account": {
+        "title": "My Account",
+        "edit": "Edit",
+        "userFallback": "User",
+        "kpis": {
+            "record": "Max",
+            "sessions": "Sessions",
+            "totalReps": "Total reps",
+            "recordOn": "on {{date}}"
+        },
+        "logout": "Sign out",
+        "editSheet": {
+            "title": "Edit profile",
+            "fullName": "Full name",
+            "username": "Username",
+            "cancel": "Cancel",
+            "save": "Save"
+        }
     }
 }
