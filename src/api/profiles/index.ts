@@ -56,3 +56,29 @@ export const useUpdateMaxPushUpsProfile = () => {
     },
   });
 };
+
+export const useUpdateProfileName = () => {
+  const queryClient = useQueryClient();
+  const { session } = useAuth();
+  const userId = session?.user.id;
+
+  return useMutation({
+    async mutationFn(data: any) {
+      if (!userId) throw new Error('Not authenticated');
+
+      const { data: profileData, error } = await supabase
+        .from('profiles')
+        .update({ full_name: data.fullName, username: data.username })
+        .eq('id', userId)
+        .single();
+
+      console.log(error);
+      if (error) throw new Error(error.message);
+      return profileData;
+    },
+    onSuccess: () => {
+      if (!userId) return;
+      queryClient.invalidateQueries({ queryKey: ['profiles'] });
+    },
+  });
+};

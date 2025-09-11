@@ -4,7 +4,7 @@ import TrainingAccordion from '@/src/components/TrainingAccordion';
 import { useProfilesRead } from '@/src/api/profiles';
 import { useSessionsRecordsList } from '@/src/api/sessionsRecords';
 
-export default function TrainingTabScreen() {
+export default function ProgramTabScreen() {
   const insets = useSafeAreaInsets();
 
   const { data: profile } = useProfilesRead();

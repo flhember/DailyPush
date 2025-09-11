@@ -34,7 +34,7 @@ export function MaxPushupHistorySheet({ open, onOpenChange, limit = 10 }: Props)
       modal
       open={open}
       onOpenChange={onOpenChange}
-      snapPoints={[85]}
+      snapPoints={[50]}
       dismissOnSnapToBottom
       forceRemoveScrollEnabled={open}
       zIndex={100_000}
@@ -115,6 +115,7 @@ export function MaxPushupHistorySheet({ open, onOpenChange, limit = 10 }: Props)
           </Button>
         </XStack>
       </Sheet.Frame>
+      <Sheet.Handle display="none" />
     </Sheet>
   );
 }

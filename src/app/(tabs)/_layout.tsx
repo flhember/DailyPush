@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import { Platform } from 'react-native';
 import { HapticTab } from '@/src/components/HapticTab';
-import { Dumbbell, House, History } from '@tamagui/lucide-icons';
+import { Dumbbell, House, History, User } from '@tamagui/lucide-icons';
 import { useTheme, YStack } from 'tamagui';
 
 export default function TabLayout() {
@@ -33,9 +33,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="Training"
+        name="program"
         options={{
-          title: 'Training',
+          title: 'Program',
           tabBarIcon: ({ color, focused }) => (
             <YStack ai="center" gap="$1" animation="bouncy" scale={focused ? 1.05 : 1}>
               <Dumbbell size={24} color={color as string} />
@@ -50,6 +50,17 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <YStack ai="center" gap="$1" animation="bouncy" scale={focused ? 1.05 : 1}>
               <History size={24} color={color as string} />
+            </YStack>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="account"
+        options={{
+          title: 'Account',
+          tabBarIcon: ({ color, focused }) => (
+            <YStack ai="center" gap="$1" animation="bouncy" scale={focused ? 1.05 : 1}>
+              <User size={24} color={color as string} />
             </YStack>
           ),
         }}

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { SectionList, RefreshControl } from 'react-native';
-import { YStack, XStack, Card, Paragraph, SizableText, Button, Separator, H4 } from 'tamagui';
+import { YStack, XStack, Card, Paragraph, SizableText, Button, H4 } from 'tamagui';
 import { Trophy, Dumbbell, CheckCircle, XCircle } from '@tamagui/lucide-icons';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,7 +8,6 @@ import { formatInDeviceTZ } from '@/src/utils/datetime';
 import { useMaxPushUpRecordsList } from '@/src/api/maxPushUpRecords';
 import { useSessionsRecordsList } from '@/src/api/sessionsRecords';
 import { PROGRAMS } from '@/src/utils/program100pushups';
-import { useProfilesRead } from '@/src/api/profiles';
 
 // ---------------- Types unifiés ----------------
 type Kind = 'all' | 'max' | 'training';
@@ -86,7 +85,6 @@ function normalize(maxData: any[] = [], sessData: any[] = []): HistoryItem[] {
 export default function HistoryScreen() {
   const insets = useSafeAreaInsets();
   const [kind, setKind] = useState<Kind>('all');
-  const { data: profile } = useProfilesRead();
 
   const {
     data: maxData = [],
@@ -112,14 +110,6 @@ export default function HistoryScreen() {
     if (kind === 'all') return allItems;
     return allItems.filter((it) => it.type === kind);
   }, [allItems, kind]);
-
-  // ✅ KPIs GLOBAUX (identiques pour tous les modes)
-  const kpis = useMemo(() => {
-    const best = profile?.maxPushups ?? 0; // 👈 record stocké dans profiles
-    const sessionCount = sessions.length + maxData.length;
-    const totalReps = sessions.reduce((s, it: any) => s + (it.total_reps ?? 0), 0);
-    return { best, sessionCount, totalReps };
-  }, [profile?.maxPushups, sessions, maxData]);
 
   // Groupage par mois (affichage)
   const sections = useMemo(() => {
@@ -175,34 +165,7 @@ export default function HistoryScreen() {
             Séances
           </Button>
         </XStack>
-
-        {/* KPIs */}
-        <XStack gap="$3" fw="wrap">
-          <Card f={1} p="$3" bordered>
-            <XStack ai="center" gap="$2">
-              <Trophy size={16} />
-              <Paragraph>Max</Paragraph>
-            </XStack>
-            <SizableText size="$8" fow="700">
-              {kpis.best}
-            </SizableText>
-          </Card>
-          <Card f={1} p="$3" bordered>
-            <Paragraph>Séances</Paragraph>
-            <SizableText size="$8" fow="700">
-              {kpis.sessionCount}
-            </SizableText>
-          </Card>
-          <Card f={1} p="$3" bordered>
-            <Paragraph>Total reps</Paragraph>
-            <SizableText size="$8" fow="700">
-              {kpis.totalReps}
-            </SizableText>
-          </Card>
-        </XStack>
       </YStack>
-
-      <Separator />
 
       {/* Liste groupée */}
       <SectionList
@@ -288,16 +251,3 @@ export default function HistoryScreen() {
     </YStack>
   );
 }
-/*
-       <Button
-        pos="absolute"
-        left="$4"
-        right="$4"
-        bottom={insets.bottom + 60}
-        size="$5"
-        theme="error"
-        onPress={async () => supabase.auth.signOut()}
-      >
-        Log out
-      </Button>
- */

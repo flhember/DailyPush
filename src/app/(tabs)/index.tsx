@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 import { MaxPushupHistorySheet } from '@/src/components/MaxPushupHistorySheet';
 import { ProgramCardPushups } from '@/src/components/ProgramCardPushups';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { ProgramProgressCard } from '@/src/components/ProgramProgressCard';
 
 export default function Home() {
   const insets = useSafeAreaInsets();
@@ -43,7 +42,7 @@ export default function Home() {
         title="Programme Pompes"
         currentLevelIndex={profile?.indexLevel ?? undefined}
         currentDayIndex={profile?.indexDay ?? 0}
-        onPlanning={() => router.navigate('/(tabs)/Training')}
+        onPlanning={() => router.navigate('/(tabs)/program')}
       />
       <MaxPushupHistorySheet open={historyOpen} onOpenChange={setHistoryOpen} limit={10} />
     </YStack>
