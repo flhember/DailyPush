@@ -1,0 +1,11 @@
+{
+  "common": {
+    "appName": "Daily Push"
+  },
+  "nav": {
+    "home": "Home",
+    "program": "Orders",
+    "history": "History",
+    "profile": "Profile"
+  }
+}

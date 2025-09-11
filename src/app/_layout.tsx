@@ -13,6 +13,7 @@ import { MyTamaguiProvider, useThemeMode } from '@/src/providers/TamaguiProvider
 import AuthProvider, { useAuth } from '@/src/providers/AuthProvider';
 import QueryProvider from '@/src/providers/QueryProvider';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { initI18n } from '@/src/i18n';
 
 function NavBridge() {
   const t = useTheme();
@@ -61,6 +62,12 @@ function NavBridge() {
       setTimeout(() => (navigating.current = false), 0);
     }
   }, [session, loading, segments]);
+
+  useEffect(() => {
+    (async () => {
+      await initI18n();
+    })();
+  }, []);
 
   return (
     <NavThemeProvider value={navTheme}>

@@ -3,20 +3,22 @@ import { Platform } from 'react-native';
 import { HapticTab } from '@/src/components/HapticTab';
 import { Dumbbell, House, History, User } from '@tamagui/lucide-icons';
 import { useTheme, YStack } from 'tamagui';
+import { useTranslation } from 'react-i18next';
 
 export default function TabLayout() {
-  const t = useTheme();
+  const th = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarButton: HapticTab,
-        tabBarActiveTintColor: t.color?.val,
-        tabBarInactiveTintColor: t.color10?.val,
+        tabBarActiveTintColor: th.color?.val,
+        tabBarInactiveTintColor: th.color10?.val,
         tabBarStyle: {
-          backgroundColor: t.background?.val,
-          borderTopColor: t.borderColor?.val,
+          backgroundColor: th.background?.val,
+          borderTopColor: th.borderColor?.val,
           ...Platform.select({ ios: { position: 'absolute' } }),
         },
       }}
@@ -24,7 +26,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: t('nav.home'),
           tabBarIcon: ({ color, focused }) => (
             <YStack ai="center" gap="$1" animation="bouncy" scale={focused ? 1.05 : 1}>
               <House size={24} color={color as string} />
@@ -35,7 +37,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="program"
         options={{
-          title: 'Program',
+          title: t('nav.program'),
           tabBarIcon: ({ color, focused }) => (
             <YStack ai="center" gap="$1" animation="bouncy" scale={focused ? 1.05 : 1}>
               <Dumbbell size={24} color={color as string} />
@@ -46,7 +48,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="history"
         options={{
-          title: 'History',
+          title: t('nav.history'),
           tabBarIcon: ({ color, focused }) => (
             <YStack ai="center" gap="$1" animation="bouncy" scale={focused ? 1.05 : 1}>
               <History size={24} color={color as string} />
@@ -57,7 +59,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="account"
         options={{
-          title: 'Account',
+          title: t('nav.profile'),
           tabBarIcon: ({ color, focused }) => (
             <YStack ai="center" gap="$1" animation="bouncy" scale={focused ? 1.05 : 1}>
               <User size={24} color={color as string} />
