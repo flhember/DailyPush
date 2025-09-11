@@ -13,25 +13,22 @@ import { Dumbbell, ChevronRight, Timer } from '@tamagui/lucide-icons';
 import { getDayPlan, PROGRAMS } from '@/src/utils/program100pushups';
 import { formatSets } from '../utils/formatSets';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
-  title: string;
   currentLevelIndex: string | undefined;
   currentDayIndex: number;
   onPlanning?: () => void;
 };
 
-export function ProgramCardPushups({
-  title,
-  currentLevelIndex,
-  currentDayIndex,
-  onPlanning,
-}: Props) {
+export function ProgramCardPushups({ currentLevelIndex, currentDayIndex, onPlanning }: Props) {
+  const { t } = useTranslation();
+
   const def = currentLevelIndex ? PROGRAMS.find((p) => p.key === currentLevelIndex) : undefined;
   const day = getDayPlan(currentLevelIndex, currentDayIndex);
   const maxDay = def ? Math.max(...def.plans.map((p) => p.day)) : 6;
   const doneDays = Math.max(0, currentDayIndex - 1);
-  const progressPct = Math.round((doneDays / maxDay) * 100); // entier 0..100
+  const progressPct = Math.round((doneDays / maxDay) * 100);
 
   if (!day) {
     return (
@@ -39,11 +36,9 @@ export function ProgramCardPushups({
         <YStack gap="$3">
           <XStack ai="center" gap="$2">
             <Dumbbell size={20} />
-            <H4>{title}</H4>
+            <H4>{t('programCard.titre')}</H4>
           </XStack>
-          <Paragraph opacity={0.7}>
-            Pas de max de pompes enregistré. Faites un test max pour savoir où vous en êtes.
-          </Paragraph>
+          <Paragraph opacity={0.7}>{t('programCard.emptyDescription')}</Paragraph>
         </YStack>
       </Card>
     );
@@ -64,16 +59,18 @@ export function ProgramCardPushups({
         <XStack ai="center" jc="space-between">
           <XStack ai="center" gap="$2">
             <Dumbbell size={20} />
-            <H4>{title}</H4>
+            <H4>{t('programCard.titre')}</H4>
           </XStack>
         </XStack>
 
         {/* Progression */}
         <YStack gap="$2">
           <XStack ai="center" jc="space-between">
-            <Paragraph>Niveau {currentLevelIndex}</Paragraph>
+            <Paragraph>
+              {t('programCard.level')} {currentLevelIndex}
+            </Paragraph>
             <SizableText size="$6" fow="700">
-              Jour {currentDayIndex} / {maxDay}
+              {t('programCard.dayProgress')} {currentDayIndex} / {maxDay}
             </SizableText>
           </XStack>
           <Progress value={progressPct} bg="$color3" br="$10" bc="$color6">
@@ -84,7 +81,7 @@ export function ProgramCardPushups({
         {/* Bloc séance actuelle */}
         <YStack gap="$2">
           <XStack ai="center" gap="$2" fw="wrap">
-            <Paragraph>Séance actuelle</Paragraph>
+            <Paragraph>{t('programCard.currentSession')}</Paragraph>
           </XStack>
 
           <XStack jc="center">
@@ -95,11 +92,14 @@ export function ProgramCardPushups({
           <XStack ai="center" gap="$2">
             <Timer size={16} />
             <Paragraph>
-              Repos {day.restSec}s • Dernière série min: {day.minLastSet}
+              {t('programCard.restAndMinLast', {
+                restSec: day.restSec,
+                minLastSet: day.minLastSet,
+              })}
             </Paragraph>
           </XStack>
           <Paragraph opacity={0.6}>
-            Repos recommandé après séance: {day.minRestAfterDays} jour(s)
+            {t('programCard.restAfter', { count: day.minRestAfterDays })}
           </Paragraph>
         </YStack>
 
@@ -108,10 +108,10 @@ export function ProgramCardPushups({
         {/* Actions */}
         <XStack jc="flex-end" gap="$2" fw="wrap">
           <Button size="$3" variant="outlined" icon={Dumbbell} onPress={onPlanning}>
-            Programme
+            {t('programCard.programButton')}
           </Button>
           <Button size="$3" theme="accent" onPress={startSession} iconAfter={ChevronRight}>
-            Commencer
+            {t('programCard.startButton')}
           </Button>
         </XStack>
       </YStack>

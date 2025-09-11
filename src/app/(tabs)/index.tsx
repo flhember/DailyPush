@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <YStack f={1} p="$4" pt={insets.top + 10} pb={tabBarHeight} gap="$3" animation="quicker">
       <XStack ai="center" justifyContent="space-between">
-        <H3 color="$color12">Daily Push.</H3>
+        <H3 color="$color12">{t('common.appName')}</H3>
         <ThemeSwitch />
       </XStack>
       <Separator borderColor="$borderColor" />
@@ -43,7 +43,6 @@ export default function Home() {
         onPressHistory={() => setHistoryOpen(true)}
       />
       <ProgramCardPushups
-        title="Programme Pompes"
         currentLevelIndex={profile?.indexLevel ?? undefined}
         currentDayIndex={profile?.indexDay ?? 0}
         onPlanning={() => router.navigate('/(tabs)/program')}

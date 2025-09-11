@@ -1,5 +1,6 @@
 import { Card, YStack, XStack, H4, Paragraph, SizableText, Button } from 'tamagui';
 import { Trophy, History } from '@tamagui/lucide-icons';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   value?: number | null;
@@ -10,6 +11,7 @@ type Props = {
 };
 
 export function MaxPushupRecordCard({ value, date, loading, onPressTest, onPressHistory }: Props) {
+  const { t } = useTranslation();
   const hasRecord = typeof value === 'number' && value > 0;
 
   return (
@@ -19,7 +21,7 @@ export function MaxPushupRecordCard({ value, date, loading, onPressTest, onPress
         <XStack ai="center" jc="space-between">
           <XStack ai="center" gap="$2">
             <Trophy size={20} />
-            <H4>Record max pompes</H4>
+            <H4>{t('maxPushupCard.pushupMaxTitle')}</H4>
           </XStack>
           {hasRecord && (
             <Button size="$2" icon={History} onPress={onPressHistory} circular chromeless />
@@ -28,7 +30,7 @@ export function MaxPushupRecordCard({ value, date, loading, onPressTest, onPress
 
         {/* CONTENU */}
         {loading ? (
-          <Paragraph>Chargement…</Paragraph>
+          <Paragraph>{t('common.loading')}</Paragraph>
         ) : hasRecord ? (
           <YStack gap="$2">
             <XStack ai="center" jc="space-between">
@@ -36,18 +38,18 @@ export function MaxPushupRecordCard({ value, date, loading, onPressTest, onPress
                 <SizableText size="$10" fow="700">
                   {value}
                 </SizableText>
-                <Paragraph>répétitions</Paragraph>
+                <Paragraph>{t('common.repetition')}</Paragraph>
               </YStack>
               <Button mt={'$6'} size="$3" theme="accent" onPress={onPressTest}>
-                Nouveau test
+                {t('common.newTest')}
               </Button>
             </XStack>
           </YStack>
         ) : (
           <YStack gap="$2">
-            <Paragraph>Aucun record enregistré pour le moment.</Paragraph>
+            <Paragraph>{t('maxPushupCard.pushupMaxEmpty')}</Paragraph>
             <Button size="$3" theme="accent" onPress={onPressTest}>
-              Faire un test max 💪
+              {t('maxPushupCard.pushupMaxDoTest')}
             </Button>
           </YStack>
         )}

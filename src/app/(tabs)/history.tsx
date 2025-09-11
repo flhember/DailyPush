@@ -8,6 +8,8 @@ import { formatInDeviceTZ } from '@/src/utils/datetime';
 import { useMaxPushUpRecordsList } from '@/src/api/maxPushUpRecords';
 import { useSessionsRecordsList } from '@/src/api/sessionsRecords';
 import { PROGRAMS } from '@/src/utils/program100pushups';
+import { useTranslation } from 'react-i18next';
+import i18n from '@/src/i18n';
 
 // ---------------- Types unifiés ----------------
 type Kind = 'all' | 'max' | 'training';
@@ -35,9 +37,9 @@ type TrainingItem = BaseItem & {
 type HistoryItem = MaxItem | TrainingItem;
 
 // ---------------- Utils ----------------
-function monthKey(dateISO: string) {
+function monthKey(dateISO: string, locale: string) {
   const d = new Date(dateISO);
-  return d.toLocaleString('fr-FR', { month: 'long', year: 'numeric' });
+  return d.toLocaleString(locale, { month: 'long', year: 'numeric' });
 }
 
 function labelFromLevelSlug(slug: string | null | undefined) {
@@ -99,6 +101,7 @@ export default function HistoryScreen() {
     refetch: refetchSess,
     isRefetching: refetchingSess,
   } = useSessionsRecordsList();
+  const { t } = useTranslation();
 
   const isLoading = loadingMax || loadingSess;
   const isRefetching = refetchingMax || refetchingSess;
@@ -111,11 +114,10 @@ export default function HistoryScreen() {
     return allItems.filter((it) => it.type === kind);
   }, [allItems, kind]);
 
-  // Groupage par mois (affichage)
   const sections = useMemo(() => {
     const map = new Map<string, HistoryItem[]>();
     for (const it of filtered) {
-      const key = monthKey(it.dateISO);
+      const key = monthKey(it.dateISO, i18n.language);
       if (!map.has(key)) map.set(key, []);
       map.get(key)!.push(it);
     }
@@ -134,7 +136,7 @@ export default function HistoryScreen() {
     <YStack f={1} p="$4" pt={insets.top + 10} gap="$3" animation="quicker">
       {/* Header + filtres */}
       <YStack p="$2" gap="$3">
-        <H4>Historique</H4>
+        <H4>{t('historyScreen.title')}</H4>
 
         {/* Filtres de type uniquement */}
         <XStack gap="$2" fw="wrap">
@@ -144,7 +146,7 @@ export default function HistoryScreen() {
             variant={kind === 'all' ? undefined : 'outlined'}
             onPress={() => setKind('all')}
           >
-            Tout
+            {t('historyScreen.filters.all')}
           </Button>
           <Button
             size="$3"
@@ -153,7 +155,7 @@ export default function HistoryScreen() {
             onPress={() => setKind('max')}
             icon={Trophy}
           >
-            Max
+            {t('historyScreen.filters.max')}
           </Button>
           <Button
             size="$3"
@@ -162,7 +164,7 @@ export default function HistoryScreen() {
             onPress={() => setKind('training')}
             icon={Dumbbell}
           >
-            Séances
+            {t('historyScreen.filters.training')}
           </Button>
         </XStack>
       </YStack>
@@ -178,7 +180,6 @@ export default function HistoryScreen() {
         renderSectionHeader={({ section: { title } }) => <Paragraph mb="$2">{title}</Paragraph>}
         renderItem={({ item }) => {
           if (item.type === 'max') {
-            // ---- Item Test Max
             return (
               <Card bordered p="$3" mb="$2">
                 <XStack ai="center" jc="space-between">
@@ -186,10 +187,10 @@ export default function HistoryScreen() {
                     <Trophy size={18} />
                     <YStack>
                       <SizableText size="$6" fow="700">
-                        {item.numberPushUps} pompes (test max)
+                        {t('historyScreen.maxItemTitle', { count: item.numberPushUps })}
                       </SizableText>
                       <Paragraph opacity={0.8}>
-                        {formatInDeviceTZ(item.dateISO, { withTime: true, locale: 'fr-FR' })}
+                        {formatInDeviceTZ(item.dateISO, { withTime: true, locale: i18n.language })}
                       </Paragraph>
                     </YStack>
                   </XStack>
@@ -207,10 +208,13 @@ export default function HistoryScreen() {
                   <Dumbbell size={18} />
                   <YStack>
                     <SizableText size="$6" fow="700">
-                      {labelFromLevelSlug(item.level)} · Jour {item.day ?? '?'}
+                      {t('historyScreen.levelTitle', {
+                        label: labelFromLevelSlug(item.level).replace(/^Niveau\s*/, ''),
+                      })}{' '}
+                      · {t('historyScreen.dayShort', { day: item.day ?? '?' })}
                     </SizableText>
                     <Paragraph opacity={0.8}>
-                      {formatInDeviceTZ(item.dateISO, { withTime: true, locale: 'fr-FR' })}
+                      {formatInDeviceTZ(item.dateISO, { withTime: true, locale: i18n.language })}
                     </Paragraph>
                   </YStack>
                 </XStack>
@@ -219,30 +223,34 @@ export default function HistoryScreen() {
                   {success ? (
                     <XStack ai="center" gap="$1">
                       <CheckCircle size={18} color="$green10" />
-                      <Paragraph>OK</Paragraph>
+                      <Paragraph>{t('historyScreen.ok')}</Paragraph>
                     </XStack>
                   ) : (
                     <XStack ai="center" gap="$1">
                       <XCircle size={18} color="$red10" />
-                      <Paragraph>Échec</Paragraph>
+                      <Paragraph>{t('historyScreen.failed')}</Paragraph>
                     </XStack>
                   )}
                 </XStack>
               </XStack>
 
               <XStack mt="$2" ai="center" gap="$3" fw="wrap">
-                <Paragraph>Total reps: {item.total_reps ?? 0}</Paragraph>
-                <Paragraph>Dernière: {item.last_set_reps ?? 0}</Paragraph>
+                <Paragraph>
+                  {t('historyScreen.stats.total', { value: item.total_reps ?? 0 })}
+                </Paragraph>
+                <Paragraph>
+                  {t('historyScreen.stats.last', { value: item.last_set_reps ?? 0 })}
+                </Paragraph>
               </XStack>
             </Card>
           );
         }}
         ListEmptyComponent={
           <YStack ai="center" p="$6" gap="$2">
-            <Paragraph>Aucun historique pour le moment.</Paragraph>
+            <Paragraph>{t('historyScreen.empty')}</Paragraph>
             <XStack gap="$2">
               <Button variant="outlined" onPress={() => router.push('/training/MaxTrainingScreen')}>
-                Test max
+                {t('historyScreen.maxTest')}
               </Button>
             </XStack>
           </YStack>

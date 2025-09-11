@@ -1,11 +1,61 @@
 {
-  "common": {
-    "appName": "Daily Push"
-  },
-  "nav": {
-    "home": "Home",
-    "program": "Orders",
-    "history": "History",
-    "profile": "Profile"
-  }
+    "common": {
+        "appName": "Daily Push",
+        "loading": "Loading…",
+        "repetition": "repetition",
+        "newTest": "New test"
+    },
+    "nav": {
+        "home": "Home",
+        "program": "Program",
+        "history": "History",
+        "profile": "Profile"
+    },
+    "maxPushupCard": {
+        "pushupMaxTitle": "Push-Up Max",
+        "pushupMaxEmpty": "No push-up max recorded yet.",
+        "pushupMaxDoTest": "Start a max test 💪",
+        "historyTitle": "Push-Up Max — History",
+        "empty": "No tests recorded.",
+        "viewAll": "View full history"
+    },
+    "programCard": {
+        "titre": "Push-Up Program",
+        "emptyDescription": "No push-up max recorded. Take a max test to see where you are.",
+        "level": "Level",
+        "dayProgress": "Day",
+        "currentSession": "Current session",
+        "restAndMinLast": "Rest {{restSec}}s • Min last set: {{minLastSet}}",
+        "restAfter": "Recommended rest after session: {{count}} day(s)",
+        "programButton": "Program",
+        "startButton": "Start"
+    },
+    "programScreen" : {
+        "titre": "Program",
+        "levelTitle": "Level {{label}}",
+        "programSubtitle": "Program {{range}} push-ups",
+        "day": "Day {{day}}",
+        "next": "Next",
+        "rest": "{{restSec}}s rest",
+        "minLastSet": "Min last set: {{minLastSet}}"
+    },
+    "historyScreen" : {
+        "title": "History",
+        "filters": {
+            "all": "All",
+            "max": "Max",
+            "training": "Sessions"
+        },
+        "maxItemTitle": "{{count}} push-ups (max test)",
+        "ok": "OK",
+        "failed": "Failed",
+            "stats": {
+            "total": "Total reps: {{value}}",
+            "last": "Last set: {{value}}"
+        },
+        "empty": "No history yet.",
+        "maxTest": "Max test",
+        "levelTitle": "Level {{label}}",
+        "dayShort": "Day {{day}}"
+    }
 }

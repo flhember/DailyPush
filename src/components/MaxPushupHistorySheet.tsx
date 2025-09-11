@@ -16,6 +16,7 @@ import { X, Trophy } from '@tamagui/lucide-icons';
 import { router } from 'expo-router';
 import { useMaxPushUpRecordsList } from '@/src/api/maxPushUpRecords';
 import { formatInDeviceTZ } from '@/src/utils/datetime'; // ton helper
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   open: boolean;
@@ -25,6 +26,7 @@ type Props = {
 
 export function MaxPushupHistorySheet({ open, onOpenChange, limit = 10 }: Props) {
   const insets = useSafeAreaInsets();
+  const { t } = useTranslation();
   const { data = [], isLoading } = useMaxPushUpRecordsList();
 
   const items = useMemo(() => (data || []).slice(0, limit), [data, limit]);
@@ -48,7 +50,7 @@ export function MaxPushupHistorySheet({ open, onOpenChange, limit = 10 }: Props)
       />
       <Sheet.Frame animation="quick" p="$4" pb={insets.bottom + 20} gap="$3">
         <XStack ai="center" jc="space-between">
-          <H4>Historique — max pompes</H4>
+          <H4>{t('maxPushupCard.historyTitle')}</H4>
           <Button chromeless circular size="$2" icon={X} onPress={() => onOpenChange(false)} />
         </XStack>
 
@@ -57,14 +59,11 @@ export function MaxPushupHistorySheet({ open, onOpenChange, limit = 10 }: Props)
         {isLoading ? (
           <XStack ai="center" jc="center" h={120}>
             <Spinner />
-            <Paragraph ml="$2">Chargement…</Paragraph>
+            <Paragraph ml="$2">{t('common.loading')}</Paragraph>
           </XStack>
         ) : items.length === 0 ? (
           <YStack ai="center" gap="$2" p="$4">
-            <Paragraph>Aucun test enregistré.</Paragraph>
-            <Button theme="accent" onPress={() => router.push('/training/MaxTrainingScreen')}>
-              Nouveau test
-            </Button>
+            <Paragraph>{t('maxPushupCard.empty')}</Paragraph>
           </YStack>
         ) : (
           <Sheet.ScrollView>
@@ -102,7 +101,7 @@ export function MaxPushupHistorySheet({ open, onOpenChange, limit = 10 }: Props)
               router.push('/history');
             }}
           >
-            Voir tout l’historique
+            {t('maxPushupCard.viewAll')}
           </Button>
           <Button
             theme="accent"
@@ -111,7 +110,7 @@ export function MaxPushupHistorySheet({ open, onOpenChange, limit = 10 }: Props)
               router.push('/training/MaxTrainingScreen');
             }}
           >
-            Nouveau test
+            {t('common.newTest')}
           </Button>
         </XStack>
       </Sheet.Frame>

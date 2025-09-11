@@ -7,6 +7,7 @@ import { Badge } from './ui/Badge';
 import { Platform } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { formatSets } from '../utils/formatSets';
+import { useTranslation } from 'react-i18next';
 
 // helpers dans TrainingAccordion.tsx
 const buildSuccessMap = (records: SessionRecord[] = []) => {
@@ -33,6 +34,8 @@ function DayRow({
   isDone?: boolean;
   onStart?: (plan: DayPlan, index: number) => void;
 }) {
+  const { t } = useTranslation();
+
   return (
     <YStack
       p="$3"
@@ -48,7 +51,7 @@ function DayRow({
             bg={isNext ? '$accentColor' : '$backgroundPress'}
             color={isNext ? 'white' : '$color'}
           >
-            Jour {plan.day}
+            {t('programScreen.day', { day: plan.day })}
           </Badge>
           {isDone && (
             <XStack ai="center" gap="$1">
@@ -57,20 +60,20 @@ function DayRow({
           )}
           {isNext && !isDone && (
             <Badge bg="$accentColor" color="white">
-              Prochaine
+              {t('programScreen.next')}
             </Badge>
           )}
         </XStack>
 
-        <XStack ai="center" gap="$2" fw="wrap">
+        <XStack ai="center" gap="$2">
           <XStack ai="center" gap="$1">
             <Timer size={14} />
             <Paragraph size="$2" opacity={0.8}>
-              {plan.restSec}s repos
+              {t('programScreen.rest', { restSec: plan.restSec })}
             </Paragraph>
           </XStack>
           <Paragraph size="$2" opacity={0.6}>
-            Min dernière: {plan.minLastSet}
+            {t('programScreen.minLastSet', { minLastSet: plan.minLastSet })}
           </Paragraph>
         </XStack>
       </XStack>
@@ -175,6 +178,7 @@ export default function TrainingAccordion({
   sessionsRecords?: SessionRecord[];
   onStart?: (plan: DayPlan, index: number, levelKey: string) => void;
 }) {
+  const { t } = useTranslation();
   const tabBarHeight = useBottomTabBarHeight();
   const scrollRef = React.useRef<ScrollView>(null);
   const positionsRef = React.useRef<Record<ProgramSlug, number>>({} as any);
@@ -196,8 +200,6 @@ export default function TrainingAccordion({
     }
   };
 
-  console.log(buildSuccessMap(sessionsRecords));
-
   return (
     <ScrollView
       ref={scrollRef}
@@ -213,8 +215,8 @@ export default function TrainingAccordion({
           return (
             <YStack key={lvl.key} onLayout={(e) => rememberY(lvl.key, e.nativeEvent.layout.y)}>
               <LevelSection
-                title={`Niveau ${lvl.label}`}
-                subtitle={`Programme ${lvl.range} pompes`}
+                title={t('programScreen.levelTitle', { label: lvl.label })}
+                subtitle={t('programScreen.programSubtitle', { range: lvl.range })}
                 plans={lvl.plans}
                 expanded={currentLevel === lvl.key}
                 currentDay={currentDay}

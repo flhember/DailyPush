@@ -1,11 +1,61 @@
 {
-  "common": {
-    "appName": "Daily Push"
-  },
-  "nav": {
-    "home": "Accueil",
-    "program": "Programme",
-    "history": "Historique",
-    "profile": "Profil"
-  }
+    "common": {
+        "appName": "Daily Push",
+        "loading": "Chargement…",
+        "repetition": "répétitions",
+        "newTest": "Nouveau test"
+    },
+    "nav": {
+        "home": "Accueil",
+        "program": "Programme",
+        "history": "Historique",
+        "profile": "Profil"
+    },
+    "maxPushupCard": {
+        "pushupMaxTitle": "Record max pompes",
+        "pushupMaxEmpty": "Aucun record enregistré pour le moment.",
+        "pushupMaxDoTest": "Faire un test max 💪",
+        "historyTitle": "Historique — max pompes",
+        "empty": "Aucun test enregistré.",
+        "viewAll": "Voir tout l’historique"
+    },
+    "programCard": {
+        "titre": "Programme Pompes",
+        "emptyDescription": "Pas de max de pompes enregistré. Faites un test max pour savoir où vous en êtes.",
+        "level": "Niveau",
+        "dayProgress": "Jour",
+        "currentSession": "Séance actuelle",
+        "restAndMinLast": "Repos {{restSec}}s • Dernière série min: {{minLastSet}}",
+        "restAfter": "Repos recommandé après séance: {{count}} jour(s)",
+        "programButton": "Programme",
+        "startButton": "Commencer"
+    },
+    "programScreen" : {
+        "titre": "Programme",
+        "levelTitle": "Niveau {{label}}",
+        "programSubtitle": "Programme {{range}} pompes",
+        "day": "Jour {{day}}",
+        "next": "Prochaine",
+        "rest": "{{restSec}} s de repos",
+        "minLastSet": "Dernière série min : {{minLastSet}}"
+    },
+    "historyScreen" : {
+        "title": "Historique",
+        "filters": {
+            "all": "Tout",
+            "max": "Max",
+            "training": "Séances"
+        },
+        "maxItemTitle": "{{count}} pompes (test max)",
+        "ok": "OK",
+        "failed": "Échec",
+        "stats": {
+            "total": "Total : {{value}}",
+            "last": "Dernière : {{value}}"
+        },
+        "empty": "Aucun historique pour le moment.",
+        "maxTest": "Test max",
+        "levelTitle": "Niveau {{label}}",
+        "dayShort": "Jour {{day}}"
+    }
 }
