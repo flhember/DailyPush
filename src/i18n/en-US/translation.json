@@ -76,5 +76,43 @@
             "cancel": "Cancel",
             "save": "Save"
         }
+    },
+    "maxTrainingScreen": {
+        "pushupsLabel_zero": "Push-up",
+        "pushupsLabel_one": "Push-up",
+        "pushupsLabel_other": "Push-ups",
+        "happy": "Happy with your score?",
+        "save": "Save my training"
+    },
+    "stopTraining": {
+        "a11yTrigger": "Stop workout",
+        "title": "Stop the workout?",
+        "description": "If you confirm, the current session will be stopped and cannot be resumed.",
+        "confirm": "Yes, stop",
+        "cancel": "Cancel"
+    },
+    "dayTrainingScreen": {
+        "invalidParams": "Invalid parameters.",
+        "header": "Day {{day}} — Set {{current}}/{{total}}",
+        "pushupsLabel_zero": "Push-up",
+        "pushupsLabel_one": "Push-up",
+        "pushupsLabel_other": "Push-ups",
+        "progress": "{{current}} / {{target}}",
+        "maxSet": "Max set — minimum {{min}}",
+        "restTitle": "Rest",
+        "nextSet": "Next set: {{target}}",
+        "finishedTitle": "Session complete",
+        "restAfter_one": "Minimum rest: {{count}} day.",
+        "restAfter_other": "Minimum rest: {{count}} days.",
+        "setSatisfied": "Happy with this set?",
+        "finishSession": "Finish session",
+        "confirmSet": "Confirm set",
+        "restPrompt": "Breathe… ready to continue?",
+        "skipRest": "Skip rest",
+        "savePrompt": "Save your session?",
+        "back": "Back",
+        "save": "Save",
+        "errorTitle": "Error",
+        "genericError": "Something went wrong."
     }
 }

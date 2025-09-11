@@ -76,5 +76,43 @@
             "cancel": "Annuler",
             "save": "Enregistrer"
         }
-    }
+    },
+    "maxTrainingScreen": {
+        "pushupsLabel_zero": "Pompe",
+        "pushupsLabel_one": "Pompe",
+        "pushupsLabel_other": "Pompes",
+        "happy": "Content de ton score ?",
+        "save": "Valider mon entraînement"
+    },
+    "stopTraining": {
+        "a11yTrigger": "Arrêter l’entraînement",
+        "title": "Arrêter l’entraînement ?",
+        "description": "Si tu confirmes, la session en cours sera stoppée et ne sera pas reprise.",
+        "confirm": "Oui, arrêter",
+        "cancel": "Annuler"
+  },
+    "dayTrainingScreen": {
+        "invalidParams": "Paramètres invalides.",
+        "header": "Jour {{day}} — Série {{current}}/{{total}}",
+        "pushupsLabel_zero": "Pompe",
+        "pushupsLabel_one": "Pompe",
+        "pushupsLabel_other": "Pompes",
+        "progress": "{{current}} / {{target}}",
+        "maxSet": "Série « max » — minimum {{min}}",
+        "restTitle": "Repos",
+        "nextSet": "Prochaine série : {{target}}",
+        "finishedTitle": "Séance terminée",
+        "restAfter_one": "Repos minimum : {{count}} jour.",
+        "restAfter_other": "Repos minimum : {{count}} jours.",
+        "setSatisfied": "Content de ta série ?",
+        "finishSession": "Terminer la séance",
+        "confirmSet": "Valider la série",
+        "restPrompt": "Respire… prêt à enchaîner ?",
+        "skipRest": "Passer le repos",
+        "savePrompt": "Enregistrer ta séance ?",
+        "back": "Retour",
+        "save": "Enregistrer",
+        "errorTitle": "Erreur",
+        "genericError": "Une erreur est survenue."
+  }
 }

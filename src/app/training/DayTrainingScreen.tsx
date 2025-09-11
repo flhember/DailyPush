@@ -12,10 +12,11 @@ import { useUpdateMaxPushUpsProfile } from '@/src/api/profiles';
 import { getNextSession } from '@/src/utils/getNextSession';
 import { useAuth } from '@/src/providers/AuthProvider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 export default function DayTrainingScreen() {
   useKeepAwake();
-
+  const { t } = useTranslation();
   const { profile } = useAuth();
   const insets = useSafeAreaInsets();
 
@@ -133,10 +134,6 @@ export default function DayTrainingScreen() {
 
   const stop = () => router.back();
 
-  // Fin de seance to Do :
-  //    -Save historique seance.
-  //    -Update level + day
-  //
   const finalizeSession = () => {
     if (!plan || !levelSlug) return;
 
@@ -200,8 +197,8 @@ export default function DayTrainingScreen() {
   if (!plan || !levelSlug) {
     return (
       <YStack f={1} jc="center" ai="center" gap="$3" p="$4">
-        <Paragraph>Paramètres invalides.</Paragraph>
-        <Button onPress={() => router.back()}>Retour</Button>
+        <Paragraph>{t('dayTrainingScreen.invalidParams')}</Paragraph>
+        <Button onPress={() => router.back()}>{t('dayTrainingScreen.back')}</Button>
       </YStack>
     );
   }
@@ -214,14 +211,18 @@ export default function DayTrainingScreen() {
 
           {/* Petit sous-titre en haut */}
           <SizableText>
-            Jour {plan.day} — Série {setIdx + 1}/{totalSets}
+            {t('dayTrainingScreen.header', {
+              day: plan.day,
+              current: setIdx + 1,
+              total: totalSets,
+            })}
           </SizableText>
 
           {/* Bloc central selon l'état */}
           {state === 'active' && (
             <>
               <H1>{count}</H1>
-              <Paragraph size="$7">Pompes</Paragraph>
+              <Paragraph size="$7">{t('dayTrainingScreen.pushupsLabel', { count })}</Paragraph>
 
               {typeof currentTarget === 'number' ? (
                 <>
@@ -233,27 +234,28 @@ export default function DayTrainingScreen() {
                   </Paragraph>
                 </>
               ) : (
-                <Paragraph>Série “max” — minimum {plan.minLastSet}</Paragraph>
+                <Paragraph>{t('dayTrainingScreen.maxSet', { min: plan.minLastSet })}</Paragraph>
               )}
             </>
           )}
 
           {state === 'rest' && (
             <YStack ai="center" gap="$3">
-              <Paragraph size="$7">Repos</Paragraph>
+              <Paragraph size="$7">{t('dayTrainingScreen.restTitle')}</Paragraph>
               <H1>{restLeft}s</H1>
-              <Paragraph>Prochaine série : {String(plan.sets[setIdx + 1])}</Paragraph>
+              <Paragraph>
+                {t('dayTrainingScreen.nextSet', { target: String(plan.sets[setIdx + 1]) })}
+              </Paragraph>
             </YStack>
           )}
 
           {state === 'finished' && (
             <YStack ai="center" gap="$3">
               <Paragraph size="$9" fow="700" color="$green10">
-                Séance terminée 🎉
+                {t('dayTrainingScreen.finishedTitle')} 🎉
               </Paragraph>
               <Paragraph ta="center">
-                Respecte {plan.minRestAfterDays} jour{plan.minRestAfterDays > 1 ? 's' : ''} de repos
-                minimum.
+                {t('dayTrainingScreen.restAfter', { count: plan.minRestAfterDays })}
               </Paragraph>
               <Separator />
             </YStack>
@@ -264,7 +266,7 @@ export default function DayTrainingScreen() {
         <YStack gap="$3" ai="center" mb={insets.bottom + 30}>
           {state === 'active' && (
             <>
-              <Paragraph size="$7">Content de ta série ?</Paragraph>
+              <Paragraph size="$7">{t('dayTrainingScreen.setSatisfied')}</Paragraph>
               <Button
                 theme="accent"
                 disabled={!canFinishSet}
@@ -272,14 +274,16 @@ export default function DayTrainingScreen() {
                 onPress={finishSet}
                 zIndex={10000}
               >
-                {setIdx === totalSets - 1 ? 'Terminer la séance' : 'Valider la série'}
+                {setIdx === totalSets - 1
+                  ? t('dayTrainingScreen.finishSession')
+                  : t('dayTrainingScreen.confirmSet')}
               </Button>
             </>
           )}
 
           {state === 'rest' && (
             <>
-              <Paragraph size="$7">Respire… prêt à enchaîner ?</Paragraph>
+              <Paragraph size="$7">{t('dayTrainingScreen.restPrompt')}</Paragraph>
               <Button
                 onPress={() => {
                   if (restTimerRef.current) {
@@ -292,18 +296,20 @@ export default function DayTrainingScreen() {
                 }}
                 zIndex={10000}
               >
-                Passer le repos
+                {t('dayTrainingScreen.skipRest')}
               </Button>
             </>
           )}
 
           {state === 'finished' && (
             <>
-              <Paragraph size="$7">Enregistrer ta séance ?</Paragraph>
+              <Paragraph size="$7">{t('dayTrainingScreen.savePrompt')}</Paragraph>
               <XStack gap="$2">
-                <Button onPress={() => router.replace('/(tabs)')}>Retour</Button>
+                <Button onPress={() => router.replace('/(tabs)')}>
+                  {t('dayTrainingScreen.back')}
+                </Button>
                 <Button theme="accent" onPress={finalizeSession}>
-                  Enregistrer
+                  {t('dayTrainingScreen.save')}
                 </Button>
               </XStack>
             </>

@@ -8,13 +8,14 @@ import { useInsertMaxPushUpRecords } from '@/src/api/maxPushUpRecords';
 import { useAuth } from '@/src/providers/AuthProvider';
 import { useUpdateMaxPushUpsProfile } from '@/src/api/profiles';
 import { findLevelIndex } from '@/src/utils/findLevelIndex';
+import { useTranslation } from 'react-i18next';
 
 export default function MaxTrainingScreen() {
   const [maxPushups, setMaxPushups] = useState<number>(0);
   const insets = useSafeAreaInsets();
   const { mutate: insertMaxPushUpRecords } = useInsertMaxPushUpRecords();
   const { mutate: updateMaxPushUpsProfile } = useUpdateMaxPushUpsProfile();
-
+  const { t } = useTranslation();
   const { profile } = useAuth();
 
   const onPress = () => {
@@ -61,12 +62,14 @@ export default function MaxTrainingScreen() {
           <StopTrainingDialog onConfirm={handleStopTraining} />
           <YStack jc="center" ai="center" p={10}>
             <H1>{maxPushups}</H1>
-            <Paragraph size="$8">Pompes</Paragraph>
+            <Paragraph size="$8">
+              {t('maxTrainingScreen.pushupsLabel', { count: maxPushups })}
+            </Paragraph>
           </YStack>
         </YStack>
 
         <YStack gap="$3" ai="center" mb={insets.bottom + 30}>
-          <Paragraph size="$7">Content de ton score ?</Paragraph>
+          <Paragraph size="$7">{t('maxTrainingScreen.happy')}</Paragraph>
           <Button
             theme="accent"
             disabled={maxPushups === 0 ? true : false}
@@ -74,7 +77,7 @@ export default function MaxTrainingScreen() {
             onPress={handleValideTraining}
             zIndex={10000}
           >
-            Valider mon entraînement
+            {t('maxTrainingScreen.save')}
           </Button>
         </YStack>
       </Pressable>

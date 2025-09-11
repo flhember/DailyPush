@@ -1,6 +1,7 @@
 import { AlertDialog, Button, XStack, YStack } from 'tamagui';
 import { X } from '@tamagui/lucide-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   onConfirm: () => void;
@@ -8,6 +9,7 @@ type Props = {
 
 export function StopTrainingDialog({ onConfirm }: Props) {
   const insets = useSafeAreaInsets();
+  const { t } = useTranslation();
 
   return (
     <AlertDialog native>
@@ -53,17 +55,15 @@ export function StopTrainingDialog({ onConfirm }: Props) {
           opacity={1}
         >
           <YStack gap="$4">
-            <AlertDialog.Title>Arrêter l’entraînement ?</AlertDialog.Title>
-            <AlertDialog.Description>
-              Si tu confirmes, la session en cours sera stoppée et non reprise.
-            </AlertDialog.Description>
+            <AlertDialog.Title>{t('stopTraining.title')}</AlertDialog.Title>
+            <AlertDialog.Description>{t('stopTraining.description')}</AlertDialog.Description>
 
             <XStack gap="$3" justifyContent="flex-end">
               <AlertDialog.Cancel asChild>
-                <Button>Annuler</Button>
+                <Button>{t('stopTraining.cancel')}</Button>
               </AlertDialog.Cancel>
               <AlertDialog.Action asChild onPress={onConfirm}>
-                <Button theme="accent">Oui, arrêter</Button>
+                <Button theme="accent">{t('stopTraining.confirm')}</Button>
               </AlertDialog.Action>
             </XStack>
           </YStack>
