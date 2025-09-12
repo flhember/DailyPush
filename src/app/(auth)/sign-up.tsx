@@ -21,6 +21,7 @@ import {
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Chrome, UserPlus } from '@tamagui/lucide-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { supabase } from '@/src/lib/supabase';
+import { useTranslation } from 'react-i18next';
 
 function passwordScore(pwd: string) {
   // Score simple: 0..4
@@ -34,7 +35,8 @@ function passwordScore(pwd: string) {
 }
 
 export default function SignUpScreen() {
-  const t = useTheme();
+  const th = useTheme();
+  const { t } = useTranslation();
 
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
@@ -46,6 +48,7 @@ export default function SignUpScreen() {
   const emailValid = useMemo(() => /\S+@\S+\.\S+/.test(email), [email]);
   const pwdOk = useMemo(() => pwd.length >= 6 && /\d/.test(pwd) && /[A-Za-z]/.test(pwd), [pwd]);
   const score = useMemo(() => passwordScore(pwd), [pwd]);
+  const MIN_PWD = 6;
 
   async function onSubmit() {
     console.log('Signing up with email:', email);
@@ -64,34 +67,31 @@ export default function SignUpScreen() {
   }, []);
 
   const strengthPct = (score / 4) * 100;
-  const strengthLabel =
-    score <= 1 ? 'Faible' : score === 2 ? 'Moyen' : score === 3 ? 'Bon' : 'Fort';
+  const strengthKey = score <= 1 ? 'weak' : score === 2 ? 'fair' : score === 3 ? 'good' : 'strong';
+  const strengthLabel = t(`auth.signUp.strength.${strengthKey}`);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <KeyboardAvoidingView
-        style={{ flex: 1, backgroundColor: t.background?.val }}
-        // behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      >
+      <KeyboardAvoidingView style={{ flex: 1, backgroundColor: th.background?.val }}>
         <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 16 }} bounces={false}>
           <YStack f={1} jc="center" ai="center">
-            <Card elevate bordered boc={t.borderColor} bw={1} p="$5" w="90%" maw={420} br="$6">
+            <Card elevate bordered boc={th.borderColor} bw={1} p="$5" w="90%" maw={420} br="$6">
               <YStack gap="$4">
                 <YStack ai="center" gap="$2">
-                  <H3 ta="center">Créer un compte</H3>
-                  <Paragraph ta="center">Rejoins-nous et suis tes entraînements</Paragraph>
+                  <H3 ta="center">{t('auth.signUp.title')}</H3>
+                  <Paragraph ta="center">{t('auth.signUp.subtitle')}</Paragraph>
                 </YStack>
 
                 {/* Email */}
                 <YStack gap="$1">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">{t('auth.signUp.emailLabel')}</Label>
                   <XStack ai="center" gap="$2">
                     <Mail size={18} />
                     <Input
                       id="signUpEmail"
                       f={1}
                       size="$4"
-                      placeholder="toi@email.com"
+                      placeholder={t('auth.signUp.emailPlaceholder')}
                       keyboardType="email-address"
                       autoCapitalize="none"
                       autoCorrect={false}
@@ -103,14 +103,14 @@ export default function SignUpScreen() {
                   </XStack>
                   {!emailValid && email.length > 0 && (
                     <SizableText size="$2" color="$red10">
-                      Adresse email invalide
+                      {t('auth.signUp.invalidEmail')}
                     </SizableText>
                   )}
                 </YStack>
 
                 {/* Password */}
                 <YStack gap="$1">
-                  <Label htmlFor="password">Mot de passe</Label>
+                  <Label htmlFor="password">{t('auth.signUp.passwordLabel')}</Label>
                   <XStack ai="center" gap="$2">
                     <Lock size={18} />
                     <YStack f={1} pos="relative">
@@ -118,7 +118,7 @@ export default function SignUpScreen() {
                         id="signUpPassword"
                         size="$4"
                         pr={50}
-                        placeholder="Au moins 6 caractères"
+                        placeholder={t('auth.signUp.passwordPlaceholder')}
                         secureTextEntry={!showPwd}
                         textContentType="newPassword"
                         value={pwd}
@@ -134,9 +134,7 @@ export default function SignUpScreen() {
                         circular
                         chromeless
                         icon={showPwd ? EyeOff : Eye}
-                        aria-label={
-                          showPwd ? 'Masquer le mot de passe' : 'Afficher le mot de passe'
-                        }
+                        aria-label={t(showPwd ? 'auth.signUp.hidePwd' : 'auth.signUp.showPwd')}
                         onPress={() => setShowPwd((v) => !v)}
                         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                       />
@@ -147,13 +145,15 @@ export default function SignUpScreen() {
                   {pwd.length > 0 && (
                     <YStack gap="$1">
                       <Progress value={strengthPct} w="100%" />
-                      <SizableText size="$2">Sécurité : {strengthLabel}</SizableText>
+                      <SizableText size="$2">
+                        {t('auth.signUp.strength.prefix')}: {strengthLabel}
+                      </SizableText>
                     </YStack>
                   )}
 
                   {!pwdOk && pwd.length > 0 && (
                     <SizableText size="$2" color="$red10">
-                      Min. 6 caractères, lettres et chiffres requis
+                      {t('auth.signUp.passwordRule', { min: MIN_PWD })}
                     </SizableText>
                   )}
                 </YStack>
@@ -196,7 +196,7 @@ export default function SignUpScreen() {
                   onPress={onSubmit}
                   disabled={loading}
                 >
-                  {loading ? <Spinner /> : 'Créer le compte'}
+                  {loading ? <Spinner /> : t('auth.signUp.submit')}
                 </Button>
 
                 {/* OAuth */}
@@ -213,15 +213,15 @@ export default function SignUpScreen() {
                     onPress={continueWithGoogle}
                     disabled={loading}
                   >
-                    Continuer avec Google
+                    {t('auth.signUp.withGoogle')}
                   </Button>
                 </YStack>
 
                 {/* Footer */}
                 <XStack jc="center" gap="$2" mt="$2">
-                  <Paragraph>Déjà un compte ?</Paragraph>
+                  <Paragraph>{t('auth.signUp.footerHave')}</Paragraph>
                   <Button chromeless size="$2" onPress={() => router.replace('/(auth)/sign-in')}>
-                    Se connecter
+                    {t('auth.signUp.footerSignIn')}
                   </Button>
                 </XStack>
               </YStack>
@@ -229,9 +229,7 @@ export default function SignUpScreen() {
 
             <XStack ai="center" gap="$2" mt="$2">
               <UserPlus size={16} />
-              <Paragraph size="$2">
-                Un email de vérification peut être envoyé selon le fournisseur.
-              </Paragraph>
+              <Paragraph size="$2">{t('auth.signUp.legalTagline')}</Paragraph>
             </XStack>
           </YStack>
         </ScrollView>

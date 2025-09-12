@@ -117,5 +117,51 @@
     },
     "errorMsg": {
         "UnauthenticatedUser": "Unauthenticated user"
+    },
+    "auth": {
+        "signIn": {
+            "title": "Welcome 👋",
+            "subtitle": "Sign in to continue your training",
+            "emailLabel": "Email",
+            "emailPlaceholder": "you@email.com",
+            "invalidEmail": "Invalid email address",
+            "passwordLabel": "Password",
+            "passwordPlaceholder": "••••••••",
+            "showPwd": "Show password",
+            "hidePwd": "Hide password",
+            "passwordMin": "At least {{count}} characters",
+            "forgot": "Forgot password?",
+            "submit": "Sign in",
+            "or": "or",
+            "withGoogle": "Continue with Google",
+            "newHere": "New here?",
+            "createAccount": "Create an account",
+            "legalTagline": "Secure & private — we never share your data."
+        },
+        "signUp": {
+            "title": "Create an account",
+            "subtitle": "Join us and track your training",
+            "emailLabel": "Email",
+            "emailPlaceholder": "you@email.com",
+            "invalidEmail": "Invalid email address",
+            "passwordLabel": "Password",
+            "passwordPlaceholder": "At least 6 characters",
+            "showPwd": "Show password",
+            "hidePwd": "Hide password",
+            "strength": {
+                "prefix": "Strength",
+                "weak": "Weak",
+                "fair": "Fair",
+                "good": "Good",
+                "strong": "Strong"
+            },
+            "passwordRule": "Min. {{min}} characters, letters and numbers required",
+            "submit": "Create account",
+            "or": "or",
+            "withGoogle": "Continue with Google",
+            "footerHave": "Already have an account?",
+            "footerSignIn": "Sign in",
+            "legalTagline": "A verification email may be sent depending on the provider."
+        }
     }
 }

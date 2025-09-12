@@ -18,9 +18,11 @@ import {
 import { Eye, EyeOff, LogIn, Mail, Lock, ArrowRight, Chrome } from '@tamagui/lucide-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { supabase } from '@/src/lib/supabase';
+import { useTranslation } from 'react-i18next';
 
 export default function SignInScreen() {
-  const t = useTheme();
+  const th = useTheme();
+  const { t } = useTranslation();
 
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
@@ -31,6 +33,7 @@ export default function SignInScreen() {
   const emailValid = useMemo(() => /\S+@\S+\.\S+/.test(email), [email]);
   const pwdValid = useMemo(() => pwd.length >= 6, [pwd]);
   const canSubmit = emailValid && pwdValid && !loading;
+  const MIN_PWD = 6;
 
   async function onSubmit() {
     console.log('Signing in with email:', email);
@@ -50,27 +53,27 @@ export default function SignInScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
-        style={{ flex: 1, backgroundColor: t.background?.val }}
+        style={{ flex: 1, backgroundColor: th.background?.val }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <YStack f={1} jc="center" ai="center" p="$4" gap="$4">
-          <Card elevate bordered boc={t.borderColor} bw={1} p="$5" w="90%" maw={420} br="$6">
+          <Card elevate bordered boc={th.borderColor} bw={1} p="$5" w="90%" maw={420} br="$6">
             <YStack gap="$4">
               <YStack ai="center" gap="$2" mb="$2">
-                <H2 ta="center">Bienvenue 👋</H2>
-                <Paragraph ta="center">Connecte-toi pour continuer ton entraînement</Paragraph>
+                <H2 ta="center">{t('auth.signIn.title')}</H2>
+                <Paragraph ta="center">{t('auth.signIn.subtitle')}</Paragraph>
               </YStack>
 
               {/* Email */}
               <YStack gap="$1">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t('auth.signIn.emailLabel')}</Label>
                 <XStack ai="center" gap="$2">
                   <Mail size={18} />
                   <Input
                     id="email"
                     f={1}
                     size="$4"
-                    placeholder="ton@email.com"
+                    placeholder={t('auth.signIn.emailPlaceholder')}
                     keyboardType="email-address"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -82,14 +85,14 @@ export default function SignInScreen() {
                 </XStack>
                 {!emailValid && email.length > 0 && (
                   <SizableText size="$2" color="$red10">
-                    Adresse email invalide
+                    {t('auth.signIn.invalidEmail')}
                   </SizableText>
                 )}
               </YStack>
 
               {/* Password */}
               <YStack gap="$1">
-                <Label htmlFor="password">Mot de passe</Label>
+                <Label htmlFor="password">{t('auth.signIn.passwordLabel')}</Label>
                 <XStack ai="center" gap="$2">
                   <Lock size={18} />
                   <YStack f={1} pos="relative">
@@ -97,7 +100,7 @@ export default function SignInScreen() {
                       id="password"
                       size="$4"
                       pr={50}
-                      placeholder="••••••••"
+                      placeholder={t('auth.signIn.passwordPlaceholder')}
                       secureTextEntry={!showPwd}
                       textContentType="password"
                       value={pwd}
@@ -114,7 +117,7 @@ export default function SignInScreen() {
                       circular
                       chromeless
                       icon={showPwd ? EyeOff : Eye}
-                      aria-label={showPwd ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                      aria-label={t(showPwd ? 'auth.signIn.hidePwd' : 'auth.signIn.showPwd')}
                       onPress={() => setShowPwd((v: any) => !v)}
                       hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                     />
@@ -122,12 +125,18 @@ export default function SignInScreen() {
                 </XStack>
                 {!pwdValid && pwd.length > 0 && (
                   <SizableText size="$2" color="$red10">
-                    6 caractères minimum
+                    {t('auth.signIn.passwordMin', { count: MIN_PWD })}
                   </SizableText>
                 )}
                 <XStack jc="flex-end">
-                  <Button chromeless size="$2" onPress={() => router.push('/(auth)/sign-in')}>
-                    Mot de passe oublié ?
+                  <Button
+                    chromeless
+                    size="$2"
+                    onPress={() => {
+                      console.log('forget password screen to do ');
+                    }}
+                  >
+                    {t('auth.signIn.forgot')}
                   </Button>
                 </XStack>
               </YStack>
@@ -147,14 +156,14 @@ export default function SignInScreen() {
                 onPress={onSubmit}
                 disabled={!canSubmit}
               >
-                {loading ? <Spinner /> : 'Se connecter'}
+                {loading ? <Spinner /> : t('auth.signIn.submit')}
               </Button>
 
               {/* OAuth */}
               <YStack gap="$3">
                 <XStack ai="center" gap="$3">
                   <Separator f={1} />
-                  <Paragraph>ou</Paragraph>
+                  <Paragraph>{t('auth.signIn.or')}</Paragraph>
                   <Separator f={1} />
                 </XStack>
                 <Button
@@ -164,15 +173,15 @@ export default function SignInScreen() {
                   onPress={continueWithGoogle}
                   disabled={loading}
                 >
-                  Continuer avec Google
+                  {t('auth.signIn.withGoogle')}
                 </Button>
               </YStack>
 
               {/* Footer links */}
               <XStack jc="center" gap="$2" mt="$2">
-                <Paragraph>Nouveau ?</Paragraph>
+                <Paragraph>{t('auth.signIn.newHere')}</Paragraph>
                 <Button chromeless size="$2" onPress={() => router.replace('/(auth)/sign-up')}>
-                  Créer un compte
+                  {t('auth.signIn.createAccount')}
                 </Button>
               </XStack>
             </YStack>
@@ -180,9 +189,7 @@ export default function SignInScreen() {
 
           <XStack ai="center" gap="$2">
             <LogIn size={16} />
-            <Paragraph size="$2">
-              Sécurisé & privé — nous ne partageons jamais vos données.
-            </Paragraph>
+            <Paragraph size="$2">{t('auth.signIn.legalTagline')}</Paragraph>
           </XStack>
         </YStack>
       </KeyboardAvoidingView>

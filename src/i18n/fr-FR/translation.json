@@ -117,5 +117,51 @@
     },
     "errorMsg": {
         "UnauthenticatedUser": "Utilisateur non authentifié"
-    }
+    },
+    "auth": {
+        "signIn": {
+            "title": "Bienvenue 👋",
+            "subtitle": "Connecte-toi pour continuer ton entraînement",
+            "emailLabel": "Email",
+            "emailPlaceholder": "ton@email.com",
+            "invalidEmail": "Adresse email invalide",
+            "passwordLabel": "Mot de passe",
+            "passwordPlaceholder": "••••••••",
+            "showPwd": "Afficher le mot de passe",
+            "hidePwd": "Masquer le mot de passe",
+            "passwordMin": "Au moins {{count}} caractères",
+            "forgot": "Mot de passe oublié ?",
+            "submit": "Se connecter",
+            "or": "ou",
+            "withGoogle": "Continuer avec Google",
+            "newHere": "Nouveau ?",
+            "createAccount": "Créer un compte",
+            "legalTagline": "Sécurisé & privé — nous ne partageons jamais vos données."
+        },
+        "signUp": {
+            "title": "Créer un compte",
+            "subtitle": "Rejoins-nous et suis tes entraînements",
+            "emailLabel": "Email",
+            "emailPlaceholder": "toi@email.com",
+            "invalidEmail": "Adresse email invalide",
+            "passwordLabel": "Mot de passe",
+            "passwordPlaceholder": "Au moins 6 caractères",
+            "showPwd": "Afficher le mot de passe",
+            "hidePwd": "Masquer le mot de passe",
+            "strength": {
+                "prefix": "Sécurité",
+                "weak": "Faible",
+                "fair": "Moyen",
+                "good": "Bon",
+                "strong": "Fort"
+            },
+            "passwordRule": "Min. {{min}} caractères, lettres et chiffres requis",
+            "submit": "Créer le compte",
+            "or": "ou",
+            "withGoogle": "Continuer avec Google",
+            "footerHave": "Déjà un compte ?",
+            "footerSignIn": "Se connecter",
+            "legalTagline": "Un email de vérification peut être envoyé selon le fournisseur."
+        }
+  }
 }
