@@ -10,7 +10,7 @@ export const resources = {
   'en-US': { translation: en },
   'fr-FR': { translation: fr },
 } as const;
-type Lang = keyof typeof resources;
+export type Lang = keyof typeof resources;
 
 export const i18n = createInstance();
 

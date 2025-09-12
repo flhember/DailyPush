@@ -23,10 +23,11 @@ import { useMaxPushUpRecordsList } from '@/src/api/maxPushUpRecords';
 import { useAuth } from '@/src/providers/AuthProvider';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/src/i18n';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { deleteOrphanAvatars } from '@/src/utils/deleteOrphanAvatars';
 import { AccountAvatar } from '@/src/components/AccountAvatar';
 import { pickAndUploadAvatar } from '@/src/utils/pickAndUploadAvatar';
+import { LanguageSwitch } from '@/src/components/LanguageMenu';
 
 function getInitials(name?: string | null, email?: string | null) {
   const base = name?.trim() || email?.split('@')[0] || 'U';
@@ -132,9 +133,12 @@ export default function AccountScreen() {
         </Button>
       </XStack>
       <Separator />
-
       {/* Hero profil */}
       <Card bordered p="$2" br="$6">
+        {/* Switch langue en haut à droite */}
+        <YStack position="absolute" top="$3" right="$3" zi={1}>
+          <LanguageSwitch size="$2" />
+        </YStack>
         <XStack ai="center" gap="$3">
           <YStack>
             <AccountAvatar
@@ -152,7 +156,6 @@ export default function AccountScreen() {
           </YStack>
         </XStack>
       </Card>
-
       {/* KPIs */}
       <XStack gap="$3" fw="wrap">
         <Card f={1} p="$3" bordered>
@@ -184,13 +187,12 @@ export default function AccountScreen() {
           </SizableText>
         </Card>
       </XStack>
-
       {/* Déconnexion */}
       <Button
         pos="absolute"
         left="$4"
         right="$4"
-        bottom={insets.bottom + 60}
+        bottom={Platform.OS === 'ios' ? insets.bottom + 60 : 10}
         size="$5"
         theme="error"
         icon={LogOut}
@@ -198,7 +200,6 @@ export default function AccountScreen() {
       >
         {t('account.logout')}
       </Button>
-
       {/* Sheet édition profil */}
       <Sheet
         modal

@@ -1,4 +1,4 @@
-import { YStack, XStack, Separator, H3, Button } from 'tamagui';
+import { YStack, XStack, Separator, H3 } from 'tamagui';
 import { ThemeSwitch } from '@/src/components/ThemeToggle';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaxPushupRecordCard } from '@/src/components/MaxPushupRecordCard';
@@ -9,7 +9,6 @@ import { MaxPushupHistorySheet } from '@/src/components/MaxPushupHistorySheet';
 import { ProgramCardPushups } from '@/src/components/ProgramCardPushups';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useTranslation } from 'react-i18next';
-import { changeLanguage } from '@/src/i18n';
 
 export default function Home() {
   const { t } = useTranslation();
@@ -48,14 +47,6 @@ export default function Home() {
         onPlanning={() => router.navigate('/(tabs)/program')}
       />
       <MaxPushupHistorySheet open={historyOpen} onOpenChange={setHistoryOpen} limit={10} />
-      <XStack gap="$2">
-        <Button bordered onPress={() => changeLanguage('fr-FR')}>
-          FR
-        </Button>
-        <Button bordered onPress={() => changeLanguage('en-US')}>
-          EN
-        </Button>
-      </XStack>
     </YStack>
   );
 }
