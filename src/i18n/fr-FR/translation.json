@@ -90,7 +90,7 @@
         "description": "Si tu confirmes, la session en cours sera stoppée et ne sera pas reprise.",
         "confirm": "Oui, arrêter",
         "cancel": "Annuler"
-  },
+    },
     "dayTrainingScreen": {
         "invalidParams": "Paramètres invalides.",
         "header": "Jour {{day}} — Série {{current}}/{{total}}",
@@ -114,5 +114,8 @@
         "save": "Enregistrer",
         "errorTitle": "Erreur",
         "genericError": "Une erreur est survenue."
-  }
+    },
+    "errorMsg": {
+        "UnauthenticatedUser": "Utilisateur non authentifié"
+    }
 }

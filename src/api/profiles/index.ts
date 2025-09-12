@@ -82,3 +82,30 @@ export const useUpdateProfileName = () => {
     },
   });
 };
+
+export const useInsertAvatar = () => {
+  const queryClient = useQueryClient();
+  const { session } = useAuth();
+  const userId = session?.user.id;
+
+  return useMutation({
+    async mutationFn(data: any) {
+      const { error, data: newAvatar } = await supabase
+        .from('profiles')
+        .update({ avatar_url: data.avatar })
+        .eq('id', userId);
+
+      console.log(error);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+      return newAvatar;
+    },
+    async onSuccess() {
+      await queryClient.invalidateQueries({
+        queryKey: ['profiles'],
+      });
+    },
+  });
+};

@@ -114,5 +114,8 @@
         "save": "Save",
         "errorTitle": "Error",
         "genericError": "Something went wrong."
+    },
+    "errorMsg": {
+        "UnauthenticatedUser": "Unauthenticated user"
     }
 }

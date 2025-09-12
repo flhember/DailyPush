@@ -8,7 +8,6 @@ import {
   Card,
   SizableText,
   Button,
-  Avatar,
   Sheet,
   Input,
   Label,
@@ -16,8 +15,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LogOut, Edit3, Trophy } from '@tamagui/lucide-icons';
 import { router } from 'expo-router';
-
-import { useProfilesRead, useUpdateProfileName } from '@/src/api/profiles';
+import { useInsertAvatar, useProfilesRead, useUpdateProfileName } from '@/src/api/profiles';
 import { useSessionsRecordsList } from '@/src/api/sessionsRecords';
 import { supabase } from '@/src/lib/supabase';
 import { formatInDeviceTZ } from '@/src/utils/datetime';
@@ -25,6 +23,10 @@ import { useMaxPushUpRecordsList } from '@/src/api/maxPushUpRecords';
 import { useAuth } from '@/src/providers/AuthProvider';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/src/i18n';
+import { Alert } from 'react-native';
+import { deleteOrphanAvatars } from '@/src/utils/deleteOrphanAvatars';
+import { AccountAvatar } from '@/src/components/AccountAvatar';
+import { pickAndUploadAvatar } from '@/src/utils/pickAndUploadAvatar';
 
 function getInitials(name?: string | null, email?: string | null) {
   const base = name?.trim() || email?.split('@')[0] || 'U';
@@ -45,6 +47,40 @@ export default function AccountScreen() {
   const { mutate: updateProfileName } = useUpdateProfileName();
   const { session } = useAuth();
   const locale = i18n.language || 'en-US';
+  const [uploading, setUploading] = useState(false);
+  const userId = session?.user.id;
+  const { mutate: insertAvatar } = useInsertAvatar();
+
+  const onPickUp = async () => {
+    try {
+      setUploading(true);
+      if (!userId || typeof userId !== 'string') throw new Error(t('errorMsg.UnauthenticatedUser'));
+
+      const publicUrl = await pickAndUploadAvatar(userId);
+      if (!publicUrl) {
+        return;
+      }
+
+      insertAvatar(
+        { avatar: publicUrl },
+        {
+          onSuccess: async () => {
+            await deleteOrphanAvatars({ userId, currentUrl: publicUrl });
+          },
+          onError: (err: any) => {
+            Alert.alert('Upload', err?.message);
+          },
+          onSettled: () => {
+            setUploading(false);
+          },
+        },
+      );
+    } catch (e: any) {
+      Alert.alert('Upload', e?.message);
+    } finally {
+      setUploading(false);
+    }
+  };
 
   // KPIs
   const sessionCount = sessions.length + maxData.length;
@@ -98,16 +134,16 @@ export default function AccountScreen() {
       <Separator />
 
       {/* Hero profil */}
-      <Card bordered p="$4" br="$6">
+      <Card bordered p="$2" br="$6">
         <XStack ai="center" gap="$3">
-          <Avatar circular size="$6">
-            <Avatar.Image uri={profile?.avatar_url ?? ''} />
-            <Avatar.Fallback bc="$color5" ai="center" jc="center" delayMs={100}>
-              <SizableText size="$9" fow="600" col="$color10">
-                {initials}
-              </SizableText>
-            </Avatar.Fallback>
-          </Avatar>
+          <YStack>
+            <AccountAvatar
+              url={profile?.avatar_url ?? undefined}
+              initials={initials}
+              uploading={uploading}
+              onPick={onPickUp}
+            />
+          </YStack>
           <YStack f={1}>
             <SizableText size="$7" fow="700">
               {profile?.full_name || t('account.userFallback')}
