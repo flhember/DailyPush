@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "DailyPush",
+    "name": "Daily Push",
     "slug": "DailyPush",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/icons/adaptive-icon.png",
     "scheme": "dailypush",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,14 +13,21 @@
       "infoPlist": {
         "UIViewControllerBasedStatusBarAppearance": true
       },
-      "bundleIdentifier": "com.flhember.DailyPush"
+      "bundleIdentifier": "com.flhember.DailyPush",
+      "icon": {
+        "dark": "./assets/icons/ios-dark.png",
+        "light": "./assets/icons/ios-light.png",
+        "tinted": "./assets/icons/ios-tinted.png"
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/icons/adaptive-icon.png",
+        "monochromeImage": "./assets/icons/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.flhember.DailyPush"
     },
     "web": {
       "bundler": "metro",
@@ -32,10 +39,14 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/icons/splash-icon-dark.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "image": "./assets/icons/splash-icon-light.png",
+            "backgroundColor": "#000000"
+          }
         }
       ],
       "expo-secure-store",
@@ -45,6 +56,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "e8041c94-a409-4629-bc89-a90c123bf90e"
+      }
     }
   }
 }

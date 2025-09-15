@@ -133,7 +133,7 @@ export default function SignInScreen() {
                     chromeless
                     size="$2"
                     onPress={() => {
-                      console.log('forget password screen to do ');
+                      router.push('/(auth)/forgot-password');
                     }}
                   >
                     {t('auth.signIn.forgot')}

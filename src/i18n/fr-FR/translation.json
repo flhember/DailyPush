@@ -162,6 +162,24 @@
             "footerHave": "Déjà un compte ?",
             "footerSignIn": "Se connecter",
             "legalTagline": "Un email de vérification peut être envoyé selon le fournisseur."
+        },
+        "forgot": {
+            "title": "Mot de passe oublié",
+            "subtitle": "Entre ton email, nous t’enverrons un lien de réinitialisation.",
+            "send": "Envoyer le lien",
+            "sent": "Vérifie ta boîte mail et reviens via le lien."
+        },
+        "reset": {
+            "title": "Définir un nouveau mot de passe",
+            "loading": "Ouverture du lien…",
+            "invalid": "Lien invalide ou expiré. Recommence la procédure.",
+            "confirm": "Confirmer le mot de passe",
+            "confirmPlaceholder": "Répète le mot de passe",
+            "mismatch": "Les mots de passe ne correspondent pas",
+            "submit": "Mettre à jour",
+            "backToSignIn": "Retour à la connexion",
+            "successTitle": "Mot de passe modifié",
+            "successMsg": "Tu peux maintenant te connecter."
         }
-  }
+    }
 }

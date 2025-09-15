@@ -162,6 +162,24 @@
             "footerHave": "Already have an account?",
             "footerSignIn": "Sign in",
             "legalTagline": "A verification email may be sent depending on the provider."
+        },
+        "forgot": {
+            "title": "Forgot password",
+            "subtitle": "Enter your email and we’ll send you a reset link.",
+            "send": "Send reset link",
+            "sent": "Check your inbox and return via the link."
+        },
+        "reset": {
+            "title": "Set a new password",
+            "loading": "Opening link…",
+            "invalid": "Invalid or expired link. Please try again.",
+            "confirm": "Confirm password",
+            "confirmPlaceholder": "Repeat the password",
+            "mismatch": "Passwords do not match",
+            "submit": "Update",
+            "backToSignIn": "Back to sign in",
+            "successTitle": "Password updated",
+            "successMsg": "You can now sign in."
         }
     }
 }

@@ -60,9 +60,10 @@ const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON || '';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: new LargeSecureStore(),
+    flowType: 'pkce',
+    detectSessionInUrl: false,
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: false,
+    storage: new LargeSecureStore(),
   },
 });
