@@ -60,7 +60,6 @@ const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON || '';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    flowType: 'pkce',
     detectSessionInUrl: false,
     autoRefreshToken: true,
     persistSession: true,

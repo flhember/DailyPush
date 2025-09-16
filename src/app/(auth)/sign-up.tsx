@@ -5,7 +5,6 @@ import {
   YStack,
   XStack,
   Card,
-  H2,
   Paragraph,
   Input,
   Label,

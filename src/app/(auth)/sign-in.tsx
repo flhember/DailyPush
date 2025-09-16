@@ -70,7 +70,7 @@ export default function SignInScreen() {
                 <XStack ai="center" gap="$2">
                   <Mail size={18} />
                   <Input
-                    id="email"
+                    id="emailSignIn"
                     f={1}
                     size="$4"
                     placeholder={t('auth.signIn.emailPlaceholder')}
@@ -97,7 +97,7 @@ export default function SignInScreen() {
                   <Lock size={18} />
                   <YStack f={1} pos="relative">
                     <Input
-                      id="password"
+                      id="passwordSignIn"
                       size="$4"
                       pr={50}
                       placeholder={t('auth.signIn.passwordPlaceholder')}

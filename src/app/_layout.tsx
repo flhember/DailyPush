@@ -14,8 +14,6 @@ import AuthProvider, { useAuth } from '@/src/providers/AuthProvider';
 import QueryProvider from '@/src/providers/QueryProvider';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { initI18n } from '@/src/i18n';
-import { isRecoverySession } from '../utils/recoveryFlag';
-import { supabase } from '../lib/supabase';
 
 function NavBridge() {
   const t = useTheme();
@@ -90,22 +88,6 @@ export default function RootLayout() {
   useEffect(() => {
     (async () => {
       await initI18n();
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const recovery = await isRecoverySession();
-        const { data } = await supabase.auth.getSession();
-        const currentSession = data?.session;
-
-        if (recovery && currentSession) {
-          router.replace('/(auth)/reset-password');
-        }
-      } catch (e) {
-        console.warn('startup recovery check failed', e);
-      }
     })();
   }, []);
 

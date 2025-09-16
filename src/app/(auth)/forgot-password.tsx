@@ -23,17 +23,19 @@ export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState('');
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
+  const [urlUI, setUrlUI] = useState<string | null>(null);
 
   const emailValid = useMemo(() => /\S+@\S+\.\S+/.test(email.trim().toLowerCase()), [email]);
 
   const onSend = async () => {
-    console.log(Linking.createURL('/(auth)/reset-password'));
+    console.log(Linking.createURL('/auth/reset-password'));
 
     if (!emailValid || busy) return;
     try {
       setBusy(true);
       // deep link → dailypush://auth/reset-password
-      const redirectTo = Linking.createURL('/(auth)/reset-password'); // = dailypush://auth/reset-password
+      const redirectTo = Linking.createURL('/(auth)/reset-password');
+      setUrlUI(redirectTo);
       const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
         redirectTo,
       });
@@ -79,7 +81,7 @@ export default function ForgotPasswordScreen() {
                 <XStack ai="center" gap="$2">
                   <Mail size={18} />
                   <Input
-                    id="fp-email"
+                    id="emailForgot"
                     f={1}
                     size="$4"
                     placeholder={t('auth.signIn.emailPlaceholder')}
@@ -117,6 +119,9 @@ export default function ForgotPasswordScreen() {
               )}
             </YStack>
           </Card>
+          <SizableText size="$2" color="$color12">
+            {urlUI}
+          </SizableText>
         </YStack>
       </KeyboardAvoidingView>
     </SafeAreaView>

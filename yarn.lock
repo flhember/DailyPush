@@ -3651,12 +3651,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/functions-js@npm:2.4.5":
-  version: 2.4.5
-  resolution: "@supabase/functions-js@npm:2.4.5"
+"@supabase/functions-js@npm:2.4.6":
+  version: 2.4.6
+  resolution: "@supabase/functions-js@npm:2.4.6"
   dependencies:
     "@supabase/node-fetch": "npm:^2.6.14"
-  checksum: 10c0/43d0a40e863e20cadae38de65930c203f50c625bad91736bf78c095e347131ea3328716a43dad58fb8d058c69b901b41fdc062e77221196d8dfc93ad772519b5
+  checksum: 10c0/ba8fa0c345277d85f575724ddaab7ef5efac8bca2c05e24f2975589057638d7795e3a4c53313c3d09741823d455e89661392662ba8be60e3a16ed9023cd8cec8
   languageName: node
   linkType: hard
 
@@ -3669,47 +3669,47 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/postgrest-js@npm:1.21.3":
-  version: 1.21.3
-  resolution: "@supabase/postgrest-js@npm:1.21.3"
+"@supabase/postgrest-js@npm:1.21.4":
+  version: 1.21.4
+  resolution: "@supabase/postgrest-js@npm:1.21.4"
   dependencies:
     "@supabase/node-fetch": "npm:^2.6.14"
-  checksum: 10c0/317a80efb4e4462895d6bc4ad40582aa09457cc794a2a5d97a002105057b2b90c0dc16981bf9f5bbd3392c9a4426786b0c00f7e395f415e2260005af612af101
+  checksum: 10c0/9efa19a3b56c780c63b7caebca084f8c67750349f882c3221c5547153baaa4010b736d4fdd9a024ebdf117eab7de17770fecb698b39210f9903777522d9a7bff
   languageName: node
   linkType: hard
 
-"@supabase/realtime-js@npm:2.15.4":
-  version: 2.15.4
-  resolution: "@supabase/realtime-js@npm:2.15.4"
+"@supabase/realtime-js@npm:2.15.5":
+  version: 2.15.5
+  resolution: "@supabase/realtime-js@npm:2.15.5"
   dependencies:
     "@supabase/node-fetch": "npm:^2.6.13"
     "@types/phoenix": "npm:^1.6.6"
     "@types/ws": "npm:^8.18.1"
     ws: "npm:^8.18.2"
-  checksum: 10c0/962dcf97e2401b4eb762c29cebc138411e94eb72b2f3458f38956cf6268a2575135b05c31ed6477c66cafe2f672afcc1aeaaef6a6556f3a1451986c15ccea54b
+  checksum: 10c0/df8946a54a10dc1cca6f697d41617ea19c60932dfa881a789e27e9d129851e5c84776f055206bc7753c1633667fc38ee4fc407ab769208a6d0e56d5d6fbe8322
   languageName: node
   linkType: hard
 
-"@supabase/storage-js@npm:^2.10.4":
-  version: 2.11.0
-  resolution: "@supabase/storage-js@npm:2.11.0"
+"@supabase/storage-js@npm:2.12.1":
+  version: 2.12.1
+  resolution: "@supabase/storage-js@npm:2.12.1"
   dependencies:
     "@supabase/node-fetch": "npm:^2.6.14"
-  checksum: 10c0/353f8cbca29e385692796ffb1a6e08fb0d71c7f7fa5f6c4564a79dbf6a4fc8123c6883b7ed3b5c5f5c02c10a60a8403569816a775ff2c11561b139e51c82d9ca
+  checksum: 10c0/c4de8d550af53f1732d17da8de780642d63a95c43b070330e6216eff0c5f9593585b89c589d1745f50d6a46091f1c9164422baafe3581e652161c53533293648
   languageName: node
   linkType: hard
 
-"@supabase/supabase-js@npm:^2.57.0":
-  version: 2.57.0
-  resolution: "@supabase/supabase-js@npm:2.57.0"
+"@supabase/supabase-js@npm:^2.57.4":
+  version: 2.57.4
+  resolution: "@supabase/supabase-js@npm:2.57.4"
   dependencies:
     "@supabase/auth-js": "npm:2.71.1"
-    "@supabase/functions-js": "npm:2.4.5"
+    "@supabase/functions-js": "npm:2.4.6"
     "@supabase/node-fetch": "npm:2.6.15"
-    "@supabase/postgrest-js": "npm:1.21.3"
-    "@supabase/realtime-js": "npm:2.15.4"
-    "@supabase/storage-js": "npm:^2.10.4"
-  checksum: 10c0/17b6fd1a180b781385160c0af4d04088066aaf0e1b280368ee797df95dcceb6d38851dae225de07ddecb45dd0ea5d013e8ac8b625cca4edfd60e28f6c2e9a046
+    "@supabase/postgrest-js": "npm:1.21.4"
+    "@supabase/realtime-js": "npm:2.15.5"
+    "@supabase/storage-js": "npm:2.12.1"
+  checksum: 10c0/9e3ae03d1bca5eba3c4305ff8a6d71964f63784a27e105e87deef23b717424f4a73448b5fe0156f318ae132be7509c359881aa00da71db25ec6d7820acb7932e
   languageName: node
   linkType: hard
 
@@ -7313,7 +7313,7 @@ __metadata:
     "@react-navigation/elements": "npm:^2.3.8"
     "@react-navigation/native": "npm:^7.1.6"
     "@rneui/themed": "npm:^4.0.0-rc.8"
-    "@supabase/supabase-js": "npm:^2.57.0"
+    "@supabase/supabase-js": "npm:^2.57.4"
     "@tamagui/babel-plugin": "npm:^1.132.23"
     "@tamagui/config": "npm:^1.132.23"
     "@tamagui/font-inter": "npm:^1.132.23"
@@ -7331,6 +7331,7 @@ __metadata:
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-prettier: "npm:^5.5.4"
     expo: "npm:^54.0.0"
+    expo-auth-session: "npm:^7.0.8"
     expo-blur: "npm:~15.0.7"
     expo-constants: "npm:~18.0.8"
     expo-crypto: "npm:~15.0.7"
@@ -7363,6 +7364,7 @@ __metadata:
     react-native-safe-area-context: "npm:~5.6.0"
     react-native-screens: "npm:~4.16.0"
     react-native-svg: "npm:15.12.1"
+    react-native-url-polyfill: "npm:^2.0.0"
     react-native-web: "npm:^0.21.0"
     react-native-webview: "npm:13.15.0"
     react-native-worklets: "npm:0.5.1"
@@ -8535,6 +8537,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-application@npm:~7.0.7":
+  version: 7.0.7
+  resolution: "expo-application@npm:7.0.7"
+  peerDependencies:
+    expo: "*"
+  checksum: 10c0/70d6647b3a5055fbde16235dc050cb6381b70e6566f3d78a30a9c1dae11b669ce417433446bd44f827ea4a6a4b61feb23a9b5dd409d7ddb2c50cef60e785d657
+  languageName: node
+  linkType: hard
+
 "expo-asset@npm:~12.0.8":
   version: 12.0.8
   resolution: "expo-asset@npm:12.0.8"
@@ -8546,6 +8557,23 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/78af2bcf3454ca462651af2cc4554c0d7b63744cb28db1b65247df2658fd45c9eeb3aa9451982c15a6612aef1b71677e775df84b5bec5db68a5d7f94735c2252
+  languageName: node
+  linkType: hard
+
+"expo-auth-session@npm:^7.0.8":
+  version: 7.0.8
+  resolution: "expo-auth-session@npm:7.0.8"
+  dependencies:
+    expo-application: "npm:~7.0.7"
+    expo-constants: "npm:~18.0.8"
+    expo-crypto: "npm:~15.0.7"
+    expo-linking: "npm:~8.0.8"
+    expo-web-browser: "npm:~15.0.7"
+    invariant: "npm:^2.2.4"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/46c6c310f3059b458f970f4b90e72c737984b4fbbacfa00cd49640dcbd423417e313f1e52b3ef8a1ee0a257116229194f0b146f2276afa4e476a35a262c89a28
   languageName: node
   linkType: hard
 
@@ -12830,6 +12858,17 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/ed94b57007125c715283fc760438ac8eac0677ced3201f6e272a7cd4459f3fecb672a8eed2c32664e5b8e6e0367585353b0f83f99b231f603d75094bb052c01f
+  languageName: node
+  linkType: hard
+
+"react-native-url-polyfill@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "react-native-url-polyfill@npm:2.0.0"
+  dependencies:
+    whatwg-url-without-unicode: "npm:8.0.0-3"
+  peerDependencies:
+    react-native: "*"
+  checksum: 10c0/a48e6978f5a2c9e225bb93cc5f9985a8ac0fe7d8122105bcd88ef8d8420a3b33a67ce5d2bda2b606bf5fa94af9f6d04efce354580b60900e7c967fd2ebdc42cf
   languageName: node
   linkType: hard
 

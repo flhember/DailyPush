@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { Alert, KeyboardAvoidingView, Linking, Platform } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import {
   YStack,
   Card,
@@ -16,25 +16,20 @@ import { supabase } from '@/src/lib/supabase';
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
-export function parseAuthFromUrl(url?: string) {
-  if (!url) return { kind: 'none' as const };
+import * as Linking from 'expo-linking';
+import * as QueryParams from 'expo-auth-session/build/QueryParams';
 
-  const q = new URL(url).searchParams;
-  const code = q.get('code');
-  if (code) return { kind: 'pkce' as const, code };
+function parseTokensFromUrl(url: string) {
+  const hash = url.split('#')[1]; // tout après le #
+  if (!hash) return null;
 
-  const hash = url.split('#')[1];
-  if (hash) {
-    const params = new URLSearchParams(hash);
-    const type = params.get('type');
-    const access_token = params.get('access_token');
-    const refresh_token = params.get('refresh_token');
-    if (type === 'recovery' && access_token && refresh_token) {
-      return { kind: 'implicit' as const, access_token, refresh_token };
-    }
-  }
-
-  return { kind: 'none' as const };
+  const params = new URLSearchParams(hash);
+  return {
+    access_token: params.get('access_token'),
+    refresh_token: params.get('refresh_token'),
+    expires_in: params.get('expires_in'),
+    token_type: params.get('token_type'),
+  };
 }
 
 export default function ResetPasswordScreen() {
@@ -44,66 +39,77 @@ export default function ResetPasswordScreen() {
   const [pwd, setPwd] = useState('');
   const [pwd2, setPwd2] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [tokenUI, setTokenUI] = useState<string | null>(null);
+  const [initialized, setInitialized] = useState(false);
 
   const pwdOk = useMemo(() => pwd.length >= 6, [pwd]);
   const match = pwd && pwd2 && pwd === pwd2;
 
+  const createSessionFromUrl = async (url: string | null) => {
+    console.log('createSessionFromUrl: ', url);
+    if (!url) return;
+
+    const { params, errorCode } = QueryParams.getQueryParams(url);
+    if (errorCode) throw new Error(errorCode);
+
+    const { access_token, refresh_token } = params;
+    console.log('access_token ', access_token);
+    console.log('refresh_token', refresh_token);
+
+    if (!access_token) return;
+    console.log(access_token);
+
+    /*const { data, error } = await supabase.auth.setSession({
+      access_token,
+      refresh_token,
+    });*/
+    const { data, error } = await supabase.auth.verifyOtp({
+      email: 'florian.hembertjaj@gmail.com',
+      token: access_token,
+      type: 'recovery',
+    });
+
+    console.log('error ', error);
+    console.log('data ', data);
+    setStage('ready');
+    setBusy(false);
+    if (error) {
+      console.log(error);
+    }
+    return data.session;
+  };
+
   useEffect(() => {
     let mounted = true;
 
-    const handleInitial = async () => {
-      try {
-        const initial = await Linking.getInitialURL();
-        const parsed = parseAuthFromUrl(initial ?? undefined);
+    Linking.getInitialURL().then(createSessionFromUrl);
 
-        if (parsed.kind === 'none') {
-          if (mounted) setStage('waiting');
-          return;
-        }
-
-        if (parsed.kind === 'pkce') {
-          // ⚠️ PKCE flow : fonctionne seulement sur build standalone
-          const { data, error } = await supabase.auth.exchangeCodeForSession(parsed.code);
-          if (error) throw error;
-          if (mounted) setStage('ready');
-        }
-
-        if (parsed.kind === 'implicit') {
-          const { data, error } = await supabase.auth.setSession({
-            access_token: parsed.access_token,
-            refresh_token: parsed.refresh_token,
-          });
-          if (error) throw error;
-          if (mounted) setStage('ready');
-        }
-      } catch (e: any) {
-        if (mounted) setError(e?.message ?? 'Lien invalide ou expiré');
-      } finally {
-        if (mounted) setBusy(false);
-      }
-    };
-
-    void handleInitial();
+    const listener = (event: { url: string }) => createSessionFromUrl(event.url);
+    Linking.addEventListener('url', listener);
 
     return () => {
       mounted = false;
+      //Linking.removeEventListener('url', listener);
     };
-  }, []);
+  }, [initialized, t]);
 
   const onUpdate = async () => {
     if (!pwdOk || !match || busy) return;
     try {
       setBusy(true);
       setError(null);
+
       const { error } = await supabase.auth.updateUser({ password: pwd });
+
       if (error) throw error;
+
       Alert.alert(
         t('auth.reset.successTitle', 'Mot de passe modifié'),
         t('auth.reset.successMsg', 'Tu peux maintenant te connecter.'),
       );
       router.replace('/(auth)/sign-in');
     } catch (e: any) {
-      setError(e?.message ?? 'Impossible de mettre à jour le mot de passe.');
+      setError(e?.message);
     } finally {
       setBusy(false);
     }
@@ -123,14 +129,18 @@ export default function ResetPasswordScreen() {
                 <Paragraph>{t('auth.reset.loading', 'Ouverture du lien…')}</Paragraph>
               </YStack>
             ) : stage !== 'ready' ? (
-              <Paragraph ta="center" color="$red10">
-                {error ?? t('auth.reset.invalid', 'Lien invalide ou expiré.')}
-              </Paragraph>
+              <YStack ai="center" gap="$3">
+                <Paragraph ta="center" color="$red10">
+                  {error ??
+                    t('auth.reset.invalid', 'Lien invalide ou expiré. Recommence la procédure.')}
+                </Paragraph>
+              </YStack>
             ) : (
               <YStack gap="$3">
                 <Paragraph ta="center" size="$7" fow="700">
                   {t('auth.reset.title', 'Définir un nouveau mot de passe')}
                 </Paragraph>
+
                 <YStack gap="$1">
                   <Label htmlFor="pwd">{t('auth.signUp.passwordLabel', 'Mot de passe')}</Label>
                   <Input
@@ -142,6 +152,7 @@ export default function ResetPasswordScreen() {
                     onChangeText={setPwd}
                   />
                 </YStack>
+
                 <YStack gap="$1">
                   <Label htmlFor="pwd2">
                     {t('auth.reset.confirm', 'Confirmer le mot de passe')}
@@ -179,7 +190,13 @@ export default function ResetPasswordScreen() {
                 </XStack>
               </YStack>
             )}
+            <Button mt={30} onPress={() => router.replace('/(auth)/sign-in')}>
+              {t('auth.reset.backToSignIn', 'Retour à la connexion')}
+            </Button>
           </Card>
+          <SizableText size="$2" color="$color12">
+            {tokenUI}
+          </SizableText>
         </YStack>
       </KeyboardAvoidingView>
     </SafeAreaView>
