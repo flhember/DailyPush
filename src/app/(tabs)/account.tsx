@@ -111,7 +111,6 @@ export default function AccountScreen() {
 
   const logout = async () => {
     await supabase.auth.signOut();
-    router.replace('/(auth)/sign-in');
   };
 
   return (

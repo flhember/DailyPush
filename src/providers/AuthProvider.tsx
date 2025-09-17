@@ -2,17 +2,22 @@ import { Session } from '@supabase/supabase-js';
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
 import { Tables } from '@/src/database.types';
 import { supabase } from '../lib/supabase';
+import * as Linking from 'expo-linking';
 
 type AuthData = {
   session: Session | null;
   profile: Tables<'profiles'> | null;
   loading: boolean;
+  forgotPassword: (email: string) => Promise<void>;
+  updatePassword: (password: string) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthData>({
   session: null,
   loading: true,
   profile: null,
+  forgotPassword: async () => {},
+  updatePassword: async () => {},
 });
 
 export default function AuthProvider({ children }: PropsWithChildren) {
@@ -51,19 +56,50 @@ export default function AuthProvider({ children }: PropsWithChildren) {
       setLoading(true);
       setSession(nextSession ?? null);
 
-      if (nextSession?.user?.id && nextSession.user.id !== session?.user?.id) {
-        await fetchProfile(nextSession.user.id);
+      if (nextSession?.user?.id) {
+        setTimeout(() => {
+          void (async () => {
+            try {
+              await fetchProfile(nextSession.user.id);
+            } catch (e) {
+              console.error('fetchProfile background failed', e);
+              setProfile(null);
+            } finally {
+              if (active) setLoading(false);
+            }
+          })();
+        }, 0);
       } else {
         setProfile(null);
+        setLoading(false);
       }
-      if (active) setLoading(false);
     });
 
     return () => {
+      console.log('Auth provider unsubscribe');
       active = false;
       subscription.unsubscribe();
     };
   }, []);
+
+  const forgotPassword = async (email: string) => {
+    const redirectTo = Linking.createURL('/(auth)/reset-password');
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
+      redirectTo,
+    });
+    if (error) throw error;
+  };
+
+  const updatePassword = async (password: string) => {
+    const {
+      data: { session },
+      error: sessionError,
+    } = await supabase.auth.getSession();
+    if (sessionError || !session) throw new Error('Session invalid. Try resetting again.');
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) throw error;
+  };
 
   return (
     <AuthContext.Provider
@@ -71,6 +107,8 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         session,
         loading,
         profile,
+        forgotPassword,
+        updatePassword,
       }}
     >
       {children}

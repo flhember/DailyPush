@@ -33,7 +33,6 @@ export default function ForgotPasswordScreen() {
     if (!emailValid || busy) return;
     try {
       setBusy(true);
-      // deep link → dailypush://auth/reset-password
       const redirectTo = Linking.createURL('/(auth)/reset-password');
       setUrlUI(redirectTo);
       const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
