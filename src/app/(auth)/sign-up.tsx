@@ -198,24 +198,6 @@ export default function SignUpScreen() {
                   {loading ? <Spinner /> : t('auth.signUp.submit')}
                 </Button>
 
-                {/* OAuth */}
-                <YStack gap="$3" mt="$1">
-                  <XStack ai="center" gap="$3">
-                    <Separator f={1} />
-                    <Paragraph>ou</Paragraph>
-                    <Separator f={1} />
-                  </XStack>
-                  <Button
-                    size="$4"
-                    variant="outlined"
-                    icon={Chrome}
-                    onPress={continueWithGoogle}
-                    disabled={loading}
-                  >
-                    {t('auth.signUp.withGoogle')}
-                  </Button>
-                </YStack>
-
                 {/* Footer */}
                 <XStack jc="center" gap="$2" mt="$2">
                   <Paragraph>{t('auth.signUp.footerHave')}</Paragraph>
@@ -236,3 +218,23 @@ export default function SignUpScreen() {
     </SafeAreaView>
   );
 }
+
+/*
+                { OAuth }
+                <YStack gap="$3" mt="$1">
+                  <XStack ai="center" gap="$3">
+                    <Separator f={1} />
+                    <Paragraph>ou</Paragraph>
+                    <Separator f={1} />
+                  </XStack>
+                  <Button
+                    size="$4"
+                    variant="outlined"
+                    icon={Chrome}
+                    onPress={continueWithGoogle}
+                    disabled={loading}
+                  >
+                    {t('auth.signUp.withGoogle')}
+                  </Button>
+                </YStack>
+ */

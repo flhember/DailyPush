@@ -19,6 +19,7 @@ import { Eye, EyeOff, LogIn, Mail, Lock, ArrowRight, Chrome } from '@tamagui/luc
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { supabase } from '@/src/lib/supabase';
 import { useTranslation } from 'react-i18next';
+import * as Linking from 'expo-linking';
 
 export default function SignInScreen() {
   const th = useTheme();
@@ -159,24 +160,6 @@ export default function SignInScreen() {
                 {loading ? <Spinner /> : t('auth.signIn.submit')}
               </Button>
 
-              {/* OAuth */}
-              <YStack gap="$3">
-                <XStack ai="center" gap="$3">
-                  <Separator f={1} />
-                  <Paragraph>{t('auth.signIn.or')}</Paragraph>
-                  <Separator f={1} />
-                </XStack>
-                <Button
-                  size="$4"
-                  variant="outlined"
-                  icon={Chrome}
-                  onPress={continueWithGoogle}
-                  disabled={loading}
-                >
-                  {t('auth.signIn.withGoogle')}
-                </Button>
-              </YStack>
-
               {/* Footer links */}
               <XStack jc="center" gap="$2" mt="$2">
                 <Paragraph>{t('auth.signIn.newHere')}</Paragraph>
@@ -196,3 +179,23 @@ export default function SignInScreen() {
     </SafeAreaView>
   );
 }
+
+/*
+              { OAuth }
+              <YStack gap="$3">
+                <XStack ai="center" gap="$3">
+                  <Separator f={1} />
+                  <Paragraph>{t('auth.signIn.or')}</Paragraph>
+                  <Separator f={1} />
+                </XStack>
+                <Button
+                  size="$4"
+                  variant="outlined"
+                  icon={Chrome}
+                  onPress={continueWithGoogle}
+                  disabled={true}
+                >
+                  {t('auth.signIn.withGoogle')}
+                </Button>
+              </YStack>
+*/
