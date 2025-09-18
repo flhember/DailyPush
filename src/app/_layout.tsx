@@ -162,11 +162,11 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <MyTamaguiProvider>
         <PortalProvider shouldAddRootHost>
-          <AuthProvider>
-            <QueryProvider>
+          <QueryProvider>
+            <AuthProvider>
               <NavBridge />
-            </QueryProvider>
-          </AuthProvider>
+            </AuthProvider>
+          </QueryProvider>
         </PortalProvider>
       </MyTamaguiProvider>
     </SafeAreaProvider>

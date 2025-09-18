@@ -3,6 +3,7 @@ import { PropsWithChildren, createContext, useContext, useEffect, useState } fro
 import { Tables } from '@/src/database.types';
 import { supabase } from '../lib/supabase';
 import * as Linking from 'expo-linking';
+import { useUpdateProfileIsPremium } from '../api/profiles/updatePremiumQuery';
 
 type AuthData = {
   session: Session | null;
@@ -24,6 +25,13 @@ export default function AuthProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Tables<'profiles'> | null>(null);
   const [loading, setLoading] = useState(true);
+  const { mutate: updateProfileIsPremium } = useUpdateProfileIsPremium();
+
+  const checkPremium = (profile: Tables<'profiles'>) => {
+    if (!profile?.premiumEnd) return false;
+    const now = new Date();
+    return new Date(profile.premiumEnd) > now;
+  };
 
   useEffect(() => {
     let active = true;
@@ -31,7 +39,19 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     const fetchProfile = async (userId: string) => {
       const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
       if (!active) return;
-      setProfile(error ? null : (data ?? null));
+
+      const profileData = error ? null : (data ?? null);
+      console.log(new Date());
+      if (profileData) {
+        const isPremium = checkPremium(profileData);
+        if (profileData.isPremium !== isPremium) {
+          updateProfileIsPremium({ isPremium, userId });
+          profileData.isPremium = isPremium;
+        }
+      }
+
+      setProfile(profileData);
+      return profileData;
     };
 
     (async () => {
