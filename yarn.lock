@@ -3268,6 +3268,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-google-signin/google-signin@npm:^16.0.0":
+  version: 16.0.0
+  resolution: "@react-native-google-signin/google-signin@npm:16.0.0"
+  peerDependencies:
+    expo: ">=52.0.40"
+    react: "*"
+    react-native: "*"
+  peerDependenciesMeta:
+    expo:
+      optional: true
+  checksum: 10c0/1ef58e78e1807e691c1be5926393bbc1d31bcc0db549dcc7f7a0bc016cf8590187679fcde5746497cb7f2bb417b78298f04e2119d835180f68eb0bba02cff36c
+  languageName: node
+  linkType: hard
+
 "@react-native/assets-registry@npm:0.81.4":
   version: 0.81.4
   resolution: "@react-native/assets-registry@npm:0.81.4"
@@ -7309,6 +7323,7 @@ __metadata:
     "@babel/core": "npm:^7.25.2"
     "@expo/vector-icons": "npm:^15.0.2"
     "@react-native-async-storage/async-storage": "npm:^2.2.0"
+    "@react-native-google-signin/google-signin": "npm:^16.0.0"
     "@react-navigation/bottom-tabs": "npm:^7.3.10"
     "@react-navigation/elements": "npm:^2.3.8"
     "@react-navigation/native": "npm:^7.1.6"

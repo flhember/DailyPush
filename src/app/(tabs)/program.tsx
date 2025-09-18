@@ -22,6 +22,7 @@ export default function ProgramTabScreen() {
         currentDay={profile?.indexDay ?? 0}
         sessionsRecords={sessionsRecords}
         onStart={(plan, i, levelKey) => console.log('start', levelKey, i, plan)}
+        hasPremiumAccess={profile?.isPremium}
       />
     </YStack>
   );

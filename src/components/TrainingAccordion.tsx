@@ -1,6 +1,15 @@
 import React from 'react';
-import { Timer, ChevronDown, Dumbbell, CheckCircle } from '@tamagui/lucide-icons';
-import { YStack, XStack, Paragraph, SizableText, ScrollView, Accordion, Square } from 'tamagui';
+import { Timer, ChevronDown, Dumbbell, CheckCircle, Lock } from '@tamagui/lucide-icons';
+import {
+  YStack,
+  XStack,
+  Paragraph,
+  SizableText,
+  ScrollView,
+  Accordion,
+  Square,
+  Button,
+} from 'tamagui';
 import { DayPlan, PROGRAMS, ProgramSlug } from '@/src/utils/program100pushups';
 import { SessionRecord } from '../api/sessionsRecords';
 import { Badge } from './ui/Badge';
@@ -8,8 +17,11 @@ import { Platform } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { formatSets } from '../utils/formatSets';
 import { useTranslation } from 'react-i18next';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useThemeMode } from '../providers/TamaguiProvider';
 
-// helpers dans TrainingAccordion.tsx
+// helpers
 const buildSuccessMap = (records: SessionRecord[] = []) => {
   const m = new Map<ProgramSlug, Set<number>>();
   for (const r of records) {
@@ -97,6 +109,9 @@ function LevelSection({
   successDays,
   onStart,
   onExpandChange,
+  isPremium,
+  hasAccess,
+  onUnlock,
 }: {
   title: string;
   subtitle: string;
@@ -106,7 +121,11 @@ function LevelSection({
   successDays?: Set<number>;
   onStart?: (plan: DayPlan, index: number) => void;
   onExpandChange?: (open: boolean) => void;
+  isPremium?: boolean;
+  hasAccess?: boolean;
+  onUnlock?: () => void;
 }) {
+  const { mode } = useThemeMode();
   const [value, setValue] = React.useState<string[]>(expanded ? ['open'] : []);
 
   React.useEffect(() => {
@@ -149,7 +168,7 @@ function LevelSection({
 
         {/* ACCORDION CONTENT */}
         <Accordion.Content>
-          <YStack gap="$2">
+          <YStack gap="$2" position="relative">
             {plans.map((p, i) => (
               <DayRow
                 key={i}
@@ -160,6 +179,59 @@ function LevelSection({
                 isNext={!!expanded && p.day === currentDay}
               />
             ))}
+
+            {isPremium && !hasAccess && (
+              <YStack
+                position="absolute"
+                top={0}
+                left={0}
+                right={0}
+                bottom={0}
+                zIndex={10}
+                ai="center"
+                jc="center"
+              >
+                {/* Blur de fond */}
+                <BlurView
+                  experimentalBlurMethod="dimezisBlurView"
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                  }}
+                  tint={mode === 'dark' ? 'dark' : 'light'}
+                  intensity={20}
+                />
+
+                {/* Carte centrale */}
+                <LinearGradient
+                  colors={['rgba(128,0,255,0.3)', 'rgba(0,200,255,0.3)']} // violet -> cyan
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={{
+                    borderRadius: 16,
+                    padding: 16,
+                    borderWidth: 1,
+                    borderColor: 'rgba(255,255,255,0.2)',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Lock size={32} color="white" />
+                  <SizableText size="$5" color="white" fow="700" ta="center" mt="$2">
+                    Niveau Premium
+                  </SizableText>
+                  <Paragraph size="$4" ta="center" color="white" fow="400" opacity={1} mt="$2">
+                    Débloque les niveaux avancés.
+                  </Paragraph>
+                  <Button onPress={onUnlock} mt="$3">
+                    Débloquer ce niveau Premium 🚀
+                  </Button>
+                </LinearGradient>
+              </YStack>
+            )}
           </YStack>
         </Accordion.Content>
       </Accordion.Item>
@@ -172,11 +244,15 @@ export default function TrainingAccordion({
   currentDay,
   sessionsRecords,
   onStart,
+  hasPremiumAccess,
+  onUnlockLevel,
 }: {
   currentLevel: string | undefined;
   currentDay: number;
   sessionsRecords?: SessionRecord[];
   onStart?: (plan: DayPlan, index: number, levelKey: string) => void;
+  hasPremiumAccess?: boolean | null;
+  onUnlockLevel?: (levelKey: ProgramSlug) => void; // callback pour lancer l'achat/déblocage
 }) {
   const { t } = useTranslation();
   const tabBarHeight = useBottomTabBarHeight();
@@ -203,7 +279,6 @@ export default function TrainingAccordion({
   return (
     <ScrollView
       ref={scrollRef}
-      // contentInsetAdjustmentBehavior={Platform.OS === 'ios' ? 'automatic' : undefined}
       contentContainerStyle={{
         paddingBottom: Platform.OS === 'ios' ? tabBarHeight : 0,
       }}
@@ -223,6 +298,9 @@ export default function TrainingAccordion({
                 successDays={done}
                 onStart={(plan, i) => onStart?.(plan, i, lvl.key)}
                 onExpandChange={(open) => open && scrollToSlug(lvl.key)}
+                isPremium={lvl.isPremium}
+                hasAccess={hasPremiumAccess ? hasPremiumAccess : false}
+                onUnlock={() => onUnlockLevel?.(lvl.key)}
               />
             </YStack>
           );

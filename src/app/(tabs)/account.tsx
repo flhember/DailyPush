@@ -14,7 +14,6 @@ import {
 } from 'tamagui';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LogOut, Edit3, Trophy } from '@tamagui/lucide-icons';
-import { router } from 'expo-router';
 import { useInsertAvatar, useProfilesRead, useUpdateProfileName } from '@/src/api/profiles';
 import { useSessionsRecordsList } from '@/src/api/sessionsRecords';
 import { supabase } from '@/src/lib/supabase';
