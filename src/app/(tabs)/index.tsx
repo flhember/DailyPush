@@ -45,6 +45,7 @@ export default function Home() {
         currentLevelIndex={profile?.indexLevel ?? undefined}
         currentDayIndex={profile?.indexDay ?? 0}
         onPlanning={() => router.navigate('/(tabs)/program')}
+        isPremium={profile?.isPremium}
       />
       <MaxPushupHistorySheet open={historyOpen} onOpenChange={setHistoryOpen} limit={10} />
     </YStack>

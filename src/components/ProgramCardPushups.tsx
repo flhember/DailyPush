@@ -9,26 +9,39 @@ import {
   SizableText,
   Progress,
 } from 'tamagui';
-import { Dumbbell, ChevronRight, Timer } from '@tamagui/lucide-icons';
-import { getDayPlan, PROGRAMS } from '@/src/utils/program100pushups';
+import { Dumbbell, ChevronRight, Timer, Lock } from '@tamagui/lucide-icons';
+import { getDayPlan, getLevelAccess, PROGRAMS } from '@/src/utils/program100pushups';
 import { formatSets } from '../utils/formatSets';
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { BlurView } from 'expo-blur';
+import { useThemeMode } from '../providers/TamaguiProvider';
+import { LinearGradient } from 'expo-linear-gradient';
 
 type Props = {
   currentLevelIndex: string | undefined;
   currentDayIndex: number;
+  isPremium?: boolean | null;
   onPlanning?: () => void;
 };
 
-export function ProgramCardPushups({ currentLevelIndex, currentDayIndex, onPlanning }: Props) {
+export function ProgramCardPushups({
+  currentLevelIndex,
+  currentDayIndex,
+  isPremium,
+  onPlanning,
+}: Props) {
   const { t } = useTranslation();
-
+  const { mode } = useThemeMode();
   const def = currentLevelIndex ? PROGRAMS.find((p) => p.key === currentLevelIndex) : undefined;
   const day = getDayPlan(currentLevelIndex, currentDayIndex);
   const maxDay = def ? Math.max(...def.plans.map((p) => p.day)) : 6;
   const doneDays = Math.max(0, currentDayIndex - 1);
   const progressPct = Math.round((doneDays / maxDay) * 100);
+  const { levelIsPremium, hasAccess } = getLevelAccess(
+    currentLevelIndex,
+    isPremium ? isPremium : false,
+  );
 
   if (!day) {
     return (
@@ -53,17 +66,17 @@ export function ProgramCardPushups({ currentLevelIndex, currentDayIndex, onPlann
   };
 
   return (
-    <Card bordered={1} p="$4" br="$6">
-      <YStack gap="$3">
-        {/* Header */}
-        <XStack ai="center" jc="space-between">
-          <XStack ai="center" gap="$2">
-            <Dumbbell size={20} />
-            <H4>{t('programCard.titre')}</H4>
-          </XStack>
+    <Card bordered={1} p="$4" br="$6" position="relative" overflow="hidden">
+      {/* Header */}
+      <XStack ai="center" jc="space-between">
+        <XStack ai="center" gap="$2">
+          <Dumbbell size={20} />
+          <H4>{t('programCard.titre')}</H4>
         </XStack>
+      </XStack>
 
-        {/* Progression */}
+      {/* Progression */}
+      <YStack gap="$3" mt="$3">
         <YStack gap="$2">
           <XStack ai="center" jc="space-between">
             <Paragraph>
@@ -115,6 +128,62 @@ export function ProgramCardPushups({ currentLevelIndex, currentDayIndex, onPlann
           </Button>
         </XStack>
       </YStack>
+
+      {/* Overlay premium */}
+      {levelIsPremium && !hasAccess && (
+        <YStack
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          zIndex={10}
+          ai="center"
+          jc="center"
+        >
+          <BlurView
+            experimentalBlurMethod="dimezisBlurView"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              borderRadius: 16, // doit matcher le Card
+            }}
+            tint={mode === 'dark' ? 'dark' : 'light'}
+            intensity={20}
+          />
+
+          <LinearGradient
+            colors={['rgba(70, 70, 70, 0.5)', 'rgba(0, 0, 0, 0.6)']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={{
+              borderRadius: 16,
+              padding: 16,
+              borderWidth: 1,
+              borderColor: 'rgba(255,255,255,0.2)',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Lock size={32} color="white" />
+            <SizableText size="$5" color="white" fow="700" ta="center" mt="$2">
+              Niveau {currentLevelIndex} Premium
+            </SizableText>
+            <Paragraph size="$4" ta="center" color="white" fow="500" opacity={1} mt="$2">
+              Débloque les niveaux avancés.
+            </Paragraph>
+            <YStack mt="$3" gap="$2" w="100%">
+              <Button theme="accent">Débloquer ce niveau Premium 🚀</Button>
+              <Button backgroundColor="$color4" onPress={() => console.log('Change lvl')}>
+                Choisir un autre niveau
+              </Button>
+            </YStack>
+          </LinearGradient>
+        </YStack>
+      )}
     </Card>
   );
 }

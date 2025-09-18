@@ -207,7 +207,7 @@ function LevelSection({
 
                 {/* Carte centrale */}
                 <LinearGradient
-                  colors={['rgba(128,0,255,0.3)', 'rgba(0,200,255,0.3)']} // violet -> cyan
+                  colors={['rgba(70, 70, 70, 0.5)', 'rgba(0, 0, 0, 0.6)']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={{
@@ -223,12 +223,12 @@ function LevelSection({
                   <SizableText size="$5" color="white" fow="700" ta="center" mt="$2">
                     Niveau Premium
                   </SizableText>
-                  <Paragraph size="$4" ta="center" color="white" fow="400" opacity={1} mt="$2">
+                  <Paragraph size="$4" ta="center" color="white" fow="500" opacity={1} mt="$2">
                     Débloque les niveaux avancés.
                   </Paragraph>
-                  <Button onPress={onUnlock} mt="$3">
-                    Débloquer ce niveau Premium 🚀
-                  </Button>
+                  <YStack mt="$3" gap="$2" w="100%">
+                    <Button theme="accent">Débloquer ce niveau Premium 🚀</Button>
+                  </YStack>
                 </LinearGradient>
               </YStack>
             )}

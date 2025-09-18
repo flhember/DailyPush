@@ -233,3 +233,15 @@ export function getDayPlan(level: string | undefined, dayIndex: number): DayPlan
   const clamped = Math.min(Math.max(dayIndex, minDay), maxDay);
   return def.plans.find((p: { day: number }) => p.day === clamped);
 }
+
+export const getLevelAccess = (levelKey: string | undefined, userIsPremium: boolean) => {
+  if (!levelKey) return { levelIsPremium: false, hasAccess: true };
+
+  const program = PROGRAMS.find((p) => p.key === levelKey);
+  if (!program) return { levelIsPremium: false, hasAccess: true };
+
+  const levelIsPremium = program.isPremium;
+  const hasAccess = !levelIsPremium || userIsPremium;
+
+  return { levelIsPremium, hasAccess };
+};
