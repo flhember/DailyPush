@@ -26,6 +26,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="dailypush"/>
+        <data android:scheme="exp+dailypush"/>
       </intent-filter>
     </activity>
   </application>
