@@ -21,12 +21,7 @@ export default function Home() {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [changeLevel, setchangeLevel] = useState(false);
 
-  useEffect(() => {
-    console.log(historyOpen);
-  }, [historyOpen]);
-
   const startMaxPushUps = () => {
-    console.log('Start Max Push Ups!');
     router.push('/training/MaxTrainingScreen');
   };
 

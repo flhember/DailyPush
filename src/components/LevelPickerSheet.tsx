@@ -16,6 +16,7 @@ import { PROGRAMS } from '@/src/utils/program100pushups';
 import { useTranslation } from 'react-i18next';
 import { Badge } from './ui/Badge';
 import { router } from 'expo-router';
+import { useUpdateLevelProfile } from '../api/profiles';
 
 type Props = {
   open: boolean;
@@ -32,6 +33,7 @@ export function LevelPickerSheet({
 }: Props) {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
+  const { mutate: updateLevelProfile } = useUpdateLevelProfile();
 
   const freeLevels = useMemo(() => PROGRAMS.filter((p) => !p.isPremium), []);
   const premiumLevels = useMemo(() => PROGRAMS.filter((p) => p.isPremium), []);
@@ -43,7 +45,8 @@ export function LevelPickerSheet({
       return;
     }
 
-    console.log('To Do: Change level en db !');
+    updateLevelProfile({ indexLevel: lvlKey, indexDay: 1 });
+    onOpenChange(false);
   };
 
   return (

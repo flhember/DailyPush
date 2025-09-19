@@ -109,3 +109,33 @@ export const useInsertAvatar = () => {
     },
   });
 };
+
+export const useUpdateLevelProfile = () => {
+  const queryClient = useQueryClient();
+  const { session } = useAuth();
+  const userId = session?.user.id;
+
+  return useMutation({
+    async mutationFn(data: any) {
+      if (!userId) throw new Error('Not authenticated');
+
+      const { data: profileData, error } = await supabase
+        .from('profiles')
+        .update({
+          indexLevel: data.indexLevel,
+          indexDay: data.indexDay,
+        })
+        .eq('id', userId)
+        .select('id, maxPushups')
+        .single();
+
+      console.log(error);
+      if (error) throw new Error(error.message);
+      return profileData;
+    },
+    onSuccess: () => {
+      if (!userId) return;
+      queryClient.invalidateQueries({ queryKey: ['profiles'] });
+    },
+  });
+};

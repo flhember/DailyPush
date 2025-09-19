@@ -102,7 +102,6 @@ export default function RootLayout() {
     let mounted = true;
 
     const handleUrl = async (rawUrl: string | null) => {
-      console.log('[handleUrl Root] start with ', rawUrl);
       if (!mounted || !rawUrl) return;
       try {
         if (!rawUrl.includes('type=recovery') && !rawUrl.includes('reset-password')) return;

@@ -9,7 +9,7 @@ import {
   SizableText,
   Progress,
 } from 'tamagui';
-import { Dumbbell, ChevronRight, Timer, Lock } from '@tamagui/lucide-icons';
+import { Dumbbell, ChevronRight, Timer, Lock, Edit3 } from '@tamagui/lucide-icons';
 import { getDayPlan, getLevelAccess, PROGRAMS } from '@/src/utils/program100pushups';
 import { formatSets } from '../utils/formatSets';
 import { router } from 'expo-router';
@@ -75,6 +75,7 @@ export function ProgramCardPushups({
           <Dumbbell size={20} />
           <H4>{t('programCard.titre')}</H4>
         </XStack>
+        <Button chromeless circular size="$2" icon={Edit3} onPress={onPressChangeLevel} />
       </XStack>
 
       {/* Progression */}
@@ -82,7 +83,7 @@ export function ProgramCardPushups({
         <YStack gap="$2">
           <XStack ai="center" jc="space-between">
             <Paragraph>
-              {t('programCard.level')} {currentLevelIndex}
+              {t('programCard.level')} {def?.label}
             </Paragraph>
             <SizableText size="$6" fow="700">
               {t('programCard.dayProgress')} {currentDayIndex} / {maxDay}

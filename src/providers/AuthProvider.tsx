@@ -41,7 +41,6 @@ export default function AuthProvider({ children }: PropsWithChildren) {
       if (!active) return;
 
       const profileData = error ? null : (data ?? null);
-      console.log(new Date());
       if (profileData) {
         const isPremium = checkPremium(profileData);
         if (profileData.isPremium !== isPremium) {
