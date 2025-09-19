@@ -1,0 +1,62 @@
+{
+  "under5": {
+    "title": "-5",
+    "short": "Débutant · 6 séances",
+    "description": "Débutant : réapprendre la technique et gagner en confiance. 6 séances douces pour commencer."
+  },
+  "6-10": {
+    "title": "6–10",
+    "short": "Débutant · 6 séances",
+    "description": "Progression douce pour atteindre 10 pompes propres. 6 séances axées sur la force et l’endurance."
+  },
+  "11-20": {
+    "title": "11–20",
+    "short": "Intermédiaire · 6 séances",
+    "description": "Renforcement général pour passer de 11 à 20 pompes. 6 séances pour améliorer volume et technique."
+  },
+  "21-25": {
+    "title": "21–25",
+    "short": "Intermédiaire · 6 séances",
+    "description": "Consolidation de la force : séries plus longues et meilleure récupération sur 6 séances."
+  },
+  "26-30": {
+    "title": "26–30",
+    "short": "Avancé · 6 séances",
+    "description": "Programme avancé pour franchir 26–30 pompes. 6 séances avec volume et récupération optimisés."
+  },
+  "31-35": {
+    "title": "31–35",
+    "short": "Avancé · 6 séances",
+    "description": "Cycle intensif de 6 séances : séries longues et travail de capacité musculaire pour augmenter l’endurance."
+  },
+  "36-40": {
+    "title": "36–40",
+    "short": "Expert · 6 séances",
+    "description": "Phase haute intensité sur 6 séances pour améliorer l’endurance maximale et la robustesse du haut du corps."
+  },
+  "41-45": {
+    "title": "41–45",
+    "short": "Expert · 6 séances",
+    "description": "Programme expert : 6 séances avec longues séries, repos court et ciblage de la résistance musculaire."
+  },
+  "46-50": {
+    "title": "46–50",
+    "short": "Élite · 6 séances",
+    "description": "Entraînement élite : 6 séances pour stabiliser et répéter 46–50 répétitions avec contrôle."
+  },
+  "51-55": {
+    "title": "51–55",
+    "short": "Élite · 6 séances",
+    "description": "Programme exigeant : 6 séances avec volume élevé et séries longues, pour pratiquants confirmés."
+  },
+  "56-60": {
+    "title": "56–60",
+    "short": "Élite · 6 séances",
+    "description": "Phase avancée pour franchir 56–60 pompes : 6 séances pour travailler volume et gestion de la fatigue."
+  },
+  "over60": {
+    "title": "60+",
+    "short": "Élite · 6 séances",
+    "description": "Programme élite : 6 séances intensives pour maintenir et dépasser 60 répétitions."
+  }
+}

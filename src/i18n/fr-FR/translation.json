@@ -3,7 +3,12 @@
         "appName": "Daily Push",
         "loading": "Chargement…",
         "repetition": "répétitions",
-        "newTest": "Nouveau test"
+        "newTest": "Nouveau test",
+        "changeLvl": "Changer de niveau",
+        "select": "Sélectionner",
+        "unlock": "Débloquer",
+        "cancel": "Annuler",
+        "seeAll": "Tout voir"
     },
     "nav": {
         "home": "Accueil",
@@ -181,5 +186,26 @@
             "successTitle": "Mot de passe modifié",
             "successMsg": "Tu peux maintenant te connecter."
         }
+    },
+    "programDescriptions": {
+        "-5": "Commencez doucement avec de courtes séances pour passer de 0 à 5 pompes.",
+        "6-10": "Améliorez votre endurance avec des séances progressives jusqu’à 10 pompes.",
+        "11-20": "Développez votre force avec des séances adaptées pour atteindre 20 pompes.",
+        "21-25": "Poussez votre corps à un nouveau palier avec des séances ciblées pour 25 pompes.",
+        "26-30": "Entrez dans la zone avancée avec des séances stimulantes pour 30 pompes.",
+        "31-35": "Renforcez votre endurance et votre technique pour atteindre 35 pompes.",
+        "36-40": "Progressez vers l’expert avec des séances exigeantes jusqu’à 40 pompes.",
+        "41-45": "Développez votre puissance et votre endurance pour 45 pompes par séance.",
+        "46-50": "Passez au niveau performance avec des séances intenses jusqu’à 50 pompes.",
+        "51-55": "Renforcez votre corps avec des séances longues et exigeantes pour 55 pompes.",
+        "56-60": "Entrez dans la zone élite avec des séances très intenses jusqu’à 60 pompes.",
+        "60+": "Repoussez vos limites avec des séances extrêmes pour dépasser 60 pompes."
+    },
+    "lockPremium" : {
+        "premiumLevel": "Niveau {{level}} Premium",
+        "premiumLevel1": "Niveau Premium",
+        "premiumDesc": "Débloque les niveaux avancés.",
+        "unlockPremiumBtn": "Débloquer ce niveau Premium 🚀",
+        "chooseAnotherLevelBtn": "Choisir un autre niveau"
     }
 }

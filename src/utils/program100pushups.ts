@@ -210,17 +210,17 @@ export const PROGRAMS: {
   plans: DayPlan[];
   isPremium: boolean;
 }[] = [
-  { key: 'under5', label: '< 5', range: '< 5', plans: pushupsUnder5, isPremium: false },
-  { key: '6-10', label: '6–10', range: '6 - 10', plans: pushups6to10, isPremium: false },
-  { key: '11-20', label: '11–20', range: '11 - 20', plans: pushups11to20, isPremium: false },
-  { key: '21-25', label: '21–25', range: '21 - 25', plans: pushups21to25, isPremium: false },
-  { key: '26-30', label: '26–30', range: '26 - 30', plans: pushups26to30, isPremium: true },
-  { key: '31-35', label: '31–35', range: '31 - 35', plans: pushups31to35, isPremium: true },
-  { key: '36-40', label: '36–40', range: '36 - 40', plans: pushups36to40, isPremium: true },
-  { key: '41-45', label: '41–45', range: '41 - 45', plans: pushups41to45, isPremium: true },
-  { key: '46-50', label: '46–50', range: '46 - 50', plans: pushups46to50, isPremium: true },
-  { key: '51-55', label: '51–55', range: '51 - 55', plans: pushups51to55, isPremium: true },
-  { key: '56-60', label: '56–60', range: '56 - 60', plans: pushups56to60, isPremium: true },
+  { key: 'under5', label: '-5', range: '< 5', plans: pushupsUnder5, isPremium: false },
+  { key: '6-10', label: '6-10', range: '6 - 10', plans: pushups6to10, isPremium: false },
+  { key: '11-20', label: '11-20', range: '11 - 20', plans: pushups11to20, isPremium: false },
+  { key: '21-25', label: '21-25', range: '21 - 25', plans: pushups21to25, isPremium: false },
+  { key: '26-30', label: '26-30', range: '26 - 30', plans: pushups26to30, isPremium: true },
+  { key: '31-35', label: '31-35', range: '31 - 35', plans: pushups31to35, isPremium: true },
+  { key: '36-40', label: '36-40', range: '36 - 40', plans: pushups36to40, isPremium: true },
+  { key: '41-45', label: '41-45', range: '41 - 45', plans: pushups41to45, isPremium: true },
+  { key: '46-50', label: '46-50', range: '46 - 50', plans: pushups46to50, isPremium: true },
+  { key: '51-55', label: '51-55', range: '51 - 55', plans: pushups51to55, isPremium: true },
+  { key: '56-60', label: '56-60', range: '56 - 60', plans: pushups56to60, isPremium: true },
   { key: 'over60', label: '60+', range: '> 60', plans: pushupsOver60, isPremium: true },
 ];
 
@@ -244,4 +244,12 @@ export const getLevelAccess = (levelKey: string | undefined, userIsPremium: bool
   const hasAccess = !levelIsPremium || userIsPremium;
 
   return { levelIsPremium, hasAccess };
+};
+
+export const getLevelDescription = (lvl: any) => {
+  const days = lvl.plans.length;
+  const avgRest = Math.round(
+    lvl.plans.reduce((s: any, p: { restSec: any }) => s + p.restSec, 0) / days,
+  );
+  return `${lvl.range} · ${days} jours · repos ~${avgRest}s`;
 };

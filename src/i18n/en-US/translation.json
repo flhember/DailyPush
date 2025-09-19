@@ -3,7 +3,12 @@
         "appName": "Daily Push",
         "loading": "Loading…",
         "repetition": "repetition",
-        "newTest": "New test"
+        "newTest": "New test",
+        "changeLvl": "Change Level",
+        "select": "Select",
+        "unlock": "Unlock",
+        "cancel": "Cancel",
+        "seeAll": "See all"
     },
     "nav": {
         "home": "Home",
@@ -181,5 +186,26 @@
             "successTitle": "Password updated",
             "successMsg": "You can now sign in."
         }
+    },
+    "programDescriptions": {
+        "-5": "Start gently with short sessions to go from 0 to 5 pushups.",
+        "6-10": "Improve endurance with progressive sessions up to 10 pushups.",
+        "11-20": "Build strength with sessions designed to reach 20 pushups.",
+        "21-25": "Push your body to a new level with targeted sessions for 25 pushups.",
+        "26-30": "Enter the advanced zone with challenging sessions for 30 pushups.",
+        "31-35": "Enhance your endurance and technique to reach 35 pushups.",
+        "36-40": "Progress towards expert level with demanding sessions up to 40 pushups.",
+        "41-45": "Develop your power and endurance for 45 pushups per session.",
+        "46-50": "Reach performance level with intense sessions up to 50 pushups.",
+        "51-55": "Strengthen your body with long, demanding sessions for 55 pushups.",
+        "56-60": "Enter elite zone with very intense sessions up to 60 pushups.",
+        "60+": "Push your limits with extreme sessions to exceed 60 pushups."
+    },
+    "lockPremium" : {
+        "premiumLevel": "Premium Level {{level}}",
+        "premiumLevel1": "Premium Level",
+        "premiumDesc": "Unlock advanced levels.",
+        "unlockPremiumBtn": "Unlock this Premium Level 🚀",
+        "chooseAnotherLevelBtn": "Choose another level"
     }
 }

@@ -9,6 +9,7 @@ import { MaxPushupHistorySheet } from '@/src/components/MaxPushupHistorySheet';
 import { ProgramCardPushups } from '@/src/components/ProgramCardPushups';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useTranslation } from 'react-i18next';
+import { LevelPickerSheet } from '@/src/components/LevelPickerSheet';
 
 export default function Home() {
   const { t } = useTranslation();
@@ -18,6 +19,7 @@ export default function Home() {
   const { data: profile } = useProfilesRead();
 
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [changeLevel, setchangeLevel] = useState(false);
 
   useEffect(() => {
     console.log(historyOpen);
@@ -46,8 +48,10 @@ export default function Home() {
         currentDayIndex={profile?.indexDay ?? 0}
         onPlanning={() => router.navigate('/(tabs)/program')}
         isPremium={profile?.isPremium}
+        onPressChangeLevel={() => setchangeLevel(true)}
       />
       <MaxPushupHistorySheet open={historyOpen} onOpenChange={setHistoryOpen} limit={10} />
+      <LevelPickerSheet open={changeLevel} onOpenChange={setchangeLevel} />
     </YStack>
   );
 }

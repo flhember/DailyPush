@@ -126,6 +126,7 @@ function LevelSection({
   onUnlock?: () => void;
 }) {
   const { mode } = useThemeMode();
+  const { t } = useTranslation();
   const [value, setValue] = React.useState<string[]>(expanded ? ['open'] : []);
 
   React.useEffect(() => {
@@ -221,13 +222,20 @@ function LevelSection({
                 >
                   <Lock size={32} color="white" />
                   <SizableText size="$5" color="white" fow="700" ta="center" mt="$2">
-                    Niveau Premium
+                    {t('lockPremium.premiumLevel1')}
                   </SizableText>
                   <Paragraph size="$4" ta="center" color="white" fow="500" opacity={1} mt="$2">
-                    Débloque les niveaux avancés.
+                    {t('lockPremium.premiumDesc')}
                   </Paragraph>
                   <YStack mt="$3" gap="$2" w="100%">
-                    <Button theme="accent">Débloquer ce niveau Premium 🚀</Button>
+                    <Button
+                      theme="accent"
+                      onPress={() => {
+                        console.log('To Do: Open sub !');
+                      }}
+                    >
+                      {t('lockPremium.unlockPremiumBtn')}
+                    </Button>
                   </YStack>
                 </LinearGradient>
               </YStack>

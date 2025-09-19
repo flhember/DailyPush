@@ -23,6 +23,7 @@ type Props = {
   currentDayIndex: number;
   isPremium?: boolean | null;
   onPlanning?: () => void;
+  onPressChangeLevel?: () => void;
 };
 
 export function ProgramCardPushups({
@@ -30,6 +31,7 @@ export function ProgramCardPushups({
   currentDayIndex,
   isPremium,
   onPlanning,
+  onPressChangeLevel,
 }: Props) {
   const { t } = useTranslation();
   const { mode } = useThemeMode();
@@ -149,7 +151,7 @@ export function ProgramCardPushups({
               left: 0,
               right: 0,
               bottom: 0,
-              borderRadius: 16, // doit matcher le Card
+              borderRadius: 16,
             }}
             tint={mode === 'dark' ? 'dark' : 'light'}
             intensity={20}
@@ -170,15 +172,15 @@ export function ProgramCardPushups({
           >
             <Lock size={32} color="white" />
             <SizableText size="$5" color="white" fow="700" ta="center" mt="$2">
-              Niveau {currentLevelIndex} Premium
+              {t('lockPremium.premiumLevel', { level: currentLevelIndex })}
             </SizableText>
             <Paragraph size="$4" ta="center" color="white" fow="500" opacity={1} mt="$2">
-              Débloque les niveaux avancés.
+              {t('lockPremium.premiumDesc')}
             </Paragraph>
             <YStack mt="$3" gap="$2" w="100%">
-              <Button theme="accent">Débloquer ce niveau Premium 🚀</Button>
-              <Button backgroundColor="$color4" onPress={() => console.log('Change lvl')}>
-                Choisir un autre niveau
+              <Button theme="accent">{t('lockPremium.unlockPremiumBtn')}</Button>
+              <Button backgroundColor="$color4" onPress={onPressChangeLevel}>
+                {t('lockPremium.chooseAnotherLevelBtn')}
               </Button>
             </YStack>
           </LinearGradient>
