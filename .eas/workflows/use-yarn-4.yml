@@ -1,0 +1,19 @@
+name: Build with Yarn 4
+defaults:
+  tools:
+    node: '22.17.1'       # ou la version Node que tu veux
+    yarn: '4.10.2'       # la version exacte que tu utilises localement
+    corepack: true       # active corepack au début du build
+jobs:
+  build_android:
+    name: Android build
+    type: build
+    params:
+      platform: android
+      profile: production
+  build_ios:
+    name: iOS build
+    type: build
+    params:
+      platform: ios
+      profile: production
